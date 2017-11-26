@@ -1,48 +1,72 @@
-##################
-#Import and Clean
-##################
+---
+title: "Procrastination"
+author: "Arturo Casillas & Eric McCandless"
+date: "November 26, 2017"
+output:
+  html_document:
+    keep_md: true
+---
 
+
+## Introduction
+
+Background: 
+
+##Sources/Data
+
+Data files: Raw and URL/Scraped
+
+```{r, initialize}
 library(knitr)
+#opts_knit$set(root.dir = "~/Documents/")
+#getwd()
+```
 
-
+```{r}
 #2.
 #read the data
+#This assumes that CaseStudy2 is your working directory
 #2.a.
-procrastination<-read.csv('./CaseStudy2/Data/Procrastination.csv', header=TRUE)
+procrastination<-read.csv('./Data/Procrastination.csv', header=TRUE)
+```
 
-#general info
-str(procrastination)
+##Additional Information
 
+Additional information about this assessment can be found in the README file in the repository.
+
+##Analysis/Findings
+
+Explore Data:
+
+Dimensions:
+
+```{r}
 #2.b.
 #dimensions
 dim(procrastination)
+```
 
-#spot check first rows
-head(procrastination)
+First Look:
 
-#2.c.
-#names
-names(procrastination)
-lapply(names(procrastination), nchar)
+```{r, results='hide'}
+#general info
+str(procrastination)
 
-#apply(procrastination, 2, class)
+#Create 'catch', a vector of boolean if-numeric
 catch=NA
 for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
 #catch[-1]
 
 #Numeric Summary
-#apply(procrastination[,c(1,6,8:9, 14:59)], 2, summary)
 apply(procrastination[,catch[-1]], 2, summary)
 
 #Character Summary
-#apply(procrastination[,-c(1,6,8:9, 14:59)], 2, unique)
 apply(procrastination[,!catch[-1]], 2, unique)
+```
 
-aggregate(procrastination[,!catch[-1]], by= , FUN=is.na)
+Clean data variable by variable:
 
-### Clean data by variable ###
-
-#rename
+```{r, echo=TRUE}
 names(procrastination)[1]<-'Age'
 
 names(procrastination)[4]<-'Education'
@@ -59,6 +83,7 @@ names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
 #check for other info about 's'
 #procrastination[procrastination$Current.Job == 's',]
+#Set 's' to student based on employment status
 levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-''
 #ouh could be oxford university hospital
@@ -148,30 +173,18 @@ names(procrastination)[61]<-'Other.Assess'
 levels(procrastination$Other.Assess)[match('4', levels(procrastination$Other.Assess))]<-'no'
 levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-''
 
-#2.e.
-#Create means for category of survey questions
-#First, find the indexes of the survey category in question
-#Then, use apply() to find the row mean only for those categories
+```
 
-XGP<-grep( 'XGP', names(procrastination))
-procrastination$XGP.Mean<-apply(procrastination[,XGP], 1, mean, na.rm=TRUE)
+Double Check
 
-XDP<-grep( 'XDP', names(procrastination))
-procrastination$XDP.Mean<-apply(procrastination[,XDP], 1, mean, na.rm=TRUE)
-
-XAIP<-grep( 'XAIP', names(procrastination))
-procrastination$XAIP.Mean<-apply(procrastination[,XAIP], 1, mean, na.rm=TRUE)
-
-SWLS<-grep( 'SWLS', names(procrastination))
-procrastination$SWLS.Mean<-apply(procrastination[,SWLS], 1, mean, na.rm=TRUE)
-
-#Set missing values
+```{r, echo=TRUE}
+#Double Check
 str(procrastination)
 
 #apply(procrastination, 2, class)
 catch=NA
 for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
-catch[-1]
+#catch[-1]
 
 #Numeric Summary
 #apply(procrastination[,c(1,6,8:9, 14:59)], 2, summary)
@@ -180,10 +193,18 @@ apply(procrastination[,catch[-1]], 2, summary)
 #Character Summary
 #apply(procrastination[,-c(1,6,8:9, 14:59)], 2, unique)
 apply(procrastination[,!catch[-1]], 2, unique)
+```
 
-str(procrastination)
+Highlights:
 
-procrastination[procrastination$Kids == 'No Kids', c(3,13)]
-procrastination[procrastination$Kids == 'No Kids', ]
-procrastination$Sons[procrastination$Kids == 'No Kids']
-as.numeric(procrastination$Sons[procrastination$Kids == 'No Kids'])
+
+
+
+###Modifications/Merges to Data
+
+###Data Summary
+
+##Conclusions
+
+
+
