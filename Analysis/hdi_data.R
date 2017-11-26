@@ -64,4 +64,4 @@ hdi_total$Development_Level <- cut(hdi_total$HDI,
                        right = FALSE)
 
 #saved file "hdi.csv" to Data file in repo:
-#write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv")
+#write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
