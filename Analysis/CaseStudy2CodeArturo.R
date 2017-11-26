@@ -171,3 +171,5 @@ apply(procrastination[,catch[-1]], 2, summary)
 #Character Summary
 #apply(procrastination[,-c(1,6,8:9, 14:59)], 2, unique)
 apply(procrastination[,!catch[-1]], 2, unique)
+
+str(procrastination)

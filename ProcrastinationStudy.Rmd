@@ -1,0 +1,59 @@
+---
+title: "Procrastination"
+author: "Arturo Casillas & Eric McCandless"
+date: "November 26, 2017"
+output:
+  html_document:
+    keep_md: true
+---
+
+
+## Introduction
+
+Background: 
+
+##Sources/Data
+
+Data files: Raw and URL/Scraped
+
+```{r}
+#2.
+#read the data from Working directory for now
+#2.a.
+procrastination<-read.csv('Procrastination.csv', header=TRUE)
+```
+
+##Additional Information
+
+Additional information about this assessment can be found in the README file in the repository.
+
+##Analysi/Findings
+
+Explore Data:
+
+```{r}
+#Create 'catch', a vector of boolean if-numeric
+catch=NA
+for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
+catch[-1]
+
+#Numeric Summary
+apply(procrastination[,catch[-1]], 2, summary)
+
+#Character Summary
+apply(procrastination[,!catch[-1]], 2, unique)
+```
+
+
+
+###Modifications/Merges to Data
+
+###Data Summary
+
+##Conclusions
+
+```{r cars}
+summary(cars)
+```
+
+
