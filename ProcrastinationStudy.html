@@ -167,13 +167,12 @@ apply(procrastination[,catch[-1]], 2, summary)
 #Character Summary
 apply(procrastination[,!catch[-1]], 2, unique)</code></pre>
 <p>Clean data variable by variable:</p>
-<pre class="r"><code>## Clean data by variable ###
+<pre class="r"><code>names(procrastination)[1]&lt;-'Age'
 
-#rename then reformat if necessary
-names(procrastination)[1]&lt;-'Age'
+names(procrastination)[4]&lt;-'Education'
 
-names(procrastination)[2]&lt;-'Education'
-levels(procrastination$Education)[match('0', levels(procrastination$Education))]&lt;-''
+#names(procrastination)[5]&lt;-'Work.Status'
+levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]&lt;-''
 
 names(procrastination)[6]&lt;-'Income.Year'
 #tail(sort(procrastination$Income.Year), 150)
@@ -278,10 +277,10 @@ levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Ass
 str(procrastination)</code></pre>
 <pre><code>## 'data.frame':    4264 obs. of  61 variables:
 ##  $ Age         : num  67.5 45 19 37.5 28 23 67.5 37.5 24 45 ...
-##  $ Education   : Factor w/ 3 levels &quot;&quot;,&quot;Female&quot;,&quot;Male&quot;: 3 3 2 3 2 2 2 3 2 3 ...
+##  $ Gender      : Factor w/ 3 levels &quot;&quot;,&quot;Female&quot;,&quot;Male&quot;: 3 3 2 3 2 2 2 3 2 3 ...
 ##  $ Kids        : Factor w/ 3 levels &quot;&quot;,&quot;No Kids&quot;,&quot;Yes Kids&quot;: 3 3 2 3 2 2 2 2 2 3 ...
-##  $ Edu         : Factor w/ 9 levels &quot;&quot;,&quot;deg&quot;,&quot;dip&quot;,..: 8 2 3 8 2 2 8 4 8 8 ...
-##  $ Work.Status : Factor w/ 7 levels &quot;&quot;,&quot;0&quot;,&quot;full-time&quot;,..: 5 4 6 3 3 3 4 4 3 3 ...
+##  $ Education   : Factor w/ 9 levels &quot;&quot;,&quot;deg&quot;,&quot;dip&quot;,..: 8 2 3 8 2 2 8 4 8 8 ...
+##  $ Work.Status : Factor w/ 6 levels &quot;&quot;,&quot;full-time&quot;,..: 4 3 5 2 2 2 3 3 2 2 ...
 ##  $ Income.Year : int  25000 35000 NA 45000 35000 15000 NA 10000 250000 87500 ...
 ##  $ Current.Job : Factor w/ 674 levels &quot;&quot;,&quot;'Utterly shiftless arts student'... at p&quot;,..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Years.Empl. : num  9.0 1.5e-19 0.0 1.4e+01 1.0 ...
@@ -552,19 +551,19 @@ apply(procrastination[,catch[-1]], 2, summary)</code></pre>
 <pre class="r"><code>#Character Summary
 #apply(procrastination[,-c(1,6,8:9, 14:59)], 2, unique)
 apply(procrastination[,!catch[-1]], 2, unique)</code></pre>
-<pre><code>## $Education
+<pre><code>## $Gender
 ## [1] &quot;Male&quot;   &quot;Female&quot; &quot;&quot;      
 ## 
 ## $Kids
 ## [1] &quot;Yes Kids&quot; &quot;No Kids&quot;  &quot;&quot;        
 ## 
-## $Edu
+## $Education
 ## [1] &quot;ma&quot;     &quot;deg&quot;    &quot;dip&quot;    &quot;grade&quot;  &quot;phd&quot;    &quot;ltuni&quot;  &quot;high&quot;   &quot;lthigh&quot;
 ## [9] &quot;&quot;      
 ## 
 ## $Work.Status
 ## [1] &quot;retired&quot;    &quot;part-time&quot;  &quot;student&quot;    &quot;full-time&quot;  &quot;unemployed&quot;
-## [6] &quot;&quot;           &quot;0&quot;         
+## [6] &quot;&quot;          
 ## 
 ## $Current.Job
 ##   [1] &quot;&quot;                                          

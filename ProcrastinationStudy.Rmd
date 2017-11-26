@@ -67,13 +67,12 @@ apply(procrastination[,!catch[-1]], 2, unique)
 Clean data variable by variable:
 
 ```{r, echo=TRUE}
-## Clean data by variable ###
-
-#rename then reformat if necessary
 names(procrastination)[1]<-'Age'
 
-names(procrastination)[2]<-'Education'
-levels(procrastination$Education)[match('0', levels(procrastination$Education))]<-''
+names(procrastination)[4]<-'Education'
+
+#names(procrastination)[5]<-'Work.Status'
+levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-''
 
 names(procrastination)[6]<-'Income.Year'
 #tail(sort(procrastination$Income.Year), 150)

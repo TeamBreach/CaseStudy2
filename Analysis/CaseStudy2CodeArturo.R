@@ -28,7 +28,7 @@ lapply(names(procrastination), nchar)
 #apply(procrastination, 2, class)
 catch=NA
 for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
-catch[-1]
+#catch[-1]
 
 #Numeric Summary
 #apply(procrastination[,c(1,6,8:9, 14:59)], 2, summary)
@@ -45,8 +45,10 @@ aggregate(procrastination[,!catch[-1]], by= , FUN=is.na)
 #rename
 names(procrastination)[1]<-'Age'
 
-names(procrastination)[2]<-'Education'
-levels(procrastination$Education)[match('0', levels(procrastination$Education))]<-''
+names(procrastination)[4]<-'Education'
+
+#names(procrastination)[5]<-'Work.Status'
+levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-''
 
 names(procrastination)[6]<-'Income.Year'
 #tail(sort(procrastination$Income.Year), 150)

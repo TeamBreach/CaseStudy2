@@ -71,13 +71,12 @@ Clean data variable by variable:
 
 
 ```r
-## Clean data by variable ###
-
-#rename then reformat if necessary
 names(procrastination)[1]<-'Age'
 
-names(procrastination)[2]<-'Education'
-levels(procrastination$Education)[match('0', levels(procrastination$Education))]<-''
+names(procrastination)[4]<-'Education'
+
+#names(procrastination)[5]<-'Work.Status'
+levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-''
 
 names(procrastination)[6]<-'Income.Year'
 #tail(sort(procrastination$Income.Year), 150)
@@ -190,10 +189,10 @@ str(procrastination)
 ```
 ## 'data.frame':	4264 obs. of  61 variables:
 ##  $ Age         : num  67.5 45 19 37.5 28 23 67.5 37.5 24 45 ...
-##  $ Education   : Factor w/ 3 levels "","Female","Male": 3 3 2 3 2 2 2 3 2 3 ...
+##  $ Gender      : Factor w/ 3 levels "","Female","Male": 3 3 2 3 2 2 2 3 2 3 ...
 ##  $ Kids        : Factor w/ 3 levels "","No Kids","Yes Kids": 3 3 2 3 2 2 2 2 2 3 ...
-##  $ Edu         : Factor w/ 9 levels "","deg","dip",..: 8 2 3 8 2 2 8 4 8 8 ...
-##  $ Work.Status : Factor w/ 7 levels "","0","full-time",..: 5 4 6 3 3 3 4 4 3 3 ...
+##  $ Education   : Factor w/ 9 levels "","deg","dip",..: 8 2 3 8 2 2 8 4 8 8 ...
+##  $ Work.Status : Factor w/ 6 levels "","full-time",..: 4 3 5 2 2 2 3 3 2 2 ...
 ##  $ Income.Year : int  25000 35000 NA 45000 35000 15000 NA 10000 250000 87500 ...
 ##  $ Current.Job : Factor w/ 674 levels "","'Utterly shiftless arts student'... at p",..: 1 1 1 1 1 1 1 1 1 1 ...
 ##  $ Years.Empl. : num  9.0 1.5e-19 0.0 1.4e+01 1.0 ...
@@ -476,19 +475,19 @@ apply(procrastination[,!catch[-1]], 2, unique)
 ```
 
 ```
-## $Education
+## $Gender
 ## [1] "Male"   "Female" ""      
 ## 
 ## $Kids
 ## [1] "Yes Kids" "No Kids"  ""        
 ## 
-## $Edu
+## $Education
 ## [1] "ma"     "deg"    "dip"    "grade"  "phd"    "ltuni"  "high"   "lthigh"
 ## [9] ""      
 ## 
 ## $Work.Status
 ## [1] "retired"    "part-time"  "student"    "full-time"  "unemployed"
-## [6] ""           "0"         
+## [6] ""          
 ## 
 ## $Current.Job
 ##   [1] ""                                          
