@@ -2,10 +2,13 @@
 #Import and Clean
 ##################
 
+library(knitr)
+
+
 #2.
 #read the data
 #2.a.
-procrastination<-read.csv('C:/users/acasi/Downloads/Procrastination.csv', header=TRUE)
+procrastination<-read.csv('./CaseStudy2/Data/Procrastination.csv', header=TRUE)
 
 #general info
 str(procrastination)
@@ -35,52 +38,55 @@ apply(procrastination[,catch[-1]], 2, summary)
 #apply(procrastination[,-c(1,6,8:9, 14:59)], 2, unique)
 apply(procrastination[,!catch[-1]], 2, unique)
 
+aggregate(procrastination[,!catch[-1]], by= , FUN=is.na)
+
 ### Clean data by variable ###
 
 #rename
 names(procrastination)[1]<-'Age'
-#procrastination$Age <- as.numeric(procrastination$Age)
 
-names(procrastination)[1]<-'Education'
-procrastination$Education<-ifelse(procrastination$Education == '0', '', procrastination$Education)
+names(procrastination)[2]<-'Education'
+levels(procrastination$Education)[match('0', levels(procrastination$Education))]<-''
 
 names(procrastination)[6]<-'Income.Year'
 #tail(sort(procrastination$Income.Year), 150)
 #Consider that the incomes are buckets not values
-unique(procrastination$Income.Year)
+#unique(procrastination$Income.Year)
 
 names(procrastination)[7]<-'Current.Job'
-procrastination$Current.Job<-ifelse(procrastination$Current.Job == 's', '', procrastination$Current.Job)
+#unique(procrastination$Current.Job)
+#check for other info about 's'
+#procrastination[procrastination$Current.Job == 's',]
+levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-''
 #ouh could be oxford university hospital
 
 names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
+#999 years is missing since we don't know what it means
 procrastination$Years.Empl.<-ifelse(procrastination$Years.Empl. == 999, NA, procrastination$Years.Empl.)
 
 names(procrastination)[9]<-'Months.Empl.'
 
 names(procrastination)[10]<-'Comm.Size'
-procrastination$Comm.Size[as.numeric(procrastination$Comm.Size) == 8]
-#procrastination$Comm.Size[procrastination$Comm.Size == '8']
+#CHeck if 8 or 0 corresponds to a category if numeric
+#procrastination$Comm.Size[as.numeric(procrastination$Comm.Size) == 8]
+#procrastination$Comm.Size[as.numeric(procrastination$Comm.Size) == 0]
+#Change to 'Small City based on other responses
 levels(procrastination$Comm.Size)[match('8', levels(procrastination$Comm.Size))]<-'Small City'
-
-procrastination$Comm.Size[as.numeric(procrastination$Comm.Size) == 0]
-#procrastination[procrastination$Comm.Size == '0',]
 levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]<-''
 
 names(procrastination)[11]<-'Country'
-procrastination$Country<-ifelse(procrastination$Country == '0', '', procrastination$Country)
 levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-''
 
-
 names(procrastination)[12]<-'Marital.Stat'
-procrastination$Marital.Stat<-ifelse(procrastination$Marital.Stat == '0', '', procrastination$Marital.Stat)
+levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-''
 
 names(procrastination)[13]<-'Sons'
-levels(procrastination$Country)[match('Male', levels(procrastination$Country))]<-'1'
-levels(procrastination$Country)[match('Female', levels(procrastination$Country))]<-'2'
-procrastination$Sons = as.numeric(procrastination$Sons)
+levels(procrastination$Sons)[match('Male', levels(procrastination$Sons))]<-'1'
+levels(procrastination$Sons)[match('Female', levels(procrastination$Sons))]<-'2'
+#Convert to numeric
+procrastination$Sons = as.numeric(as.character(procrastination$Sons))
 
 names(procrastination)[14]<-'Daughters'
 #procrastination$Daughters = as.numeric(procrastination$Daughters)
@@ -134,10 +140,11 @@ names(procrastination)[59]<-'SWLS5'
 names(procrastination)[60]<-'Self.Assess'
 
 names(procrastination)[61]<-'Other.Assess'
-procrastination$Other.Assess<-ifelse(procrastination$Other.Assess == '4', '', procrastination$Other.Assess)
-procrastination$Other.Assess<-ifelse(procrastination$Other.Assess == '0', '', procrastination$Other.Assess)
-as.numeric(procrastination$Other.Assess)
-procrastination$Other.Assess[133] = 'no'
+#Check if '4' or '0' correspond to a categor under numeric coding
+#procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 4]
+#procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 0]
+levels(procrastination$Other.Assess)[match('4', levels(procrastination$Other.Assess))]<-'no'
+levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-''
 
 #2.e.
 #Create means for category of survey questions
@@ -173,3 +180,8 @@ apply(procrastination[,catch[-1]], 2, summary)
 apply(procrastination[,!catch[-1]], 2, unique)
 
 str(procrastination)
+
+procrastination[procrastination$Kids == 'No Kids', c(3,13)]
+procrastination[procrastination$Kids == 'No Kids', ]
+procrastination$Sons[procrastination$Kids == 'No Kids']
+as.numeric(procrastination$Sons[procrastination$Kids == 'No Kids'])
