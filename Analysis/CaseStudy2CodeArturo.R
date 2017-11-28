@@ -187,3 +187,26 @@ procrastination[procrastination$Kids == 'No Kids', c(3,13)]
 procrastination[procrastination$Kids == 'No Kids', ]
 procrastination$Sons[procrastination$Kids == 'No Kids']
 as.numeric(procrastination$Sons[procrastination$Kids == 'No Kids'])
+
+
+
+######## MERGE THE TWO DATASESTS ###############
+
+#THis requires both 'procrasintation' and 'hdi_total' from previous codes
+
+sort(unique(procrastination$Country))
+#Use Spanish Spelling of COlumbia
+levels(procrastination$Country)[match('Columbia', levels(procrastination$Country))]<-'Colombia'
+#Use correct Spelling of Israel
+levels(procrastination$Country)[match('Isreal', levels(procrastination$Country))]<-'Israel'
+
+sort(unique(hdi_total$Country))
+
+test<-merge(x=procrastination, y=hdi_total, by.x='Country', by.y='Country', all.x = TRUE)
+summary(test$HDI)
+str(test)
+
+unique(test$Country[is.na(test$HDI)])
+#No HDI for Antiqua, Bermuda, Guam, Macao, Puerto Rico, and former Yogoslavia
+Ta<-table(test$Country[is.na(test$HDI)])
+Ta[Ta > 0]
