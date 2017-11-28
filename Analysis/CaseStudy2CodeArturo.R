@@ -192,6 +192,7 @@ as.numeric(procrastination$Sons[procrastination$Kids == 'No Kids'])
 
 ######## MERGE THE TWO DATASESTS ###############
 
+#3.c.
 #THis requires both 'procrasintation' and 'hdi_total' from previous codes
 
 sort(unique(procrastination$Country))
@@ -202,11 +203,11 @@ levels(procrastination$Country)[match('Isreal', levels(procrastination$Country))
 
 sort(unique(hdi_total$Country))
 
-test<-merge(x=procrastination, y=hdi_total, by.x='Country', by.y='Country', all.x = TRUE)
-summary(test$HDI)
-str(test)
+procrast_hdi<-merge(x=procrastination, y=hdi_total, by.x='Country', by.y='Country', all.x = TRUE)
+summary(test$procrast_hdi)
+str(procrast_hdi)
 
-unique(test$Country[is.na(test$HDI)])
+unique(procrast_hdi$Country[is.na(procrast_hdi$HDI)])
 #No HDI for Antiqua, Bermuda, Guam, Macao, Puerto Rico, and former Yogoslavia
-Ta<-table(test$Country[is.na(test$HDI)])
+Ta<-table(procrast_hdi$Country[is.na(procrast_hdi$HDI)])
 Ta[Ta > 0]

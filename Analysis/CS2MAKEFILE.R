@@ -13,4 +13,6 @@ source(source('~/CaseStudy2/Analysis/hdi_data.R'), echo=FALSE)
 #OUTPUT: hdi_total
 
 #INPUT: procrastination; hdi_total;
-source(, echo=FALSE)
+source(source('~/CaseStudy2/Analysis/merge_data.R'), echo=FALSE)
+source(source('~/CaseStudy2/Analysis/hdi_data.R'), echo=FALSE)
+#OUTPUT: procrast_hdi
