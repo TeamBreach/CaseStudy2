@@ -5,6 +5,10 @@
 #read the data
 procrastination<-read.csv('./CaseStudy2/Data/Procrastination.csv', header=TRUE)
 
+#2.b.
+#check dimensions
+dim(procrastination)
+
 ### Clean data by variable ###
 
 #rename
@@ -32,6 +36,7 @@ names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
 #999 years is missing since we don't know what it means
 procrastination$Years.Empl.<-ifelse(procrastination$Years.Empl. == 999, NA, procrastination$Years.Empl.)
+round(procrast_hdi$Years.Empl)
 
 names(procrastination)[9]<-'Months.Empl.'
 

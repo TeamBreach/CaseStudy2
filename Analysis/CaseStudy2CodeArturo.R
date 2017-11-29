@@ -8,7 +8,7 @@ library(knitr)
 #2.
 #read the data
 #2.a.
-procrastination<-read.csv('./CaseStudy2/Data/Procrastination.csv', header=TRUE)
+procrastination<-read.csv('~/CaseStudy2/Data/Procrastination.csv', header=TRUE)
 
 #general info
 str(procrastination)

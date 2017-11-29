@@ -4,6 +4,12 @@ author: "Arturo Casillas & Eric McCandless"
 date: "November 26, 2017"
 output:
   html_document:
+    toc: true
+    toc_float: true
+    code_folding: hide
+    #df_print: kable
+    #df_print: paged
+    theme: "flatly"
     keep_md: true
 ---
 
@@ -18,17 +24,23 @@ Data files: Raw and URL/Scraped
 
 ```{r, initialize}
 library(knitr)
+library(xml2)
+library(rvest)
 #opts_knit$set(root.dir = "~/Documents/")
 #getwd()
 ```
 
+Procrastination data imported and cleaned
+
 ```{r}
-#2.
-#read the data
-#This assumes that CaseStudy2 is your working directory
-#2.a.
+# #2.
+# #read the data
+# #This assumes that CaseStudy2 is your working directory
+# #2.a.
 procrastination<-read.csv('./Data/Procrastination.csv', header=TRUE)
+#read_chunk('./Analysis/procrastination_data.R')
 ```
+
 
 ##Additional Information
 
@@ -48,7 +60,7 @@ dim(procrastination)
 
 First Look:
 
-```{r, results='hide'}
+```{r, echo=TRUE, results='hide'}
 #general info
 str(procrastination)
 
@@ -66,7 +78,7 @@ apply(procrastination[,!catch[-1]], 2, unique)
 
 Clean data variable by variable:
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, results='markup'}
 names(procrastination)[1]<-'Age'
 
 names(procrastination)[4]<-'Education'
@@ -177,7 +189,7 @@ levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Ass
 
 Double Check
 
-```{r, echo=TRUE}
+```{r, echo=TRUE, results='hide'}
 #Double Check
 str(procrastination)
 
