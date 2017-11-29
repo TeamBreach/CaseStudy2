@@ -25,6 +25,8 @@ head(procrastination)
 names(procrastination)
 lapply(names(procrastination), nchar)
 
+#2.d.
+#Check Character and Numeric
 #apply(procrastination, 2, class)
 catch=NA
 for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
@@ -59,9 +61,22 @@ names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
 #check for other info about 's'
 #procrastination[procrastination$Current.Job == 's',]
-levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]<-'student'
+levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-''
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-''
-#ouh could be oxford university hospital
+
+#Fix Misspellings
+#ouh could be oxford university hospital was not changed
+levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]<-'student'
+levels(procrastination$Current.Job)[match('Studey', levels(procrastination$Current.Job))]<-'student'
+levels(procrastination$Current.Job)[match('psychologis', levels(procrastination$Current.Job))]<-'psychologist'
+levels(procrastination$Current.Job)[match('mktg', levels(procrastination$Current.Job))]<-'Marketing'
+levels(procrastination$Current.Job)[match('MD', levels(procrastination$Current.Job))]<-'Physician'
+levels(procrastination$Current.Job)[match('Economy', levels(procrastination$Current.Job))]<-'Economist'
+levels(procrastination$Current.Job)[match('vidoe', levels(procrastination$Current.Job))]<-'video'
+levels(procrastination$Current.Job)[match('houswife', levels(procrastination$Current.Job))]<-'Housewife'
+gsub('â???"', '', levels(procrastination$Current.Job))
+levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]<-'student'
+levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]<-'Assistant'
 
 names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
@@ -165,13 +180,15 @@ procrastination$XAIP.Mean<-apply(procrastination[,XAIP], 1, mean, na.rm=TRUE)
 SWLS<-grep( 'SWLS', names(procrastination))
 procrastination$SWLS.Mean<-apply(procrastination[,SWLS], 1, mean, na.rm=TRUE)
 
-#Set missing values
+
+#2.d.
+#Double Check Character and Numeric
 str(procrastination)
 
 #apply(procrastination, 2, class)
 catch=NA
 for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
-catch[-1]
+#catch[-1]
 
 #Numeric Summary
 #apply(procrastination[,c(1,6,8:9, 14:59)], 2, summary)
