@@ -67,6 +67,7 @@ apply(procrastination[,!catch[-1]], 2, unique)
 ```
 
 Clean data variable by variable:
+
  * Go through variables one by one
   * Rename if necessary to keep 12 characters and under
   * Define appropriate missing values: '0' when numeric and blank when character
@@ -82,12 +83,14 @@ Clean data variable by variable:
 
 ### Clean data by variable ###
 
+#rename levels or change values
+
 names(procrastination)[1]<-'Age'
 
 names(procrastination)[4]<-'Education'
 
 #names(procrastination)[5]<-'Work.Status'
-levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-''
+levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-NA #''
 
 names(procrastination)[6]<-'Income.Year'
 #tail(sort(procrastination$Income.Year), 150)
@@ -98,8 +101,8 @@ names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
 #check for other info about 's'
 #procrastination[procrastination$Current.Job == 's',]
-levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-''
-levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-''
+levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-NA
+levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-NA
 
 #Fix Misspellings
 #ouh could be oxford university hospital was not changed
@@ -805,15 +808,15 @@ names(procrastination)[10]<-'Comm.Size'
 #procrastination$Comm.Size[as.numeric(procrastination$Comm.Size) == 0]
 #Change to 'Small City based on other responses
 levels(procrastination$Comm.Size)[match('8', levels(procrastination$Comm.Size))]<-'Small City'
-levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]<-''
+levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]<-NA
 
 names(procrastination)[11]<-'Country'
-levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-''
-levels(procrastination$Country)[match('', levels(procrastination$Country))]<-'<NA>'
-levels(procrastination$Country)[match(' ', levels(procrastination$Country))]<-'<NA>'
+levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-NA
+levels(procrastination$Country)[match('', levels(procrastination$Country))]<-NA
+#levels(procrastination$Country)[match(' ', levels(procrastination$Country))]<-'<NA>'
 
 names(procrastination)[12]<-'Marital.Stat'
-levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-''
+levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-NA
 
 names(procrastination)[13]<-'Sons'
 levels(procrastination$Sons)[match('Male', levels(procrastination$Sons))]<-'1'
@@ -877,7 +880,7 @@ names(procrastination)[61]<-'Other.Assess'
 #procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 4]
 #procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 0]
 levels(procrastination$Other.Assess)[match('4', levels(procrastination$Other.Assess))]<-'no'
-levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-''
+levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-NA
 ```
 
 
@@ -1174,50 +1177,49 @@ knitr::kable(procrast_hdi12)
 
 Country               Count   Percentage
 -------------------  ------  -----------
-United States          2785        69.00
-Canada                  243         6.02
-United Kingdom          177         4.39
-Australia                99         2.45
-India                    78         1.93
-Italy                    62         1.54
-Germany                  36         0.89
-Brazil                   20         0.50
-Ireland                  19         0.47
-Israel                   19         0.47
-Netherlands              18         0.45
-Sweden                   15         0.37
-Norway                   14         0.35
-France                   13         0.32
-Japan                    13         0.32
-Spain                    13         0.32
-China                    12         0.30
-Finland                  12         0.30
-Mexico                   12         0.30
-New Zealand              12         0.30
-South Africa             12         0.30
-Switzerland              12         0.30
-Philippines              11         0.27
-Greece                   10         0.25
-Belgium                   9         0.22
-Denmark                   9         0.22
-Turkey                    9         0.22
-Hong Kong                 7         0.17
-Portugal                  7         0.17
+United States          2785        71.85
+Canada                  243         6.27
+United Kingdom          177         4.57
+Australia                99         2.55
+India                    78         2.01
+Italy                    62         1.60
+Germany                  36         0.93
+Brazil                   20         0.52
+Ireland                  19         0.49
+Israel                   19         0.49
+Netherlands              18         0.46
+Sweden                   15         0.39
+Norway                   14         0.36
+France                   13         0.34
+Japan                    13         0.34
+Spain                    13         0.34
+China                    12         0.31
+Finland                  12         0.31
+Mexico                   12         0.31
+New Zealand              12         0.31
+South Africa             12         0.31
+Switzerland              12         0.31
+Philippines              11         0.28
+Greece                   10         0.26
+Belgium                   9         0.23
+Denmark                   9         0.23
+Turkey                    9         0.23
+Hong Kong                 7         0.18
+Portugal                  7         0.18
 Slovenia                  6         0.15
-Poland                    5         0.12
-Romania                   5         0.12
-Afghanistan               4         0.10
+Poland                    5         0.13
+Romania                   5         0.13
 Chile                     4         0.10
 Croatia                   4         0.10
 Malaysia                  4         0.10
 Singapore                 4         0.10
-Algeria                   3         0.07
-Argentina                 3         0.07
-Austria                   3         0.07
-Czech Republic            3         0.07
-Ecuador                   3         0.07
-Puerto Rico               3         0.07
-Uruguay                   3         0.07
+Algeria                   3         0.08
+Argentina                 3         0.08
+Austria                   3         0.08
+Czech Republic            3         0.08
+Ecuador                   3         0.08
+Puerto Rico               3         0.08
+Uruguay                   3         0.08
 Albania                   2         0.05
 Andorra                   2         0.05
 Bermuda                   2         0.05
@@ -1233,37 +1235,37 @@ Thailand                  2         0.05
 Ukraine                   2         0.05
 Venezuela                 2         0.05
 Yugoslavia                2         0.05
-Antigua                   1         0.02
-Bahamas                   1         0.02
-Barbados                  1         0.02
-Bolivia                   1         0.02
-Botswana                  1         0.02
-Brunei                    1         0.02
-Cyprus                    1         0.02
-Dominican Republic        1         0.02
-Egypt                     1         0.02
-El Salvador               1         0.02
-Guam                      1         0.02
-Guyana                    1         0.02
-Hungary                   1         0.02
-Iceland                   1         0.02
-Jamaica                   1         0.02
-Kazakhstan                1         0.02
-Kenya                     1         0.02
-Lithuania                 1         0.02
-Luxembourg                1         0.02
-Macao                     1         0.02
-Macedonia                 1         0.02
-Morocco                   1         0.02
-Myanmar                   1         0.02
-Nicaragua                 1         0.02
-Pakistan                  1         0.02
-Panama                    1         0.02
-Qatar                     1         0.02
-Russia                    1         0.02
-Sri Lanka                 1         0.02
-Taiwan                    1         0.02
-Vietnam                   1         0.02
+Antigua                   1         0.03
+Bahamas                   1         0.03
+Barbados                  1         0.03
+Bolivia                   1         0.03
+Botswana                  1         0.03
+Brunei                    1         0.03
+Cyprus                    1         0.03
+Dominican Republic        1         0.03
+Egypt                     1         0.03
+El Salvador               1         0.03
+Guam                      1         0.03
+Guyana                    1         0.03
+Hungary                   1         0.03
+Iceland                   1         0.03
+Jamaica                   1         0.03
+Kazakhstan                1         0.03
+Kenya                     1         0.03
+Lithuania                 1         0.03
+Luxembourg                1         0.03
+Macao                     1         0.03
+Macedonia                 1         0.03
+Morocco                   1         0.03
+Myanmar                   1         0.03
+Nicaragua                 1         0.03
+Pakistan                  1         0.03
+Panama                    1         0.03
+Qatar                     1         0.03
+Russia                    1         0.03
+Sri Lanka                 1         0.03
+Taiwan                    1         0.03
+Vietnam                   1         0.03
 Estonia                   0         0.00
 Lebanon                   0         0.00
 
@@ -1296,8 +1298,9 @@ no|no                483        11.76
 NA|NA                 71         1.73
 no|yes                51         1.24
 yes|                  25         0.61
-|                      7         0.17
+|                      6         0.15
 no|                    4         0.10
+|NA                    1         0.02
 |no                    1         0.02
 
 Top 15 Nations According to the Decisional Procrastination Scale - DP (Q5b)
@@ -1308,9 +1311,11 @@ Top 15 Nations According to the Decisional Procrastination Scale - DP (Q5b)
 DP_Mean <- procrast_hdi1[,c("Country", "XDP.Mean")]
 DP_Mean <- aggregate(DP_Mean[, c("XDP.Mean")], list(DP_Mean$Country), mean)
 colnames(DP_Mean) <- c("Country", "XDP.Mean")
+
 #second table that shows development level by country.
 DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
 DP_Mean1 <- unique(DP_Mean1)
+
 #merging 2 tables to get DP and development category together in df.
 DP_Meanfinal <- merge(DP_Mean, DP_Mean1, by=c("Country"))
 DP_Meanfinal = DP_Meanfinal[-1,]
@@ -1319,6 +1324,8 @@ DP_Meanfinal <- head(DP_Meanfinal,15)
 DP_Meanfinal$XDP.Mean <- round(DP_Meanfinal$XDP.Mean, digits=1)
 DP_Meanfinal$Development_Level <- as.character(DP_Meanfinal$Development_Level)
 DP_Meanfinal$Development_Level[is.na(DP_Meanfinal$Development_Level)] <- "No Development Level Reported"
+
+
 #creating bar plot.
 ggplot(DP_Meanfinal, aes(x=reorder(Country,XDP.Mean),y=XDP.Mean)) +
   geom_bar(stat="identity", aes(fill=Development_Level)) +
@@ -1386,7 +1393,7 @@ ggplot(procrast_hdi1, aes(x=Age, y=Income.Year, color=Gender)) +
 
 ![](ProcrastinationStudy_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
-Relationship Between Life Satisfaction and HDI (Q5d)
+Relationship Between Life Satisfaction and HDI (Q5e)
 
 ?????????????????????????????????????????????????
 

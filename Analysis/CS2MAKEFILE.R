@@ -6,15 +6,29 @@ library(xml2)
 library(rvest)
 #getwd()
 
+
+
+
+###### IMPORT THE PROCASINTATION DATA 
+
 #INPUT: Procrastination.csv
 source('~/CaseStudy2/Analysis/procrastination_data.R', echo=TRUE)
 #OUTPUT: procrastination
+
+
+
+###### IMPORT/SCRAPE THE HUMAN DEVELOPMENT TABLES
 
 source('~/CaseStudy2/Analysis/hdi_data.R', echo=TRUE)
 #OUTPUT: hdi_total
 #
 #Uncommment below if you woud like to  export the scraped hdi data
 #write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
+
+
+
+
+###### MERGE THE PROCRASTINATION AND HDI TABLES
 
 #INPUT: procrastination; hdi_total;
 source('~/CaseStudy2/Analysis/merge_data.R', echo=TRUE)

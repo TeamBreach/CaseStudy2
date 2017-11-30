@@ -257,8 +257,14 @@ p<- p  + theme_minimal() + theme(plot.title = element_text(hjust = 0.5), axis.te
 #p<- p  + theme_minimal() + theme(plot.title = element_text(hjust = 0.5)) + coord_flip()
 p
 
-temp<-data.frame(procrast_hdi5[order(-procrast_hdi5, na.last = TRUE)[c(1:3, 5:16)]])
-temp
+Ta<-sort(table(procrast_hdi1$Country), decreasing=TRUE)
+Ta[1:15]
+summary(procrast_hdi1$Country)
+sum(Ta)
+str(procrast_hdi1)
+  
+temp<-data.frame(procrast_hdi1[order(-procrast_hdi1, na.last = TRUE), ])
+temp[c(1:3, 4:16),]
 
 ggplot(data=temp, aes(x=))
 
@@ -268,3 +274,7 @@ procrastination$Current.Job[grepl('&', procrastination$Current.Job)]
 sum(grepl('â???"', procrastination$Current.Job))
 
 procrastination$Current.Job[!is.na(procrastination$Current.Job)]
+
+unique(procrast_hdi$Self.Assess)
+unique(procrast_hdi$Other.Assess)
+unique(procrast_hdi$Gender)

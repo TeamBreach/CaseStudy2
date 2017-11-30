@@ -34,7 +34,7 @@ library(rvest)
 Procrastination data imported and cleaned
 
 
-Import:
+Import the data. It has 4,264 observations and 61 variables:
 
 ```{r}
 # #2.
@@ -71,12 +71,16 @@ apply(procrastination[,!catch[-1]], 2, unique)
 ```
 
 Clean data variable by variable:
+
  * Go through variables one by one
   * Rename if necessary to keep 12 characters and under
+  * the '.' is used as a separator
   * Define appropriate missing values: '0' when numeric and blank when character
-   * Use 2.c.iii.-iv. as examples
+   * Use 2.c.iii.-iv. as examples  
+   -For example, work status has a '0' instead of 'full-time' or 'retired'. This was changed to a missing value
   * Fix when factor labels are not applied correctly
    * Use 2.c.ii. as example
+   - Sons has 'Male' and 'Female' instead of 1 and 2
   * Decide what to do with nonsense data
    * Use 2.c.i. as example
 
@@ -85,12 +89,14 @@ Clean data variable by variable:
 
 ### Clean data by variable ###
 
+#rename levels or change values
+
 names(procrastination)[1]<-'Age'
 
 names(procrastination)[4]<-'Education'
 
 #names(procrastination)[5]<-'Work.Status'
-levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-''
+levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-NA #''
 
 names(procrastination)[6]<-'Income.Year'
 #tail(sort(procrastination$Income.Year), 150)
@@ -101,8 +107,8 @@ names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
 #check for other info about 's'
 #procrastination[procrastination$Current.Job == 's',]
-levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-''
-levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-''
+levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-NA
+levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-NA
 
 #Fix Misspellings
 #ouh could be oxford university hospital was not changed
@@ -132,15 +138,15 @@ names(procrastination)[10]<-'Comm.Size'
 #procrastination$Comm.Size[as.numeric(procrastination$Comm.Size) == 0]
 #Change to 'Small City based on other responses
 levels(procrastination$Comm.Size)[match('8', levels(procrastination$Comm.Size))]<-'Small City'
-levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]<-''
+levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]<-NA
 
 names(procrastination)[11]<-'Country'
-levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-''
-levels(procrastination$Country)[match('', levels(procrastination$Country))]<-'<NA>'
-levels(procrastination$Country)[match(' ', levels(procrastination$Country))]<-'<NA>'
+levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-NA
+levels(procrastination$Country)[match('', levels(procrastination$Country))]<-NA
+#levels(procrastination$Country)[match(' ', levels(procrastination$Country))]<-'<NA>'
 
 names(procrastination)[12]<-'Marital.Stat'
-levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-''
+levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-NA
 
 names(procrastination)[13]<-'Sons'
 levels(procrastination$Sons)[match('Male', levels(procrastination$Sons))]<-'1'
@@ -204,7 +210,7 @@ names(procrastination)[61]<-'Other.Assess'
 #procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 4]
 #procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 0]
 levels(procrastination$Other.Assess)[match('4', levels(procrastination$Other.Assess))]<-'no'
-levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-''
+levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-NA
 
 ```
 
@@ -482,9 +488,11 @@ Top 15 Nations According to the Decisional Procrastination Scale - DP (Q5b)
 DP_Mean <- procrast_hdi1[,c("Country", "XDP.Mean")]
 DP_Mean <- aggregate(DP_Mean[, c("XDP.Mean")], list(DP_Mean$Country), mean)
 colnames(DP_Mean) <- c("Country", "XDP.Mean")
+
 #second table that shows development level by country.
 DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
 DP_Mean1 <- unique(DP_Mean1)
+
 #merging 2 tables to get DP and development category together in df.
 DP_Meanfinal <- merge(DP_Mean, DP_Mean1, by=c("Country"))
 DP_Meanfinal = DP_Meanfinal[-1,]
@@ -493,6 +501,8 @@ DP_Meanfinal <- head(DP_Meanfinal,15)
 DP_Meanfinal$XDP.Mean <- round(DP_Meanfinal$XDP.Mean, digits=1)
 DP_Meanfinal$Development_Level <- as.character(DP_Meanfinal$Development_Level)
 DP_Meanfinal$Development_Level[is.na(DP_Meanfinal$Development_Level)] <- "No Development Level Reported"
+
+
 #creating bar plot.
 ggplot(DP_Meanfinal, aes(x=reorder(Country,XDP.Mean),y=XDP.Mean)) +
   geom_bar(stat="identity", aes(fill=Development_Level)) +
@@ -503,6 +513,7 @@ ggplot(DP_Meanfinal, aes(x=reorder(Country,XDP.Mean),y=XDP.Mean)) +
   geom_text(aes(label = XDP.Mean), hjust=-.25, size=5) +
   scale_fill_brewer(palette="Dark2") +
   coord_flip()
+
 ```
 
 Top 15 Nations According to the General Procrastination Scale - GP (Q5c)
