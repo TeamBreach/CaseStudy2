@@ -422,6 +422,115 @@ unemployed      258          6.4
 retired         174          4.3
                  42          1.0
 
+```r
+procrast_hdi5 <- table(procrast_hdi1$Country)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+
+
+
+Response              Count   Percentage
+-------------------  ------  -----------
+United States          2785        69.00
+Canada                  243         6.02
+United Kingdom          177         4.39
+                        160         3.96
+Australia                99         2.45
+India                    78         1.93
+Italy                    62         1.54
+Germany                  36         0.89
+Brazil                   20         0.50
+Ireland                  19         0.47
+Israel                   19         0.47
+Netherlands              18         0.45
+Sweden                   15         0.37
+Norway                   14         0.35
+France                   13         0.32
+Japan                    13         0.32
+Spain                    13         0.32
+China                    12         0.30
+Finland                  12         0.30
+Mexico                   12         0.30
+New Zealand              12         0.30
+South Africa             12         0.30
+Switzerland              12         0.30
+Philippines              11         0.27
+Greece                   10         0.25
+Belgium                   9         0.22
+Denmark                   9         0.22
+Turkey                    9         0.22
+Hong Kong                 7         0.17
+Portugal                  7         0.17
+Slovenia                  6         0.15
+Poland                    5         0.12
+Romania                   5         0.12
+Afghanistan               4         0.10
+Chile                     4         0.10
+Croatia                   4         0.10
+Malaysia                  4         0.10
+Singapore                 4         0.10
+Algeria                   3         0.07
+Argentina                 3         0.07
+Austria                   3         0.07
+Czech Republic            3         0.07
+Ecuador                   3         0.07
+Puerto Rico               3         0.07
+Uruguay                   3         0.07
+Albania                   2         0.05
+Andorra                   2         0.05
+Bermuda                   2         0.05
+Bulgaria                  2         0.05
+Colombia                  2         0.05
+Ghana                     2         0.05
+Iran                      2         0.05
+Malta                     2         0.05
+Peru                      2         0.05
+Saudi Arabia              2         0.05
+South Korea               2         0.05
+Thailand                  2         0.05
+Ukraine                   2         0.05
+Venezuela                 2         0.05
+Yugoslavia                2         0.05
+Antigua                   1         0.02
+Bahamas                   1         0.02
+Barbados                  1         0.02
+Bolivia                   1         0.02
+Botswana                  1         0.02
+Brunei                    1         0.02
+Cyprus                    1         0.02
+Dominican Republic        1         0.02
+Egypt                     1         0.02
+El Salvador               1         0.02
+Guam                      1         0.02
+Guyana                    1         0.02
+Hungary                   1         0.02
+Iceland                   1         0.02
+Jamaica                   1         0.02
+Kazakhstan                1         0.02
+Kenya                     1         0.02
+Lithuania                 1         0.02
+Luxembourg                1         0.02
+Macao                     1         0.02
+Macedonia                 1         0.02
+Morocco                   1         0.02
+Myanmar                   1         0.02
+Nicaragua                 1         0.02
+Pakistan                  1         0.02
+Panama                    1         0.02
+Qatar                     1         0.02
+Russia                    1         0.02
+Sri Lanka                 1         0.02
+Taiwan                    1         0.02
+Vietnam                   1         0.02
+Estonia                   0         0.00
+Lebanon                   0         0.00
 
 
 Highlights:

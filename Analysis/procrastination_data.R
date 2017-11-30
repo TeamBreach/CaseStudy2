@@ -64,6 +64,8 @@ levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]
 
 names(procrastination)[11]<-'Country'
 levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-''
+levels(procrastination$Country)[match('', levels(procrastination$Country))]<-'<NA>'
+levels(procrastination$Country)[match(' ', levels(procrastination$Country))]<-'<NA>'
 
 names(procrastination)[12]<-'Marital.Stat'
 levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-''

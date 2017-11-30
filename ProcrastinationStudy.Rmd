@@ -101,15 +101,28 @@ names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
 #check for other info about 's'
 #procrastination[procrastination$Current.Job == 's',]
-#Set 's' to student based on employment status
 levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-''
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-''
-#ouh could be oxford university hospital
+
+#Fix Misspellings
+#ouh could be oxford university hospital was not changed
+levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]<-'student'
+levels(procrastination$Current.Job)[match('Studey', levels(procrastination$Current.Job))]<-'student'
+levels(procrastination$Current.Job)[match('psychologis', levels(procrastination$Current.Job))]<-'psychologist'
+levels(procrastination$Current.Job)[match('mktg', levels(procrastination$Current.Job))]<-'Marketing'
+levels(procrastination$Current.Job)[match('MD', levels(procrastination$Current.Job))]<-'Physician'
+levels(procrastination$Current.Job)[match('Economy', levels(procrastination$Current.Job))]<-'Economist'
+levels(procrastination$Current.Job)[match('vidoe', levels(procrastination$Current.Job))]<-'video'
+levels(procrastination$Current.Job)[match('houswife', levels(procrastination$Current.Job))]<-'Housewife'
+gsub('â???"', '', levels(procrastination$Current.Job))
+levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]<-'student'
+levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]<-'Assistant'
 
 names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
 #999 years is missing since we don't know what it means
 procrastination$Years.Empl.<-ifelse(procrastination$Years.Empl. == 999, NA, procrastination$Years.Empl.)
+round(procrast_hdi$Years.Empl)
 
 names(procrastination)[9]<-'Months.Empl.'
 
@@ -123,6 +136,8 @@ levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]
 
 names(procrastination)[11]<-'Country'
 levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-''
+levels(procrastination$Country)[match('', levels(procrastination$Country))]<-'<NA>'
+levels(procrastination$Country)[match(' ', levels(procrastination$Country))]<-'<NA>'
 
 names(procrastination)[12]<-'Marital.Stat'
 levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-''
@@ -356,6 +371,7 @@ ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
   geom_histogram()
 ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
   geom_histogram()
+
 ```
 
 ```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
@@ -380,8 +396,41 @@ procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
 rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
 knitr::kable(procrast_hdi12)
 ```
+```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
+procrast_hdi5 <- table(procrast_hdi1$Country)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+
+```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
+#4.e.
+Vector <- data.frame('Match.Assess'<-paste(procrast_hdi1$Self.Assess , procrast_hdi1$Other.Assess, sep = "|"))
+Vector <- Vector[Vector == 'yes|yes' | Vector == 'no|no']
+
+procrast_hdi6 <- table(Vector)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=1)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+
+```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
+#4.e.
+temp<-procrast_hdi5[order(-procrast_hdi5)[1:15]]
+temp
 
 
+```
 
 Highlights:
 
