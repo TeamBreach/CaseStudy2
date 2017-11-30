@@ -17,6 +17,7 @@ Data files: Raw and URL/Scraped
 library(knitr)
 library(xml2)
 library(rvest)
+library(pander)
 #opts_knit$set(root.dir = "~/Documents/")
 #getwd()
 ```
@@ -24,7 +25,7 @@ library(rvest)
 Procrastination data imported and cleaned
 
 
-Import:
+Import the data. It has 4,264 observations and 61 variables:
 
 
 ```r
@@ -70,10 +71,13 @@ Clean data variable by variable:
 
  * Go through variables one by one
   * Rename if necessary to keep 12 characters and under
+  * the '.' is used as a separator
   * Define appropriate missing values: '0' when numeric and blank when character
-   * Use 2.c.iii.-iv. as examples
+   * Use 2.c.iii.-iv. as examples  
+   -For example, work status has a '0' instead of 'full-time' or 'retired'. This was changed to a missing value
   * Fix when factor labels are not applied correctly
    * Use 2.c.ii. as example
+   - Sons has 'Male' and 'Female' instead of 1 and 2
   * Decide what to do with nonsense data
    * Use 2.c.i. as example
 
@@ -1151,6 +1155,90 @@ retired         174         4.31
 
 Participants by Occupation (Q4c)
 
+
+```r
+## We find this more useful than table()
+## A different analyst can use table() or a different function ahead
+EMTABLE<-function(df, var1 = 'Variable', digits = 1){
+  
+ # df<-procrast_hdi1$Gender
+ # digits = 1
+ # var1 = 'Variable'
+
+  procrast_hdi10 <- table(df)
+  #Convert to data.frame
+  procrast_hdi11 <- data.frame(cbind(procrast_hdi10, prop.table(procrast_hdi10)))
+  #Tidy Count and Percentage
+  names(procrast_hdi11) <- c("Count", "Percentage")
+  procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=digits)
+  #Descending order
+  procrast_hdi11 <- procrast_hdi11[order(-procrast_hdi11$Percentage), ,drop = FALSE]
+  #Row.Names as column
+  procrast_hdi12 <- cbind(rownames(procrast_hdi11), procrast_hdi11)
+  names(procrast_hdi12)[1] = var1
+  rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12)  
+  
+  #This outputs this table to our preferred format
+  return(procrast_hdi12)
+
+}
+```
+
+20 most frequent occupations
+
+
+```r
+#4.c.
+#Then, table for Job Table
+JobTable<-EMTABLE(procrast_hdi1$Current.Job, digits=1, var1 = 'Current Occupation')
+pander(JobTable[1:20,])
+```
+
+
+------------------------------------------
+ Current Occupation    Count   Percentage 
+--------------------- ------- ------------
+                       2045       56.5    
+
+   please specify       200       5.5     
+
+       teacher          74         2      
+
+  college professor     43        1.2     
+
+      engineer          32        0.9     
+
+       manager          32        0.9     
+
+      Attorney          30        0.8     
+
+       retired          28        0.8     
+
+       Editor           21        0.6     
+
+      Marketing         21        0.6     
+
+      attorney          19        0.5     
+
+     Unemployed         18        0.5     
+
+       writer           19        0.5     
+
+      houswife          16        0.4     
+
+  Doctor; Physician     16        0.4     
+
+        Nurse           13        0.4     
+
+ Software Developer     16        0.4     
+
+     consultant         12        0.3     
+
+    Administrator       10        0.3     
+
+ assistant professor    10        0.3     
+------------------------------------------
+
 ???????????????????????????????????????????????????????
 
 Participants by Country (Q4d)
@@ -1338,7 +1426,7 @@ ggplot(DP_Meanfinal, aes(x=reorder(Country,XDP.Mean),y=XDP.Mean)) +
   coord_flip()
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
 Top 15 Nations According to the General Procrastination Scale - GP (Q5c)
 
@@ -1373,7 +1461,7 @@ ggplot(DP_Meanfinal, aes(x=reorder(Country,XGP.Mean),y=XGP.Mean)) +
   coord_flip()
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 Relationship Between Age and Income (Q5d)
 
@@ -1391,7 +1479,7 @@ ggplot(procrast_hdi1, aes(x=Age, y=Income.Year, color=Gender)) +
   ylab("Income") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
 
 Relationship Between Life Satisfaction and HDI (Q5e)
 
@@ -1409,7 +1497,7 @@ ggplot(procrast_hdi1, aes(x=HDI, y=SWLS.Mean)) +
   ylab("Life Satisfaction") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 
 Highlights:

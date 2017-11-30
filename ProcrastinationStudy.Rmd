@@ -27,6 +27,7 @@ Data files: Raw and URL/Scraped
 library(knitr)
 library(xml2)
 library(rvest)
+library(pander)
 #opts_knit$set(root.dir = "~/Documents/")
 #getwd()
 ```
@@ -441,6 +442,44 @@ knitr::kable(procrast_hdi12)
 ```
 
 Participants by Occupation (Q4c)
+
+```{r}
+
+## We find this more useful than table()
+## A different analyst can use table() or a different function ahead
+EMTABLE<-function(df, var1 = 'Variable', digits = 1){
+  
+ # df<-procrast_hdi1$Gender
+ # digits = 1
+ # var1 = 'Variable'
+
+  procrast_hdi10 <- table(df)
+  #Convert to data.frame
+  procrast_hdi11 <- data.frame(cbind(procrast_hdi10, prop.table(procrast_hdi10)))
+  #Tidy Count and Percentage
+  names(procrast_hdi11) <- c("Count", "Percentage")
+  procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=digits)
+  #Descending order
+  procrast_hdi11 <- procrast_hdi11[order(-procrast_hdi11$Percentage), ,drop = FALSE]
+  #Row.Names as column
+  procrast_hdi12 <- cbind(rownames(procrast_hdi11), procrast_hdi11)
+  names(procrast_hdi12)[1] = var1
+  rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12)  
+  
+  #This outputs this table to our preferred format
+  return(procrast_hdi12)
+
+}
+```
+
+20 most frequent occupations
+
+```{r}
+#4.c.
+#Then, table for Job Table
+JobTable<-EMTABLE(procrast_hdi1$Current.Job, digits=1, var1 = 'Current Occupation')
+pander(JobTable[1:20,])
+```
 
 ???????????????????????????????????????????????????????
 

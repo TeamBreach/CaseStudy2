@@ -249,10 +249,11 @@ div.tocify {
 <pre class="r"><code>library(knitr)
 library(xml2)
 library(rvest)
+library(pander)
 #opts_knit$set(root.dir = &quot;~/Documents/&quot;)
 #getwd()</code></pre>
 <p>Procrastination data imported and cleaned</p>
-<p>Import:</p>
+<p>Import the data. It has 4,264 observations and 61 variables:</p>
 <pre class="r"><code># #2.
 # #read the data
 # #This assumes that CaseStudy2 is your working directory
@@ -283,10 +284,13 @@ apply(procrastination[,!catch[-1]], 2, unique)</code></pre>
 <ul>
 <li>Go through variables one by one</li>
 <li>Rename if necessary to keep 12 characters and under</li>
+<li>the ‘.’ is used as a separator</li>
 <li>Define appropriate missing values: ‘0’ when numeric and blank when character</li>
-<li>Use 2.c.iii.-iv. as examples</li>
+<li>Use 2.c.iii.-iv. as examples<br />
+-For example, work status has a ‘0’ instead of ‘full-time’ or ‘retired’. This was changed to a missing value</li>
 <li>Fix when factor labels are not applied correctly</li>
 <li>Use 2.c.ii. as example</li>
+<li>Sons has ‘Male’ and ‘Female’ instead of 1 and 2</li>
 <li>Decide what to do with nonsense data</li>
 <li>Use 2.c.i. as example</li>
 </ul>
@@ -1408,6 +1412,152 @@ knitr::kable(procrast_hdi12)</code></pre>
 </tbody>
 </table>
 <p>Participants by Occupation (Q4c)</p>
+<pre class="r"><code>## We find this more useful than table()
+## A different analyst can use table() or a different function ahead
+EMTABLE&lt;-function(df, var1 = 'Variable', digits = 1){
+  
+ # df&lt;-procrast_hdi1$Gender
+ # digits = 1
+ # var1 = 'Variable'
+
+  procrast_hdi10 &lt;- table(df)
+  #Convert to data.frame
+  procrast_hdi11 &lt;- data.frame(cbind(procrast_hdi10, prop.table(procrast_hdi10)))
+  #Tidy Count and Percentage
+  names(procrast_hdi11) &lt;- c(&quot;Count&quot;, &quot;Percentage&quot;)
+  procrast_hdi11$Percentage &lt;- round(procrast_hdi11$Percentage * 100, digits=digits)
+  #Descending order
+  procrast_hdi11 &lt;- procrast_hdi11[order(-procrast_hdi11$Percentage), ,drop = FALSE]
+  #Row.Names as column
+  procrast_hdi12 &lt;- cbind(rownames(procrast_hdi11), procrast_hdi11)
+  names(procrast_hdi12)[1] = var1
+  rownames(procrast_hdi12) &lt;- 1:nrow(procrast_hdi12)  
+  
+  #This outputs this table to our preferred format
+  return(procrast_hdi12)
+
+}</code></pre>
+<p>20 most frequent occupations</p>
+<pre class="r"><code>#4.c.
+#Then, table for Job Table
+JobTable&lt;-EMTABLE(procrast_hdi1$Current.Job, digits=1, var1 = 'Current Occupation')
+pander(JobTable[1:20,])</code></pre>
+<table style="width:58%;">
+<colgroup>
+<col width="30%"></col>
+<col width="11%"></col>
+<col width="16%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th align="center">Current Occupation</th>
+<th align="center">Count</th>
+<th align="center">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="center"></td>
+<td align="center">2045</td>
+<td align="center">56.5</td>
+</tr>
+<tr class="even">
+<td align="center">please specify</td>
+<td align="center">200</td>
+<td align="center">5.5</td>
+</tr>
+<tr class="odd">
+<td align="center">teacher</td>
+<td align="center">74</td>
+<td align="center">2</td>
+</tr>
+<tr class="even">
+<td align="center">college professor</td>
+<td align="center">43</td>
+<td align="center">1.2</td>
+</tr>
+<tr class="odd">
+<td align="center">engineer</td>
+<td align="center">32</td>
+<td align="center">0.9</td>
+</tr>
+<tr class="even">
+<td align="center">manager</td>
+<td align="center">32</td>
+<td align="center">0.9</td>
+</tr>
+<tr class="odd">
+<td align="center">Attorney</td>
+<td align="center">30</td>
+<td align="center">0.8</td>
+</tr>
+<tr class="even">
+<td align="center">retired</td>
+<td align="center">28</td>
+<td align="center">0.8</td>
+</tr>
+<tr class="odd">
+<td align="center">Editor</td>
+<td align="center">21</td>
+<td align="center">0.6</td>
+</tr>
+<tr class="even">
+<td align="center">Marketing</td>
+<td align="center">21</td>
+<td align="center">0.6</td>
+</tr>
+<tr class="odd">
+<td align="center">attorney</td>
+<td align="center">19</td>
+<td align="center">0.5</td>
+</tr>
+<tr class="even">
+<td align="center">Unemployed</td>
+<td align="center">18</td>
+<td align="center">0.5</td>
+</tr>
+<tr class="odd">
+<td align="center">writer</td>
+<td align="center">19</td>
+<td align="center">0.5</td>
+</tr>
+<tr class="even">
+<td align="center">houswife</td>
+<td align="center">16</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="odd">
+<td align="center">Doctor; Physician</td>
+<td align="center">16</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="even">
+<td align="center">Nurse</td>
+<td align="center">13</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="odd">
+<td align="center">Software Developer</td>
+<td align="center">16</td>
+<td align="center">0.4</td>
+</tr>
+<tr class="even">
+<td align="center">consultant</td>
+<td align="center">12</td>
+<td align="center">0.3</td>
+</tr>
+<tr class="odd">
+<td align="center">Administrator</td>
+<td align="center">10</td>
+<td align="center">0.3</td>
+</tr>
+<tr class="even">
+<td align="center">assistant professor</td>
+<td align="center">10</td>
+<td align="center">0.3</td>
+</tr>
+</tbody>
+</table>
 <p>???????????????????????????????????????????????????????</p>
 <p>Participants by Country (Q4d)</p>
 <p>Counts of how many participants there were by country in decending order. There were 160 observations without a country name. These observations were removed from the list prior to creating the table.</p>
