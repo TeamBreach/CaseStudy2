@@ -1035,11 +1035,17 @@ Additional information about this assessment can be found in the README file in 
 
 ##Analysis/Findings
 
-Removed age outliers <18.
+Removed age outliers <18 per clients request. (Q4a)
 
 
 ```r
 procrast_hdi1 <- procrast_hdi[procrast_hdi$Age>18,]
+```
+
+Descriptive Statistics - Age, Income, HDI, 4 Mean Scores (Q4b)
+
+
+```r
 procrast_hdi2 <- apply(procrast_hdi1[,c('Age','Income.Year', 'HDI', 'XGP.Mean', 'XDP.Mean', 'XAIP.Mean', 'SWLS.Mean')], 2, summary)
 kable(procrast_hdi2)
 ```
@@ -1054,85 +1060,116 @@ Mean       38.28382      59879.87     0.9054367    3.23947    3.051635    2.9638
 Max.       80.00000     250000.00     0.9490000    5.00000    5.000000    5.000000    5.000000
 NA's       71.00000        486.00   242.0000000   71.00000   71.000000   71.000000   71.000000
 
+Histogram for Age (Q4b)
+
+Histogram shows most respondents age 18+ from the study are under 50, however, there is a large segment age 50-60. 
+
+
 ```r
 library(ggplot2)
 ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
-  geom_histogram()
+  geom_histogram() +
+  xlab("Age") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+Histogram for Income (Q4b)
+
+Histogram shows most respondents from the study have income below 100K, however, there is a large segment with income of 150K. 
+
 
 ```r
+library(ggplot2)
 ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
-  geom_histogram()
+  geom_histogram() +
+  xlab("Income") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-11-1.png)<!-- -->
+
+Participants by Gender (Q4c)
+
+Counts of how many participants there were by gender in decending order.  There were 6 observations without a gender value.  These observations were removed from the list prior to creating the table.
 
 
 ```r
 procrast_hdi3 <- table(procrast_hdi1$Gender)
 procrast_hdi11 <- data.frame(cbind(procrast_hdi3, prop.table(procrast_hdi3)))
-names(procrast_hdi11) <- c("Count", "Percentage")
-procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=1)
-procrast_hdi12 <- data.frame(procrast_hdi11)
-procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
-procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
-rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
-knitr::kable(procrast_hdi12)
-```
-
-
-
-Response    Count   Percentage
----------  ------  -----------
-Female       2309         57.2
-Male         1721         42.6
-                6          0.1
-
-```r
-procrast_hdi4 <- table(procrast_hdi1$Work.Status)
-procrast_hdi11 <- data.frame(cbind(procrast_hdi4, prop.table(procrast_hdi4)))
-names(procrast_hdi11) <- c("Count", "Percentage")
-procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=1)
-procrast_hdi12 <- data.frame(procrast_hdi11)
-procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
-procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
-rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
-knitr::kable(procrast_hdi12)
-```
-
-
-
-Response      Count   Percentage
------------  ------  -----------
-full-time      2260         56.0
-student         837         20.7
-part-time       465         11.5
-unemployed      258          6.4
-retired         174          4.3
-                 42          1.0
-
-```r
-procrast_hdi5 <- table(procrast_hdi1$Country)
-procrast_hdi11 <- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
+procrast_hdi11 = procrast_hdi11[-1,]
 names(procrast_hdi11) <- c("Count", "Percentage")
 procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
 procrast_hdi12 <- data.frame(procrast_hdi11)
 procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
-procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+procrast_hdi12 <- cbind(Gender=rownames(procrast_hdi12), procrast_hdi12)
 rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
 knitr::kable(procrast_hdi12)
 ```
 
 
 
-Response              Count   Percentage
+Gender    Count   Percentage
+-------  ------  -----------
+Female     2309        57.21
+Male       1721        42.64
+
+Participants by Work Status (Q4c)
+
+Counts of how many participants there were by work status in decending order.  There were 42 observations without a work status value.  These observations were removed from the list prior to creating the table.
+
+
+```r
+procrast_hdi4 <- table(procrast_hdi1$Work.Status)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi4, prop.table(procrast_hdi4)))
+procrast_hdi11 = procrast_hdi11[-1,]
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(WorkStatus=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+
+
+
+WorkStatus    Count   Percentage
+-----------  ------  -----------
+full-time      2260        56.00
+student         837        20.74
+part-time       465        11.52
+unemployed      258         6.39
+retired         174         4.31
+
+Participants by Occupation (Q4c)
+
+???????????????????????????????????????????????????????
+
+Participants by Country (Q4d)
+
+Counts of how many participants there were by country in decending order.  There were 160 observations without a country name.  These observations were removed from the list prior to creating the table.
+
+
+```r
+procrast_hdi5 <- table(procrast_hdi1$Country)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
+procrast_hdi11 = procrast_hdi11[-1,]
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(Country=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+
+
+
+Country               Count   Percentage
 -------------------  ------  -----------
 United States          2785        69.00
 Canada                  243         6.02
 United Kingdom          177         4.39
-<NA>                    160         3.96
 Australia                99         2.45
 India                    78         1.93
 Italy                    62         1.54
@@ -1223,146 +1260,103 @@ Vietnam                   1         0.02
 Estonia                   0         0.00
 Lebanon                   0         0.00
 
+Perceptions of Procrastination (Q4e)
+
+Data show that 2,841 respondents' perception of whether or not they are a procrastinator matched what others think.  This equates to 69% of the respondent base.
+
 
 ```r
-#4.e.
 Vector <- data.frame('Match.Assess'<-paste(procrast_hdi1$Self.Assess , procrast_hdi1$Other.Assess, sep = "|"))
-Vector <- Vector[Vector == 'yes|yes' | Vector == 'no|no']
-
 procrast_hdi6 <- table(Vector)
-procrast_hdi11 <- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
+procrast_hdi11 <- data.frame(cbind(procrast_hdi6, prop.table(procrast_hdi6)))
 names(procrast_hdi11) <- c("Count", "Percentage")
-procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=1)
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
 procrast_hdi12 <- data.frame(procrast_hdi11)
 procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
-procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+procrast_hdi12 <- cbind(Procrastination=rownames(procrast_hdi12), procrast_hdi12)
 rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
 knitr::kable(procrast_hdi12)
 ```
 
 
 
-Response              Count   Percentage
--------------------  ------  -----------
-United States          2785         69.0
-Canada                  243          6.0
-United Kingdom          177          4.4
-<NA>                    160          4.0
-Australia                99          2.5
-India                    78          1.9
-Italy                    62          1.5
-Germany                  36          0.9
-Brazil                   20          0.5
-Ireland                  19          0.5
-Israel                   19          0.5
-Netherlands              18          0.4
-Sweden                   15          0.4
-China                    12          0.3
-Finland                  12          0.3
-France                   13          0.3
-Japan                    13          0.3
-Mexico                   12          0.3
-New Zealand              12          0.3
-Norway                   14          0.3
-Philippines              11          0.3
-South Africa             12          0.3
-Spain                    13          0.3
-Switzerland              12          0.3
-Belgium                   9          0.2
-Denmark                   9          0.2
-Greece                   10          0.2
-Hong Kong                 7          0.2
-Portugal                  7          0.2
-Turkey                    9          0.2
-Afghanistan               4          0.1
-Algeria                   3          0.1
-Argentina                 3          0.1
-Austria                   3          0.1
-Chile                     4          0.1
-Croatia                   4          0.1
-Czech Republic            3          0.1
-Ecuador                   3          0.1
-Malaysia                  4          0.1
-Poland                    5          0.1
-Puerto Rico               3          0.1
-Romania                   5          0.1
-Singapore                 4          0.1
-Slovenia                  6          0.1
-Uruguay                   3          0.1
-Albania                   2          0.0
-Andorra                   2          0.0
-Antigua                   1          0.0
-Bahamas                   1          0.0
-Barbados                  1          0.0
-Bermuda                   2          0.0
-Bolivia                   1          0.0
-Botswana                  1          0.0
-Brunei                    1          0.0
-Bulgaria                  2          0.0
-Colombia                  2          0.0
-Cyprus                    1          0.0
-Dominican Republic        1          0.0
-Egypt                     1          0.0
-El Salvador               1          0.0
-Estonia                   0          0.0
-Ghana                     2          0.0
-Guam                      1          0.0
-Guyana                    1          0.0
-Hungary                   1          0.0
-Iceland                   1          0.0
-Iran                      2          0.0
-Jamaica                   1          0.0
-Kazakhstan                1          0.0
-Kenya                     1          0.0
-Lebanon                   0          0.0
-Lithuania                 1          0.0
-Luxembourg                1          0.0
-Macao                     1          0.0
-Macedonia                 1          0.0
-Malta                     2          0.0
-Morocco                   1          0.0
-Myanmar                   1          0.0
-Nicaragua                 1          0.0
-Pakistan                  1          0.0
-Panama                    1          0.0
-Peru                      2          0.0
-Qatar                     1          0.0
-Russia                    1          0.0
-Saudi Arabia              2          0.0
-South Korea               2          0.0
-Sri Lanka                 1          0.0
-Taiwan                    1          0.0
-Thailand                  2          0.0
-Ukraine                   2          0.0
-Venezuela                 2          0.0
-Vietnam                   1          0.0
-Yugoslavia                2          0.0
+Procrastination    Count   Percentage
+----------------  ------  -----------
+yes|yes             2358        57.41
+yes|no              1107        26.95
+no|no                483        11.76
+NA|NA                 71         1.73
+no|yes                51         1.24
+yes|                  25         0.61
+|                      7         0.17
+no|                    4         0.10
+|no                    1         0.02
+
+Top 15 Nations According to the Decisional Procrastination Scale - DP (Q5b)
 
 
 ```r
-#4.e.
-temp<-data.frame(procrast_hdi5[order(-procrast_hdi5, na.last = TRUE)[c(1:3, 5:16)]])
-temp
+DP_Mean <- procrast_hdi1[,c("Country", "XDP.Mean")]
+DP_Mean <- aggregate(DP_Mean[, c("XDP.Mean")], list(DP_Mean$Country), mean)
+colnames(DP_Mean) <- c("Country", "XDP.Mean")
+
+DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
+DP_Mean1 <- unique(DP_Mean1)
+
+DP_Meanfinal <- merge(DP_Mean, DP_Mean1, by=c("Country"))
+DP_Meanfinal = DP_Meanfinal[-1,]
+DP_Meanfinal <- DP_Meanfinal[order(-DP_Meanfinal$XDP.Mean), ,drop = FALSE]
+DP_Meanfinal <- head(DP_Meanfinal,15)
+DP_Meanfinal$XDP.Mean <- round(DP_Meanfinal$XDP.Mean, digits=1)
+DP_Meanfinal$Development_Level <- as.character(DP_Meanfinal$Development_Level)
+DP_Meanfinal$Development_Level[is.na(DP_Meanfinal$Development_Level)] <- "No Development Level Reported"
+
+ggplot(DP_Meanfinal, aes(x=reorder(Country,XDP.Mean),y=XDP.Mean)) +
+  geom_bar(stat="identity", aes(fill=Development_Level)) +
+  ggtitle("Top 15 Nations in Average DP Procrastination Scores") +
+  theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=15)) +
+  xlab("Country") +
+  ylab("DP") +
+  geom_text(aes(label = XDP.Mean), hjust=-.25, size=5) +
+  scale_fill_brewer(palette="Dark2") +
+  coord_flip()
 ```
 
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+
+Top 15 Nations According to the General Procrastination Scale - GP (Q5c)
+
+Data show that 9 countries show up in the top 15 in both the DP and GP scale.  The countries are Slovania, Taiwan, Puerto Rico, Qatar, Panama, Sri Lanka, Austria, Ecuador, and Uruguay.
+
+
+```r
+DP_Mean <- procrast_hdi1[,c("Country", "XGP.Mean")]
+DP_Mean <- aggregate(DP_Mean[, c("XGP.Mean")], list(DP_Mean$Country), mean)
+colnames(DP_Mean) <- c("Country", "XGP.Mean")
+
+DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
+DP_Mean1 <- unique(DP_Mean1)
+
+DP_Meanfinal <- merge(DP_Mean, DP_Mean1, by=c("Country"))
+DP_Meanfinal = DP_Meanfinal[-1,]
+DP_Meanfinal <- DP_Meanfinal[order(-DP_Meanfinal$XGP.Mean), ,drop = FALSE]
+DP_Meanfinal <- head(DP_Meanfinal,15)
+DP_Meanfinal$XGP.Mean <- round(DP_Meanfinal$XGP.Mean, digits=1)
+DP_Meanfinal$Development_Level <- as.character(DP_Meanfinal$Development_Level)
+DP_Meanfinal$Development_Level[is.na(DP_Meanfinal$Development_Level)] <- "No Development Level Reported"
+
+ggplot(DP_Meanfinal, aes(x=reorder(Country,XGP.Mean),y=XGP.Mean)) +
+  geom_bar(stat="identity", aes(fill=Development_Level)) +
+  ggtitle("Top 15 Nations in Average GP Procrastination Scores") +
+  theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=15)) +
+  xlab("Country") +
+  ylab("GP") +
+  geom_text(aes(label = XGP.Mean), hjust=-.25, size=5) +
+  scale_fill_brewer(palette="Dark2") +
+  coord_flip()
 ```
-##              Var1 Freq
-## 1   United States 2785
-## 2          Canada  243
-## 3  United Kingdom  177
-## 4       Australia   99
-## 5           India   78
-## 6           Italy   62
-## 7         Germany   36
-## 8          Brazil   20
-## 9         Ireland   19
-## 10         Israel   19
-## 11    Netherlands   18
-## 12         Sweden   15
-## 13         Norway   14
-## 14         France   13
-## 15          Japan   13
-```
+
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
 
 Highlights:
 
