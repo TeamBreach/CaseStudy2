@@ -300,15 +300,698 @@ names(procrastination)[7]&lt;-'Current.Job'
 #unique(procrastination$Current.Job)
 #check for other info about 's'
 #procrastination[procrastination$Current.Job == 's',]
-#Set 's' to student based on employment status
 levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]&lt;-''
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]&lt;-''
-#ouh could be oxford university hospital
+
+#Fix Misspellings
+#ouh could be oxford university hospital was not changed
+levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]&lt;-'student'
+levels(procrastination$Current.Job)[match('Studey', levels(procrastination$Current.Job))]&lt;-'student'
+levels(procrastination$Current.Job)[match('psychologis', levels(procrastination$Current.Job))]&lt;-'psychologist'
+levels(procrastination$Current.Job)[match('mktg', levels(procrastination$Current.Job))]&lt;-'Marketing'
+levels(procrastination$Current.Job)[match('MD', levels(procrastination$Current.Job))]&lt;-'Physician'
+levels(procrastination$Current.Job)[match('Economy', levels(procrastination$Current.Job))]&lt;-'Economist'
+levels(procrastination$Current.Job)[match('vidoe', levels(procrastination$Current.Job))]&lt;-'video'
+levels(procrastination$Current.Job)[match('houswife', levels(procrastination$Current.Job))]&lt;-'Housewife'
+gsub('â???&quot;', '', levels(procrastination$Current.Job))</code></pre>
+<pre><code>##   [1] &quot;&quot;                                          
+##   [2] &quot;'Utterly shiftless arts student'... at p&quot;  
+##   [3] &quot; Accountant&quot;                               
+##   [4] &quot; acupuncturist&quot;                            
+##   [5] &quot; admin assist&quot;                             
+##   [6] &quot; anthropologist&quot;                           
+##   [7] &quot; Assistant&quot;                                
+##   [8] &quot; Attorney-self employed&quot;                   
+##   [9] &quot; bookseller&quot;                               
+##  [10] &quot; Communications&quot;                           
+##  [11] &quot; consultant&quot;                               
+##  [12] &quot; designer&quot;                                 
+##  [13] &quot; Diplomat&quot;                                 
+##  [14] &quot; Epidemiologist&quot;                           
+##  [15] &quot; houswife&quot;                                 
+##  [16] &quot; innkeeper&quot;                                
+##  [17] &quot; Military&quot;                                 
+##  [18] &quot; Research/Teaching Assistant&quot;              
+##  [19] &quot; school&quot;                                   
+##  [20] &quot; specialist&quot;                               
+##  [21] &quot; teacher&quot;                                  
+##  [22] &quot; Teaching Assistant/Graduate student&quot;      
+##  [23] &quot; university faculty&quot;                       
+##  [24] &quot; veterinarian&quot;                             
+##  [25] &quot;abc&quot;                                       
+##  [26] &quot;Academic&quot;                                  
+##  [27] &quot;Academic Assistant&quot;                        
+##  [28] &quot;academic/career coach &amp; admin assistant&quot;   
+##  [29] &quot;Account Manager&quot;                           
+##  [30] &quot;account planner&quot;                           
+##  [31] &quot;Account Service Rep&quot;                       
+##  [32] &quot;Accounting&quot;                                
+##  [33] &quot;Accounting Assistant&quot;                      
+##  [34] &quot;Accounting Manager&quot;                        
+##  [35] &quot;Accounts Payable&quot;                          
+##  [36] &quot;Accounts Payable / Fleet Manager&quot;          
+##  [37] &quot;acounting analyst&quot;                         
+##  [38] &quot;Activities Leader&quot;                         
+##  [39] &quot;Actress&quot;                                   
+##  [40] &quot;adjunct faculty / University + communit&quot;   
+##  [41] &quot;Administration Assistant&quot;                  
+##  [42] &quot;Administrative Asistant for Jewelry Stor&quot;  
+##  [43] &quot;Administrative Officer&quot;                    
+##  [44] &quot;Administrator&quot;                             
+##  [45] &quot;adult care&quot;                                
+##  [46] &quot;advocate&quot;                                  
+##  [47] &quot;Agronomist&quot;                                
+##  [48] &quot;airline&quot;                                   
+##  [49] &quot;airport ground handler&quot;                    
+##  [50] &quot;analyst&quot;                                   
+##  [51] &quot;Analyst&quot;                                   
+##  [52] &quot;Antique Dealer&quot;                            
+##  [53] &quot;Architect&quot;                                 
+##  [54] &quot;Art Director&quot;                              
+##  [55] &quot;Artist&quot;                                    
+##  [56] &quot;Artist/ designer/builder&quot;                  
+##  [57] &quot;Artist/administrator&quot;                      
+##  [58] &quot;artist/designer/homemaker&quot;                 
+##  [59] &quot;Assistant District Attorney&quot;               
+##  [60] &quot;assistant general counsel&quot;                 
+##  [61] &quot;assistant professor&quot;                       
+##  [62] &quot;Assistant Professor&quot;                       
+##  [63] &quot;Assoc. Governmental Program Analyst&quot;       
+##  [64] &quot;associate&quot;                                 
+##  [65] &quot;Associate / investment banking&quot;            
+##  [66] &quot;associate at law firm&quot;                     
+##  [67] &quot;Associate Director&quot;                        
+##  [68] &quot;Associate director/ marketing communicat&quot;  
+##  [69] &quot;Associate Producer&quot;                        
+##  [70] &quot;asst&quot;                                      
+##  [71] &quot;Asst. Pre-school Teacher&quot;                  
+##  [72] &quot;Asst. Prof.&quot;                               
+##  [73] &quot;Astrohysicist&quot;                             
+##  [74] &quot;attorney&quot;                                  
+##  [75] &quot;Attorney&quot;                                  
+##  [76] &quot;Attorney - self employed for 2 years â&lt;U+0080&gt;&lt;U+0093&gt; f&quot;
+##  [77] &quot;Attorney â&lt;U+0080&gt;&lt;U+0093&gt; Associate&quot;                    
+##  [78] &quot;audio engineer&quot;                            
+##  [79] &quot;Aviation Specialist&quot;                       
+##  [80] &quot;Bank Teller&quot;                               
+##  [81] &quot;banker&quot;                                    
+##  [82] &quot;Bar &amp; Restaurant Owner&quot;                    
+##  [83] &quot;Bartender&quot;                                 
+##  [84] &quot;Biologist&quot;                                 
+##  [85] &quot;bookkeeper&quot;                                
+##  [86] &quot;bookkeeper/ actor&quot;                         
+##  [87] &quot;Box Office Representative&quot;                 
+##  [88] &quot;Braillist&quot;                                 
+##  [89] &quot;Budget analyst&quot;                            
+##  [90] &quot;business&quot;                                  
+##  [91] &quot;Business / Test Analyst&quot;                   
+##  [92] &quot;BUSINESS CONSULTA&quot;                         
+##  [93] &quot;business consultant&quot;                       
+##  [94] &quot;business manager&quot;                          
+##  [95] &quot;Business Owner&quot;                            
+##  [96] &quot;Business Systems Analyst&quot;                  
+##  [97] &quot;businesswoman&quot;                             
+##  [98] &quot;buyer&quot;                                     
+##  [99] &quot;C E O/ M D&quot;                                
+## [100] &quot;CAD operator&quot;                              
+## [101] &quot;CAD Technician&quot;                            
+## [102] &quot;Camera Coordinator&quot;                        
+## [103] &quot;Campus Planner&quot;                            
+## [104] &quot;Capstone Golf Course&quot;                      
+## [105] &quot;Career Placement Associate&quot;                
+## [106] &quot;Case Manager&quot;                              
+## [107] &quot;Casting Director&quot;                          
+## [108] &quot;cataloguer /  freelance artist&quot;            
+## [109] &quot;catholic priest/ full timestudent&quot;         
+## [110] &quot;ceo&quot;                                       
+## [111] &quot;Certified Nurse's Assistant&quot;               
+## [112] &quot;chairman of the board&quot;                     
+## [113] &quot;chauffeur&quot;                                 
+## [114] &quot;Chief Financial Officer&quot;                   
+## [115] &quot;Chief of Staff&quot;                            
+## [116] &quot;Chiefe Development Engineer&quot;               
+## [117] &quot;chiropractor&quot;                              
+## [118] &quot;civil servant&quot;                             
+## [119] &quot;Civil servant&quot;                             
+## [120] &quot;clerk&quot;                                     
+## [121] &quot;Client Relationship Assistant&quot;             
+## [122] &quot;Clinical Dietitian&quot;                        
+## [123] &quot;clinical psychologist&quot;                     
+## [124] &quot;Clinical Research Assistant&quot;               
+## [125] &quot;Clinical Trial Assistant&quot;                  
+## [126] &quot;Clutter clearer,  video editor, caterer&quot;   
+## [127] &quot;Co-Proprietor&quot;                             
+## [128] &quot;Collection management specialist&quot;          
+## [129] &quot;College Administrator&quot;                     
+## [130] &quot;college faculty&quot;                           
+## [131] &quot;college professor&quot;                         
+## [132] &quot;Communications &amp; Publishing&quot;               
+## [133] &quot;company director&quot;                          
+## [134] &quot;Computer Consultant&quot;                       
+## [135] &quot;Computer Instructor (Continuing Educatio&quot;  
+## [136] &quot;Computer Operator&quot;                         
+## [137] &quot;Computer Programmer&quot;                       
+## [138] &quot;Computer Science&quot;                          
+## [139] &quot;Computer Systems Analyst&quot;                  
+## [140] &quot;Computers&quot;                                 
+## [141] &quot;Consultant and entrepreneur (small busin&quot;  
+## [142] &quot;Consulting Manager&quot;                        
+## [143] &quot;Consumer Case Coordinator&quot;                 
+## [144] &quot;Controller&quot;                                
+## [145] &quot;Contsuruction Management&quot;                  
+## [146] &quot;Coordinator of International Programs&quot;     
+## [147] &quot;coordinatore operativo&quot;                    
+## [148] &quot;copy supervisor&quot;                           
+## [149] &quot;Copy Writer&quot;                               
+## [150] &quot;Corporate instructor&quot;                      
+## [151] &quot;Corporate Trainer&quot;                         
+## [152] &quot;Corporation President&quot;                     
+## [153] &quot;Corrections&quot;                               
+## [154] &quot;Counselor&quot;                                 
+## [155] &quot;Country Style Employee&quot;                    
+## [156] &quot;Creative Consultant&quot;                       
+## [157] &quot;Creative Director&quot;                         
+## [158] &quot;CRNA&quot;                                      
+## [159] &quot;Customer Service&quot;                          
+## [160] &quot;Customer Service at Domino's Pizza&quot;        
+## [161] &quot;Dance teacher&quot;                             
+## [162] &quot;Data Warehouse Engineer&quot;                   
+## [163] &quot;Dealer&quot;                                    
+## [164] &quot;Dental &amp; Disability Coordinator&quot;           
+## [165] &quot;dentist&quot;                                   
+## [166] &quot;Dept. Director (Non-profit)&quot;               
+## [167] &quot;Deputy Chief of Public Information for t&quot;  
+## [168] &quot;Deputy Chieif Information Officer&quot;         
+## [169] &quot;Deputy Director&quot;                           
+## [170] &quot;deputy practice manager&quot;                   
+## [171] &quot;Designer&quot;                                  
+## [172] &quot;detail checker&quot;                            
+## [173] &quot;Developer&quot;                                 
+## [174] &quot;Dietitian&quot;                                 
+## [175] &quot;director&quot;                                  
+## [176] &quot;Director / information technology&quot;         
+## [177] &quot;Director of a language program&quot;            
+## [178] &quot;Director of Academic Affairs&quot;              
+## [179] &quot;Director of business development&quot;          
+## [180] &quot;Director of Contract Management&quot;           
+## [181] &quot;Director of non-profit organization&quot;       
+## [182] &quot;Director of Software Company&quot;              
+## [183] &quot;Director Operations&quot;                       
+## [184] &quot;Director,social Dvelopment&quot;                
+## [185] &quot;Disability Allowance&quot;                      
+## [186] &quot;Dish Washer&quot;                               
+## [187] &quot;Divisional Manager of a large cosmetics&quot;   
+## [188] &quot;Doctor Research&quot;                           
+## [189] &quot;Doctor; Physician&quot;                         
+## [190] &quot;Doctoral Candidate!!!  no wonder i'm doi&quot;  
+## [191] &quot;Driver&quot;                                    
+## [192] &quot;Early child hood teacher&quot;                  
+## [193] &quot;Early Childhood Education Student/ Nanny&quot;  
+## [194] &quot;Ecology technician&quot;                        
+## [195] &quot;Economist&quot;                                 
+## [196] &quot;Editor&quot;                                    
+## [197] &quot;Editor Attorney&quot;                           
+## [198] &quot;education&quot;                                 
+## [199] &quot;Education (at a university)&quot;               
+## [200] &quot;education administration&quot;                  
+## [201] &quot;Education Specialist&quot;                      
+## [202] &quot;Educator/Student&quot;                          
+## [203] &quot;EFL Teacher/ Professional Researcher&quot;      
+## [204] &quot;EHS Manager&quot;                               
+## [205] &quot;election services&quot;                         
+## [206] &quot;Electrical Technician&quot;                     
+## [207] &quot;electronic technician&quot;                     
+## [208] &quot;employed by a church&quot;                      
+## [209] &quot;EMT&quot;                                       
+## [210] &quot;energy therapist&quot;                          
+## [211] &quot;engineer&quot;                                  
+## [212] &quot;enologist&quot;                                 
+## [213] &quot;entertainer&quot;                               
+## [214] &quot;entrepreneur&quot;                              
+## [215] &quot;Entrepreneur &amp; Consultant&quot;                 
+## [216] &quot;Environmental Analyst&quot;                     
+## [217] &quot;environmental education non profit direc&quot;  
+## [218] &quot;Environmental Engineer&quot;                    
+## [219] &quot;Environmental Senior Specialist&quot;           
+## [220] &quot;EOD&quot;                                       
+## [221] &quot;ESL Teacher/Biologist&quot;                     
+## [222] &quot;Executive&quot;                                 
+## [223] &quot;Executive Assistant&quot;                       
+## [224] &quot;Executive Director&quot;                        
+## [225] &quot;Executive officer&quot;                         
+## [226] &quot;Executive Vice President / Senior Lender&quot;  
+## [227] &quot;Facilitator&quot;                               
+## [228] &quot;Facilities Management&quot;                     
+## [229] &quot;Farm Manager&quot;                              
+## [230] &quot;fdsdf&quot;                                     
+## [231] &quot;federal excise tax auditor&quot;                
+## [232] &quot;Field Coordinator&quot;                         
+## [233] &quot;film editor&quot;                               
+## [234] &quot;Film Industry/Miscelanious&quot;                
+## [235] &quot;Film maker&quot;                                
+## [236] &quot;Finance&quot;                                   
+## [237] &quot;Financial Advisor&quot;                         
+## [238] &quot;financial analyst&quot;                         
+## [239] &quot;Financial Analyst&quot;                         
+## [240] &quot;Financial Consultant&quot;                      
+## [241] &quot;Financial Controller&quot;                      
+## [242] &quot;financial officer / small career-trainin&quot;  
+## [243] &quot;financial risk manager&quot;                    
+## [244] &quot;First VP &amp; Associate General Counsel&quot;      
+## [245] &quot;Fitness Assistant / wellness mentor / ca&quot;  
+## [246] &quot;Fitness Instructor&quot;                        
+## [247] &quot;flight surgeon&quot;                            
+## [248] &quot;Food Department Director&quot;                  
+## [249] &quot;Food Service Supervisor&quot;                   
+## [250] &quot;Foreign Affairs Specialist&quot;                
+## [251] &quot;Framer/Sales Associate&quot;                    
+## [252] &quot;free lance bookkeeper&quot;                     
+## [253] &quot;Free lance editor and tutor--in theory&quot;    
+## [254] &quot;free professionist&quot;                        
+## [255] &quot;Freelance&quot;                                 
+## [256] &quot;Freelance ESL Teacher&quot;                     
+## [257] &quot;Freelance musician / part time EMT / pri&quot;  
+## [258] &quot;Freelance Project Manager&quot;                 
+## [259] &quot;Full-Time Mother / Part-Time Editor&quot;       
+## [260] &quot;full time student and part time bartende&quot;  
+## [261] &quot;fulltime office assistant&quot;                 
+## [262] &quot;furniture maker, home restorer&quot;            
+## [263] &quot;Gender/Public Health Consultant&quot;           
+## [264] &quot;Geologist&quot;                                 
+## [265] &quot;Geophysicist&quot;                              
+## [266] &quot;Gove service&quot;                              
+## [267] &quot;Graduate Assistant&quot;                        
+## [268] &quot;Graduate Research Assistant&quot;               
+## [269] &quot;Graduate Researcher&quot;                       
+## [270] &quot;Graduate student--research and teaching&quot;   
+## [271] &quot;Graduate student/University instructor&quot;    
+## [272] &quot;Grants Administrator&quot;                      
+## [273] &quot;Graphic Designer&quot;                          
+## [274] &quot;Grease Monkey&quot;                             
+## [275] &quot;Grocery Store Salesman&quot;                    
+## [276] &quot;Groundskeeper&quot;                             
+## [277] &quot;Head - Operations &amp; QA&quot;                    
+## [278] &quot;health care&quot;                               
+## [279] &quot;Healthcare Consultant&quot;                     
+## [280] &quot;home maker&quot;                                
+## [281] &quot;host&quot;                                      
+## [282] &quot;hostess&quot;                                   
+## [283] &quot;Hotel Desk Clerk&quot;                          
+## [284] &quot;Housekeeping&quot;                              
+## [285] &quot;HR generalist&quot;                             
+## [286] &quot;Human Resource Manager&quot;                    
+## [287] &quot;Human Resource Manger&quot;                     
+## [288] &quot;HVAC Tech&quot;                                 
+## [289] &quot;ICT Director&quot;                              
+## [290] &quot;In-house Legal Counsel&quot;                    
+## [291] &quot;information assisstant&quot;                    
+## [292] &quot;Information Developer&quot;                     
+## [293] &quot;Information Management&quot;                    
+## [294] &quot;Information technology&quot;                    
+## [295] &quot;Information Technology Consultant&quot;         
+## [296] &quot;Instructional Assistant Online&quot;            
+## [297] &quot;instructor / coach&quot;                        
+## [298] &quot;Insurance&quot;                                 
+## [299] &quot;insurance agent&quot;                           
+## [300] &quot;Insurance Agent&quot;                           
+## [301] &quot;insurance broker's assistant&quot;              
+## [302] &quot;Insurance Claims Supervisor&quot;               
+## [303] &quot;Insurance Coordinator&quot;                     
+## [304] &quot;intern&quot;                                    
+## [305] &quot;Internet &amp; media consultant&quot;               
+## [306] &quot;Internship&quot;                                
+## [307] &quot;interpreter&quot;                               
+## [308] &quot;Investigative Specialist&quot;                  
+## [309] &quot;Investment Assistant&quot;                      
+## [310] &quot;investment banker&quot;                         
+## [311] &quot;Investment Counsel&quot;                        
+## [312] &quot;ISTraining Coordinator&quot;                    
+## [313] &quot;IT&quot;                                        
+## [314] &quot;IT admin&quot;                                  
+## [315] &quot;IT Administrator&quot;                          
+## [316] &quot;IT analyst&quot;                                
+## [317] &quot;IT Assistant&quot;                              
+## [318] &quot;IT consultant&quot;                             
+## [319] &quot;IT Consultant&quot;                             
+## [320] &quot;IT director&quot;                               
+## [321] &quot;IT Director&quot;                               
+## [322] &quot;IT Engineer&quot;                               
+## [323] &quot;IT Manager&quot;                                
+## [324] &quot;IT security consultant&quot;                    
+## [325] &quot;IT Specialist&quot;                             
+## [326] &quot;IT Support&quot;                                
+## [327] &quot;IT Support Engineer&quot;                       
+## [328] &quot;IT systems administrator&quot;                  
+## [329] &quot;IT Technician&quot;                             
+## [330] &quot;Janitor&quot;                                   
+## [331] &quot;jewelry artist&quot;                            
+## [332] &quot;Journalist&quot;                                
+## [333] &quot;journalist (freelance)&quot;                    
+## [334] &quot;Juvenile Corrections Officer&quot;              
+## [335] &quot;Lab Director/Archeologist&quot;                 
+## [336] &quot;Lab Services Assistant&quot;                    
+## [337] &quot;Labor Relations Specialist&quot;                
+## [338] &quot;laboratory technician&quot;                     
+## [339] &quot;laborer (construction)&quot;                    
+## [340] &quot;land use planner&quot;                          
+## [341] &quot;landscape designer&quot;                        
+## [342] &quot;Language Service Provider&quot;                 
+## [343] &quot;language trainer&quot;                          
+## [344] &quot;Law clerk&quot;                                 
+## [345] &quot;law enforcement&quot;                           
+## [346] &quot;lecturer&quot;                                  
+## [347] &quot;Legal Assistant&quot;                           
+## [348] &quot;Legal Assistant / Office Manager&quot;          
+## [349] &quot;Legal Secretary&quot;                           
+## [350] &quot;Legislation Analyst&quot;                       
+## [351] &quot;letter carrier&quot;                            
+## [352] &quot;Librarian&quot;                                 
+## [353] &quot;Library Assistant&quot;                         
+## [354] &quot;library paraprofessional&quot;                  
+## [355] &quot;Library technician&quot;                        
+## [356] &quot;Licensed Professional Counselor&quot;           
+## [357] &quot;Life Guard&quot;                                
+## [358] &quot;Lift Ops&quot;                                  
+## [359] &quot;LPN&quot;                                       
+## [360] &quot;maintenance tech.&quot;                         
+## [361] &quot;Management consultant&quot;                     
+## [362] &quot;Management Consultant &amp; Entrepreneur&quot;      
+## [363] &quot;manager&quot;                                   
+## [364] &quot;Manager - Analytical and Environmental S&quot;  
+## [365] &quot;manager IT&quot;                                
+## [366] &quot;Manager,Interacitve Media&quot;                 
+## [367] &quot;manufacturing&quot;                             
+## [368] &quot;Market Analyst&quot;                            
+## [369] &quot;Market Research Analyst&quot;                   
+## [370] &quot;Marketing&quot;                                 
+## [371] &quot;marketing copywriter&quot;                      
+## [372] &quot;Massage Therapist&quot;                         
+## [373] &quot;Master Control Operator&quot;                   
+## [374] &quot;md&quot;                                        
+## [375] &quot;Mechanical Engineer&quot;                       
+## [376] &quot;Media Consultant&quot;                          
+## [377] &quot;Media Relations Manager&quot;                   
+## [378] &quot;media relations/science writing&quot;           
+## [379] &quot;Medical&quot;                                   
+## [380] &quot;Medical / Public Health Educator&quot;          
+## [381] &quot;Medical Laboratory&quot;                        
+## [382] &quot;Medical Practitioner&quot;                      
+## [383] &quot;medical sonographer&quot;                       
+## [384] &quot;medical transcriptionist&quot;                  
+## [385] &quot;Mentor/Special Events intern&quot;              
+## [386] &quot;Mover&quot;                                     
+## [387] &quot;Multimedia Developer&quot;                      
+## [388] &quot;museum docent&quot;                             
+## [389] &quot;Musician&quot;                                  
+## [390] &quot;musician/student/teacher&quot;                  
+## [391] &quot;Nanny&quot;                                     
+## [392] &quot;Nanny and student&quot;                         
+## [393] &quot;Network Engineer&quot;                          
+## [394] &quot;Network Services Engineer&quot;                 
+## [395] &quot;new realtor&quot;                               
+## [396] &quot;newspaper carrier&quot;                         
+## [397] &quot;Night Dispatch Supervisor  (it's just a&quot;   
+## [398] &quot;Non-profit Consultant&quot;                     
+## [399] &quot;Nurse&quot;                                     
+## [400] &quot;nursing home&quot;                              
+## [401] &quot;office&quot;                                    
+## [402] &quot;Office Admin&quot;                              
+## [403] &quot;Office Manager&quot;                            
+## [404] &quot;Office Manager / Accountant&quot;               
+## [405] &quot;Office Services Manager&quot;                   
+## [406] &quot;Online Media Buyer&quot;                        
+## [407] &quot;operations manager&quot;                        
+## [408] &quot;Organic Grocery Store Cashier/shift lead&quot;  
+## [409] &quot;Ornithology Graduate Student and Teachin&quot;  
+## [410] &quot;ouh&quot;                                       
+## [411] &quot;Outdoor Recreation Coordinator&quot;            
+## [412] &quot;Owner&quot;                                     
+## [413] &quot;owner - private practice physical therap&quot;  
+## [414] &quot;P-T College Faculty &amp; P-T Self-Employed&quot;   
+## [415] &quot;Page Designer for a newspaper&quot;             
+## [416] &quot;Paralegal&quot;                                 
+## [417] &quot;Paraprofessional&quot;                          
+## [418] &quot;Parent Educator/Supervisor&quot;                
+## [419] &quot;Partner&quot;                                   
+## [420] &quot;Pastor ; Life coach  clergy&quot;               
+## [421] &quot;pathology&quot;                                 
+## [422] &quot;PCA&quot;                                       
+## [423] &quot;PCA for a quadrapilegic and a PCA for a&quot;   
+## [424] &quot;Pharmaceutical Merchandiser&quot;               
+## [425] &quot;Pharmacist&quot;                                
+## [426] &quot;pharmacy tech.&quot;                            
+## [427] &quot;phd student researcher&quot;                    
+## [428] &quot;photo profucer&quot;                            
+## [429] &quot;Physical Science Technician&quot;               
+## [430] &quot;physician (internist)&quot;                     
+## [431] &quot;Physicist&quot;                                 
+## [432] &quot;Physiotherapst&quot;                            
+## [433] &quot;pjublic relations director&quot;                
+## [434] &quot;Plant Engineering Supervisor&quot;              
+## [435] &quot;please specify&quot;                            
+## [436] &quot;Please specify title Manager for Regulat&quot;  
+## [437] &quot;policy analyst&quot;                            
+## [438] &quot;Post Grad Physician&quot;                       
+## [439] &quot;Postdoc&quot;                                   
+## [440] &quot;Postdoctoral Researcher&quot;                   
+## [441] &quot;pr and communications firm owner&quot;          
+## [442] &quot;President&quot;                                 
+## [443] &quot;President Nongovernmental organization&quot;    
+## [444] &quot;president/CEO&quot;                             
+## [445] &quot;Press Officer&quot;                             
+## [446] &quot;Private Equity Principal&quot;                  
+## [447] &quot;pro poker player /   website owner&quot;        
+## [448] &quot;Probation Supervisor&quot;                      
+## [449] &quot;Process Engineer&quot;                          
+## [450] &quot;Procrastinator&quot;                            
+## [451] &quot;Produce Associate&quot;                         
+## [452] &quot;producer&quot;                                  
+## [453] &quot;Product Field Test Manager&quot;                
+## [454] &quot;Production Operations Support Analyst&quot;     
+## [455] &quot;Professional Organizer&quot;                    
+## [456] &quot;Professional Soccer Player&quot;                
+## [457] &quot;Program Assistant&quot;                         
+## [458] &quot;Program Coordinator&quot;                       
+## [459] &quot;Program Director&quot;                          
+## [460] &quot;Program director at a non-profit organiz&quot;  
+## [461] &quot;Program Manager&quot;                           
+## [462] &quot;Program Manager and Acting Director&quot;       
+## [463] &quot;Program officer&quot;                           
+## [464] &quot;Program Specialist&quot;                        
+## [465] &quot;Programmer&quot;                                
+## [466] &quot;Programmer Analyst&quot;                        
+## [467] &quot;Programmer/Developer&quot;                      
+## [468] &quot;Programmer/Software Analyst&quot;               
+## [469] &quot;project manager&quot;                           
+## [470] &quot;Project Manager&quot;                           
+## [471] &quot;Proofreader&quot;                               
+## [472] &quot;Proposal Director&quot;                         
+## [473] &quot;Psychiatrist in Private Practice&quot;          
+## [474] &quot;psychologist&quot;                              
+## [475] &quot;psychotherapist&quot;                           
+## [476] &quot;Public Health&quot;                             
+## [477] &quot;public relations&quot;                          
+## [478] &quot;Publishing&quot;                                
+## [479] &quot;quad racer&quot;                                
+## [480] &quot;Quality Manager&quot;                           
+## [481] &quot;Quotations specialist&quot;                     
+## [482] &quot;real estate&quot;                               
+## [483] &quot;real estate agent&quot;                         
+## [484] &quot;Real Estate Appraiser&quot;                     
+## [485] &quot;real estate broker&quot;                        
+## [486] &quot;Real estate developer&quot;                     
+## [487] &quot;realtor&quot;                                   
+## [488] &quot;Reasearch assistant&quot;                       
+## [489] &quot;Receptionist&quot;                              
+## [490] &quot;Recreational Staff&quot;                        
+## [491] &quot;Regional Sales Manager&quot;                    
+## [492] &quot;Registered Respiratory Therapist&quot;          
+## [493] &quot;regulatory affairs&quot;                        
+## [494] &quot;Research / GIS analyst&quot;                    
+## [495] &quot;Research Analyst&quot;                          
+## [496] &quot;Research Assistant&quot;                        
+## [497] &quot;Research Associate&quot;                        
+## [498] &quot;research coordinator&quot;                      
+## [499] &quot;Research intern&quot;                           
+## [500] &quot;Research manager&quot;                          
+## [501] &quot;Research Scholar&quot;                          
+## [502] &quot;Research Scientist&quot;                        
+## [503] &quot;research specialist&quot;                       
+## [504] &quot;research technician&quot;                       
+## [505] &quot;researcher&quot;                                
+## [506] &quot;Researcher - Physician&quot;                    
+## [507] &quot;Residence Don&quot;                             
+## [508] &quot;resident physician&quot;                        
+## [509] &quot;Residential Services Supervisor&quot;           
+## [510] &quot;Respiratory Therapist&quot;                     
+## [511] &quot;restaurant mgr / student / and looking f&quot;  
+## [512] &quot;Restaurant operations manager&quot;             
+## [513] &quot;Retail&quot;                                    
+## [514] &quot;Retail / artist /writer&quot;                   
+## [515] &quot;retired&quot;                                   
+## [516] &quot;retired/adjunct&quot;                           
+## [517] &quot;RN&quot;                                        
+## [518] &quot;RN - Medical Sales&quot;                        
+## [519] &quot;rocket scientist&quot;                          
+## [520] &quot;student&quot;                                   
+## [521] &quot;Sales&quot;                                     
+## [522] &quot;Sales executive&quot;                           
+## [523] &quot;Sales Expert&quot;                              
+## [524] &quot;sales insurance&quot;                           
+## [525] &quot;sales manager&quot;                             
+## [526] &quot;Sales Rep&quot;                                 
+## [527] &quot;Sales/ daycare worker&quot;                     
+## [528] &quot;School Counselor&quot;                          
+## [529] &quot;Science writing intern&quot;                    
+## [530] &quot;Scientist&quot;                                 
+## [531] &quot;secretary&quot;                                 
+## [532] &quot;Secretary&quot;                                 
+## [533] &quot;Self-Employed / personal trainer / stren&quot;  
+## [534] &quot;Self-employed Family Therapist&quot;            
+## [535] &quot;self-employed freelance writer/author&quot;     
+## [536] &quot;self-employed Photographer&quot;                
+## [537] &quot;self-employed translator&quot;                  
+## [538] &quot;Self-employed writer/editor&quot;               
+## [539] &quot;self employed&quot;                             
+## [540] &quot;Self Employed&quot;                             
+## [541] &quot;Self employed Public Relations&quot;            
+## [542] &quot;self employeed&quot;                            
+## [543] &quot;selfemplyed renovator&quot;                     
+## [544] &quot;Senate Page&quot;                               
+## [545] &quot;senior consultant&quot;                         
+## [546] &quot;Senior Consultant Programmer/Analyst&quot;      
+## [547] &quot;Senior Grant Officer&quot;                      
+## [548] &quot;Senior Human Resources Consultant&quot;         
+## [549] &quot;Senior Policy Advisor&quot;                     
+## [550] &quot;senior project manager&quot;                    
+## [551] &quot;Senior Records Analyst&quot;                    
+## [552] &quot;Senior Staff Writer&quot;                       
+## [553] &quot;Senior Systems Analyst&quot;                    
+## [554] &quot;Server&quot;                                    
+## [555] &quot;Service co-ordinator&quot;                      
+## [556] &quot;Service Registrar/English Instructor&quot;      
+## [557] &quot;set designer&quot;                              
+## [558] &quot;set lighting technician&quot;                   
+## [559] &quot;Shipping/receiving/warehouse mgnt&quot;         
+## [560] &quot;Social Media consultant&quot;                   
+## [561] &quot;Social Policy Analyst&quot;                     
+## [562] &quot;Social Work Intern&quot;                        
+## [563] &quot;Social Worker&quot;                             
+## [564] &quot;Software analyst&quot;                          
+## [565] &quot;Software Developer&quot;                        
+## [566] &quot;Software engineer&quot;                         
+## [567] &quot;Software Pro&quot;                              
+## [568] &quot;Software Sales&quot;                            
+## [569] &quot;Software trainer&quot;                          
+## [570] &quot;Speaker Author Consultant&quot;                 
+## [571] &quot;Speaker/Actor&quot;                             
+## [572] &quot;Special Education Administrative Assista&quot;  
+## [573] &quot;special education teacher&quot;                 
+## [574] &quot;Special Projects Editor&quot;                   
+## [575] &quot;Speech and language Assistant&quot;             
+## [576] &quot;Sr. Drug Safety Associate&quot;                 
+## [577] &quot;Staff Writer at a magazine&quot;                
+## [578] &quot;Statistician&quot;                              
+## [579] &quot;Stay-at-home dad&quot;                          
+## [580] &quot;steamship agent&quot;                           
+## [581] &quot;stocker&quot;                                   
+## [582] &quot;Student / working part-time&quot;               
+## [583] &quot;Student and Administrative Assistant&quot;      
+## [584] &quot;Student and part time secretary&quot;           
+## [585] &quot;Student and Private Curator&quot;               
+## [586] &quot;student childhood and youth studies&quot;       
+## [587] &quot;student fysiotherapy /home care / massage&quot; 
+## [588] &quot;Student part-time and sales full-time&quot;     
+## [589] &quot;student/barmaid&quot;                           
+## [590] &quot;student/imvestor&quot;                          
+## [591] &quot;student/retail&quot;                            
+## [592] &quot;Student/Teacher&quot;                           
+## [593] &quot;student/waiter&quot;                            
+## [594] &quot;supervising program development speciali&quot;  
+## [595] &quot;Supervisor&quot;                                
+## [596] &quot;supervisor shelderd workshop for handcap&quot;  
+## [597] &quot;Surgeon&quot;                                   
+## [598] &quot;Surgical Resident&quot;                         
+## [599] &quot;System Analyst&quot;                            
+## [600] &quot;system manager&quot;                            
+## [601] &quot;Systems Analyst&quot;                           
+## [602] &quot;Systems Programmer/Analyst&quot;                
+## [603] &quot;tax consultant&quot;                            
+## [604] &quot;Tax Examiner&quot;                              
+## [605] &quot;teacher's assistant/afterschool leader&quot;    
+## [606] &quot;teacher / Administrator&quot;                   
+## [607] &quot;Teacher and Full Time Doctoral Student&quot;    
+## [608] &quot;Teacher assistant&quot;                         
+## [609] &quot;Tech Analyst/GIS&quot;                          
+## [610] &quot;Tech Support&quot;                              
+## [611] &quot;Technical Coordinator&quot;                     
+## [612] &quot;Technical director&quot;                        
+## [613] &quot;Technical officer&quot;                         
+## [614] &quot;Technical support rep&quot;                     
+## [615] &quot;Technical Trainer&quot;                         
+## [616] &quot;technical writer&quot;                          
+## [617] &quot;Technical Writer&quot;                          
+## [618] &quot;Technology (CTO)&quot;                          
+## [619] &quot;Technology Curriculum Developer Science&quot;   
+## [620] &quot;Telemarketer&quot;                              
+## [621] &quot;television director&quot;                       
+## [622] &quot;Television Producer&quot;                       
+## [623] &quot;Temp&quot;                                      
+## [624] &quot;temporary office&quot;                          
+## [625] &quot;Test Item Writer (Self-employed)&quot;          
+## [626] &quot;Theater artist/ Teacher&quot;                   
+## [627] &quot;Theater General Manager&quot;                   
+## [628] &quot;Tour Guide&quot;                                
+## [629] &quot;Town Clerk&quot;                                
+## [630] &quot;Town Planner&quot;                              
+## [631] &quot;trader&quot;                                    
+## [632] &quot;Traffic Reporter-Radio&quot;                    
+## [633] &quot;trainee&quot;                                   
+## [634] &quot;training Coordinator&quot;                      
+## [635] &quot;Training Coordinator&quot;                      
+## [636] &quot;Translator&quot;                                
+## [637] &quot;treatment support co-ordinator&quot;            
+## [638] &quot;Tutor&quot;                                     
+## [639] &quot;TV BROADCAST TECHNICIAN&quot;                   
+## [640] &quot;TV News Executive Producer&quot;                
+## [641] &quot;Unemployed&quot;                                
+## [642] &quot;University Staff&quot;                          
+## [643] &quot;Urban Planner/Economic Development Plann&quot;  
+## [644] &quot;Vetrans Representative&quot;                    
+## [645] &quot;vice-president&quot;                            
+## [646] &quot;vice president&quot;                            
+## [647] &quot;Vice President / program office&quot;           
+## [648] &quot;video&quot;                                     
+## [649] &quot;visual artist&quot;                             
+## [650] &quot;VMD&quot;                                       
+## [651] &quot;Volunteer Director&quot;                        
+## [652] &quot;volunteer mental health worker&quot;            
+## [653] &quot;VP Scientific Affairs / pharmaceutical c&quot;  
+## [654] &quot;warehouse&quot;                                 
+## [655] &quot;Warehouse Supervisor&quot;                      
+## [656] &quot;Web Communications&quot;                        
+## [657] &quot;Web Designer&quot;                              
+## [658] &quot;Webmaster / Print Designer&quot;                
+## [659] &quot;wig designer&quot;                              
+## [660] &quot;writer&quot;                                    
+## [661] &quot;Writer &amp; Director of Content Solutions&quot;    
+## [662] &quot;Writer / eductor&quot;                          
+## [663] &quot;writer / lecturer / consultant&quot;            
+## [664] &quot;Writer / web designer/ web-master&quot;         
+## [665] &quot;Writer and management consultant&quot;          
+## [666] &quot;writer/editor&quot;                             
+## [667] &quot;Writer/editor/musician&quot;                    
+## [668] &quot;writer/musician&quot;                           
+## [669] &quot;Writing Consultant&quot;                        
+## [670] &quot;yoga teacher&quot;</code></pre>
+<pre class="r"><code>levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]&lt;-'student'
+levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]&lt;-'Assistant'
 
 names(procrastination)[8]&lt;-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
 #999 years is missing since we don't know what it means
 procrastination$Years.Empl.&lt;-ifelse(procrastination$Years.Empl. == 999, NA, procrastination$Years.Empl.)
+procrastination$Years.Empl.&lt;-round(procrastination$Years.Empl)
 
 names(procrastination)[9]&lt;-'Months.Empl.'
 
@@ -322,6 +1005,8 @@ levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]
 
 names(procrastination)[11]&lt;-'Country'
 levels(procrastination$Country)[match('0', levels(procrastination$Country))]&lt;-''
+levels(procrastination$Country)[match('', levels(procrastination$Country))]&lt;-'&lt;NA&gt;'
+levels(procrastination$Country)[match(' ', levels(procrastination$Country))]&lt;-'&lt;NA&gt;'
 
 names(procrastination)[12]&lt;-'Marital.Stat'
 levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]&lt;-''
@@ -735,7 +1420,7 @@ knitr::kable(procrast_hdi12)</code></pre>
 <td align="right">4.39</td>
 </tr>
 <tr class="even">
-<td align="left"></td>
+<td align="left"><NA></td>
 <td align="right">160</td>
 <td align="right">3.96</td>
 </tr>
@@ -1186,6 +1871,514 @@ knitr::kable(procrast_hdi12)</code></pre>
 </tr>
 </tbody>
 </table>
+<pre class="r"><code>#4.e.
+Vector &lt;- data.frame('Match.Assess'&lt;-paste(procrast_hdi1$Self.Assess , procrast_hdi1$Other.Assess, sep = &quot;|&quot;))
+Vector &lt;- Vector[Vector == 'yes|yes' | Vector == 'no|no']
+
+procrast_hdi6 &lt;- table(Vector)
+procrast_hdi11 &lt;- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
+names(procrast_hdi11) &lt;- c(&quot;Count&quot;, &quot;Percentage&quot;)
+procrast_hdi11$Percentage &lt;- round(procrast_hdi11$Percentage * 100, digits=1)
+procrast_hdi12 &lt;- data.frame(procrast_hdi11)
+procrast_hdi12 &lt;- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 &lt;- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) &lt;- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Response</th>
+<th align="right">Count</th>
+<th align="right">Percentage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">United States</td>
+<td align="right">2785</td>
+<td align="right">69.0</td>
+</tr>
+<tr class="even">
+<td align="left">Canada</td>
+<td align="right">243</td>
+<td align="right">6.0</td>
+</tr>
+<tr class="odd">
+<td align="left">United Kingdom</td>
+<td align="right">177</td>
+<td align="right">4.4</td>
+</tr>
+<tr class="even">
+<td align="left"><NA></td>
+<td align="right">160</td>
+<td align="right">4.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Australia</td>
+<td align="right">99</td>
+<td align="right">2.5</td>
+</tr>
+<tr class="even">
+<td align="left">India</td>
+<td align="right">78</td>
+<td align="right">1.9</td>
+</tr>
+<tr class="odd">
+<td align="left">Italy</td>
+<td align="right">62</td>
+<td align="right">1.5</td>
+</tr>
+<tr class="even">
+<td align="left">Germany</td>
+<td align="right">36</td>
+<td align="right">0.9</td>
+</tr>
+<tr class="odd">
+<td align="left">Brazil</td>
+<td align="right">20</td>
+<td align="right">0.5</td>
+</tr>
+<tr class="even">
+<td align="left">Ireland</td>
+<td align="right">19</td>
+<td align="right">0.5</td>
+</tr>
+<tr class="odd">
+<td align="left">Israel</td>
+<td align="right">19</td>
+<td align="right">0.5</td>
+</tr>
+<tr class="even">
+<td align="left">Netherlands</td>
+<td align="right">18</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="odd">
+<td align="left">Sweden</td>
+<td align="right">15</td>
+<td align="right">0.4</td>
+</tr>
+<tr class="even">
+<td align="left">China</td>
+<td align="right">12</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="odd">
+<td align="left">Finland</td>
+<td align="right">12</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="even">
+<td align="left">France</td>
+<td align="right">13</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="odd">
+<td align="left">Japan</td>
+<td align="right">13</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="even">
+<td align="left">Mexico</td>
+<td align="right">12</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="odd">
+<td align="left">New Zealand</td>
+<td align="right">12</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="even">
+<td align="left">Norway</td>
+<td align="right">14</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="odd">
+<td align="left">Philippines</td>
+<td align="right">11</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="even">
+<td align="left">South Africa</td>
+<td align="right">12</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="odd">
+<td align="left">Spain</td>
+<td align="right">13</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="even">
+<td align="left">Switzerland</td>
+<td align="right">12</td>
+<td align="right">0.3</td>
+</tr>
+<tr class="odd">
+<td align="left">Belgium</td>
+<td align="right">9</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">Denmark</td>
+<td align="right">9</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="left">Greece</td>
+<td align="right">10</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">Hong Kong</td>
+<td align="right">7</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="left">Portugal</td>
+<td align="right">7</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="even">
+<td align="left">Turkey</td>
+<td align="right">9</td>
+<td align="right">0.2</td>
+</tr>
+<tr class="odd">
+<td align="left">Afghanistan</td>
+<td align="right">4</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">Algeria</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Argentina</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">Austria</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Chile</td>
+<td align="right">4</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">Croatia</td>
+<td align="right">4</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Czech Republic</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">Ecuador</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Malaysia</td>
+<td align="right">4</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">Poland</td>
+<td align="right">5</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Puerto Rico</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">Romania</td>
+<td align="right">5</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Singapore</td>
+<td align="right">4</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">Slovenia</td>
+<td align="right">6</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="odd">
+<td align="left">Uruguay</td>
+<td align="right">3</td>
+<td align="right">0.1</td>
+</tr>
+<tr class="even">
+<td align="left">Albania</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Andorra</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Antigua</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Bahamas</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Barbados</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Bermuda</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Bolivia</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Botswana</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Brunei</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Bulgaria</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Colombia</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Cyprus</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Dominican Republic</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Egypt</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">El Salvador</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Estonia</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Ghana</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Guam</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Guyana</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Hungary</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Iceland</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Iran</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Jamaica</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Kazakhstan</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Kenya</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Lebanon</td>
+<td align="right">0</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Lithuania</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Luxembourg</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Macao</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Macedonia</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Malta</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Morocco</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Myanmar</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Nicaragua</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Pakistan</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Panama</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Peru</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Qatar</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Russia</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Saudi Arabia</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">South Korea</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Sri Lanka</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Taiwan</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Thailand</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Ukraine</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Venezuela</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="even">
+<td align="left">Vietnam</td>
+<td align="right">1</td>
+<td align="right">0.0</td>
+</tr>
+<tr class="odd">
+<td align="left">Yugoslavia</td>
+<td align="right">2</td>
+<td align="right">0.0</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>#4.e.
+temp&lt;-data.frame(procrast_hdi5[order(-procrast_hdi5, na.last = TRUE)[c(1:3, 5:16)]])
+temp</code></pre>
+<pre><code>##              Var1 Freq
+## 1   United States 2785
+## 2          Canada  243
+## 3  United Kingdom  177
+## 4       Australia   99
+## 5           India   78
+## 6           Italy   62
+## 7         Germany   36
+## 8          Brazil   20
+## 9         Ireland   19
+## 10         Israel   19
+## 11    Netherlands   18
+## 12         Sweden   15
+## 13         Norway   14
+## 14         France   13
+## 15          Japan   13</code></pre>
 <p>Highlights:</p>
 <div id="modificationsmerges-to-data" class="section level3">
 <h3>Modifications/Merges to Data</h3>

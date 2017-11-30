@@ -122,7 +122,7 @@ names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
 #999 years is missing since we don't know what it means
 procrastination$Years.Empl.<-ifelse(procrastination$Years.Empl. == 999, NA, procrastination$Years.Empl.)
-round(procrast_hdi$Years.Empl)
+procrastination$Years.Empl.<-round(procrastination$Years.Empl)
 
 names(procrastination)[9]<-'Months.Empl.'
 
