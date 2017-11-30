@@ -23,7 +23,7 @@ Background:
 Data files: Raw and URL/Scraped
  * Procrastination data
 
-```{r, initialize}
+```{r, initialize, warning=FALSE}
 library(knitr)
 library(xml2)
 library(rvest)
@@ -239,7 +239,7 @@ apply(procrastination[,!catch[-1]], 2, unique)
 HDI_Data Scraped and cleaned
  * Scrape HDI data and save to repository
 
-```{r}
+```{r, warning=FALSE}
 #Access tables on website and save and clean each of the 8 tables.
 
 hdi_url <- ("https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries")
@@ -344,6 +344,44 @@ procrast_hdi<-merge(x=procrastination, y=hdi_total, by.x='Country', by.y='Countr
 Additional information about this assessment can be found in the README file in the repository.
 
 ##Analysis/Findings
+
+Removed age outliers <18.
+
+```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
+procrast_hdi1 <- procrast_hdi[procrast_hdi$Age>18,]
+procrast_hdi2 <- apply(procrast_hdi1[,c('Age','Income.Year', 'HDI', 'XGP.Mean', 'XDP.Mean', 'XAIP.Mean', 'SWLS.Mean')], 2, summary)
+kable(procrast_hdi2)
+library(ggplot2)
+ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
+  geom_histogram()
+ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
+  geom_histogram()
+```
+
+```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
+procrast_hdi3 <- table(procrast_hdi1$Gender)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi3, prop.table(procrast_hdi3)))
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=1)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
+procrast_hdi4 <- table(procrast_hdi1$Work.Status)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi4, prop.table(procrast_hdi4)))
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=1)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+
+
 
 Highlights:
 

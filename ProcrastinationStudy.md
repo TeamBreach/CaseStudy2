@@ -10,6 +10,7 @@ Background:
 ##Sources/Data
 
 Data files: Raw and URL/Scraped
+ * Procrastination data
 
 
 ```r
@@ -23,6 +24,9 @@ library(rvest)
 Procrastination data imported and cleaned
 
 
+Import:
+
+
 ```r
 # #2.
 # #read the data
@@ -30,22 +34,8 @@ Procrastination data imported and cleaned
 # #2.a.
 procrastination<-read.csv('./Data/Procrastination.csv', header=TRUE)
 #read_chunk('./Analysis/procrastination_data.R')
-```
 
-
-##Additional Information
-
-Additional information about this assessment can be found in the README file in the repository.
-
-##Analysis/Findings
-
-Explore Data:
-
-Dimensions:
-
-
-```r
-#2.b.
+#2.a.
 #dimensions
 dim(procrastination)
 ```
@@ -54,7 +44,10 @@ dim(procrastination)
 ## [1] 4264   61
 ```
 
-First Look:
+Dimensions:
+ * Initial dimensions are 4264 observations and 61 variables
+
+<-!First Look:
 
 
 ```r
@@ -74,9 +67,21 @@ apply(procrastination[,!catch[-1]], 2, unique)
 ```
 
 Clean data variable by variable:
+ * Go through variables one by one
+  * Rename if necessary to keep 12 characters and under
+  * Define appropriate missing values: '0' when numeric and blank when character
+   * Use 2.c.iii.-iv. as examples
+  * Fix when factor labels are not applied correctly
+   * Use 2.c.ii. as example
+  * Decide what to do with nonsense data
+   * Use 2.c.i. as example
 
 
 ```r
+#2.b.-2.c.
+
+### Clean data by variable ###
+
 names(procrastination)[1]<-'Age'
 
 names(procrastination)[4]<-'Education'
@@ -94,7 +99,7 @@ names(procrastination)[7]<-'Current.Job'
 #check for other info about 's'
 #procrastination[procrastination$Current.Job == 's',]
 #Set 's' to student based on employment status
-levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]<-'student'
+levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-''
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-''
 #ouh could be oxford university hospital
 
@@ -184,6 +189,30 @@ levels(procrastination$Other.Assess)[match('4', levels(procrastination$Other.Ass
 levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-''
 ```
 
+
+Create Procrastination means
+ * These are the mean procrastination scores per individual per category
+
+
+```r
+#2.e.
+#Create means for category of survey questions
+#First, find the indexes of the survey category in question
+#Then, use apply() to find the row mean only for those categories
+
+XGP<-grep( 'XGP', names(procrastination))
+procrastination$XGP.Mean<-apply(procrastination[,XGP], 1, mean, na.rm=TRUE)
+
+XDP<-grep( 'XDP', names(procrastination))
+procrastination$XDP.Mean<-apply(procrastination[,XDP], 1, mean, na.rm=TRUE)
+
+XAIP<-grep( 'XAIP', names(procrastination))
+procrastination$XAIP.Mean<-apply(procrastination[,XAIP], 1, mean, na.rm=TRUE)
+
+SWLS<-grep( 'SWLS', names(procrastination))
+procrastination$SWLS.Mean<-apply(procrastination[,SWLS], 1, mean, na.rm=TRUE)
+```
+
 Double Check
 
 
@@ -204,6 +233,196 @@ apply(procrastination[,catch[-1]], 2, summary)
 #apply(procrastination[,-c(1,6,8:9, 14:59)], 2, unique)
 apply(procrastination[,!catch[-1]], 2, unique)
 ```
+
+HDI_Data Scraped and cleaned
+ * Scrape HDI data and save to repository
+
+
+```r
+#Access tables on website and save and clean each of the 8 tables.
+
+hdi_url <- ("https://en.wikipedia.org/wiki/List_of_countries_by_Human_Development_Index#Complete_list_of_countries")
+
+hdi1 <- hdi_url %>%
+  html() %>%
+  html_nodes('table') %>%
+  .[[3]] %>%
+  html_table(fill=TRUE)
+hdi1 <- hdi1[,-c(1:2),]
+hdi1 <- hdi1[,-c(3:273),]
+hdi1 <- hdi1[-c(1:3),]
+colnames(hdi1) <- c("Country","HDI")
+hdi1 <- hdi1[-c(27:28),]
+
+hdi2 <- hdi_url %>%
+  html() %>%
+  html_nodes('table') %>%
+  .[[6]] %>%
+  html_table(fill=TRUE)
+hdi2 <- hdi2[,-c(1:2),]
+hdi2 <- hdi2[,-c(3:298),]
+hdi2 <- hdi2[-c(1:3),]
+colnames(hdi2) <- c("Country","HDI")
+hdi2 <- hdi2[-c(29:30),]
+
+hdi3 <- hdi_url %>%
+  html() %>%
+  html_nodes('table') %>%
+  .[[9]] %>%
+  html_table(fill=TRUE)
+hdi3 <- hdi3[,-c(1:2),]
+hdi3 <- hdi3[,-c(3:223),]
+hdi3 <- hdi3[-c(1:3),]
+colnames(hdi3) <- c("Country","HDI")
+hdi3 <- hdi3[-c(21:22),]
+
+hdi4 <- hdi_url %>%
+  html() %>%
+  html_nodes('table') %>%
+  .[[12]] %>%
+  html_table(fill=TRUE)
+hdi4 <- hdi4[,-c(1:2),]
+hdi4 <- hdi4[,-c(3:223),]
+hdi4 <- hdi4[-c(1:3),]
+colnames(hdi4) <- c("Country","HDI")
+hdi4 <- hdi4[-c(22:23),]
+
+#Bind tables and convert HDI to numeric for analysis.
+
+hdi_total <- rbind(hdi1, hdi2, hdi3, hdi4)
+hdi_total$HDI <- as.numeric(hdi_total$HDI)
+
+#Create HDI category column and assign category to each country.
+
+hdi_total$Development_Level <- cut(hdi_total$HDI, 
+                       breaks = c(-Inf, .550, .701, .800, Inf), 
+                       labels = c("Low Human Development", "Medium Human Development", "High Human Development", "Very High Human Development"),
+                       right = FALSE)
+
+#saved file "hdi.csv" to Data file in repo:
+#write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
+```
+
+Merge the two datasets
+ * Prepare to merge by Country / align spellings
+ * Merge Procrastination and HDI_Data by Country
+ * Use merged table for analysis
+
+
+```r
+############## MERGE THE TWO DATASESTS ################
+
+#3.c.
+#THis requires both 'procrasintation' and 'hdi_total' from previous codes
+
+#Check Spellings
+#sort(unique(procrastination$Country))
+#sort(unique(hdi_total$Country))
+
+#Use Spanish Spelling of COlumbia
+levels(procrastination$Country)[match('Columbia', levels(procrastination$Country))]<-'Colombia'
+#Use correct Spelling of Israel
+levels(procrastination$Country)[match('Isreal', levels(procrastination$Country))]<-'Israel'
+
+procrast_hdi<-merge(x=procrastination, y=hdi_total, by.x='Country', by.y='Country', all.x = TRUE)
+
+##Check results
+#summary(test$procrast_hdi)
+#str(procrast_hdi)
+
+#unique(procrast_hdi$Country[is.na(procrast_hdi$HDI)])
+##No HDI for Antiqua, Bermuda, Guam, Macao, Puerto Rico, and former Yogoslavia
+
+#Summary of missing values
+#Ta<-table(procrast_hdi$Country[is.na(procrast_hdi$HDI)])
+#Ta[Ta > 0]
+```
+
+##Additional Information
+
+Additional information about this assessment can be found in the README file in the repository.
+
+##Analysis/Findings
+
+Removed age outliers <18.
+
+
+```r
+procrast_hdi1 <- procrast_hdi[procrast_hdi$Age>18,]
+procrast_hdi2 <- apply(procrast_hdi1[,c('Age','Income.Year', 'HDI', 'XGP.Mean', 'XDP.Mean', 'XAIP.Mean', 'SWLS.Mean')], 2, summary)
+kable(procrast_hdi2)
+```
+
+                Age   Income.Year           HDI   XGP.Mean    XDP.Mean   XAIP.Mean   SWLS.Mean
+--------  ---------  ------------  ------------  ---------  ----------  ----------  ----------
+Min.       19.00000      10000.00     0.4790000    1.00000    1.000000    1.000000    1.000000
+1st Qu.    28.00000      15000.00     0.9200000    2.80000    2.400000    2.400000    2.400000
+Median     37.50000      45000.00     0.9200000    3.25000    3.000000    2.933333    3.000000
+Mean       38.28382      59879.87     0.9054367    3.23947    3.051635    2.963859    3.046779
+3rd Qu.    45.00000      87500.00     0.9200000    3.75000    3.800000    3.533333    3.800000
+Max.       80.00000     250000.00     0.9490000    5.00000    5.000000    5.000000    5.000000
+NA's       71.00000        486.00   242.0000000   71.00000   71.000000   71.000000   71.000000
+
+```r
+library(ggplot2)
+ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
+  geom_histogram()
+```
+
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+
+```r
+ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
+  geom_histogram()
+```
+
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-8-2.png)<!-- -->
+
+
+```r
+procrast_hdi3 <- table(procrast_hdi1$Gender)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi3, prop.table(procrast_hdi3)))
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=1)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+
+
+
+Response    Count   Percentage
+---------  ------  -----------
+Female       2309         57.2
+Male         1721         42.6
+                6          0.1
+
+```r
+procrast_hdi4 <- table(procrast_hdi1$Work.Status)
+procrast_hdi11 <- data.frame(cbind(procrast_hdi4, prop.table(procrast_hdi4)))
+names(procrast_hdi11) <- c("Count", "Percentage")
+procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=1)
+procrast_hdi12 <- data.frame(procrast_hdi11)
+procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
+procrast_hdi12 <- cbind(Response=rownames(procrast_hdi12), procrast_hdi12)
+rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
+knitr::kable(procrast_hdi12)
+```
+
+
+
+Response      Count   Percentage
+-----------  ------  -----------
+full-time      2260         56.0
+student         837         20.7
+part-time       465         11.5
+unemployed      258          6.4
+retired         174          4.3
+                 42          1.0
+
+
 
 Highlights:
 
