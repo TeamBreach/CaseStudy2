@@ -1039,6 +1039,7 @@ Removed age outliers <18 per clients request. (Q4a)
 
 
 ```r
+#Removed respondents age<18.
 procrast_hdi1 <- procrast_hdi[procrast_hdi$Age>18,]
 ```
 
@@ -1046,6 +1047,7 @@ Descriptive Statistics - Age, Income, HDI, 4 Mean Scores (Q4b)
 
 
 ```r
+#Summary stats for key variables.
 procrast_hdi2 <- apply(procrast_hdi1[,c('Age','Income.Year', 'HDI', 'XGP.Mean', 'XDP.Mean', 'XAIP.Mean', 'SWLS.Mean')], 2, summary)
 kable(procrast_hdi2)
 ```
@@ -1066,6 +1068,7 @@ Histogram shows most respondents age 18+ from the study are under 50, however, t
 
 
 ```r
+#histogram to show distribution of respondent age.
 library(ggplot2)
 ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
   geom_histogram() +
@@ -1080,7 +1083,7 @@ Histogram shows most respondents from the study have income below 100K, however,
 
 
 ```r
-library(ggplot2)
+#histogram to show distribution of respondent income.
 ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
   geom_histogram() +
   xlab("Income") 
@@ -1094,6 +1097,7 @@ Counts of how many participants there were by gender in decending order.  There 
 
 
 ```r
+#table that shows counts/percentages.
 procrast_hdi3 <- table(procrast_hdi1$Gender)
 procrast_hdi11 <- data.frame(cbind(procrast_hdi3, prop.table(procrast_hdi3)))
 procrast_hdi11 = procrast_hdi11[-1,]
@@ -1119,6 +1123,7 @@ Counts of how many participants there were by work status in decending order.  T
 
 
 ```r
+#table that shows counts/percentages.
 procrast_hdi4 <- table(procrast_hdi1$Work.Status)
 procrast_hdi11 <- data.frame(cbind(procrast_hdi4, prop.table(procrast_hdi4)))
 procrast_hdi11 = procrast_hdi11[-1,]
@@ -1151,12 +1156,14 @@ Counts of how many participants there were by country in decending order.  There
 
 
 ```r
+#table that shows counts/percentages.
 procrast_hdi5 <- table(procrast_hdi1$Country)
 procrast_hdi11 <- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
 procrast_hdi11 = procrast_hdi11[-1,]
 names(procrast_hdi11) <- c("Count", "Percentage")
 procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
 procrast_hdi12 <- data.frame(procrast_hdi11)
+#sorting
 procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
 procrast_hdi12 <- cbind(Country=rownames(procrast_hdi12), procrast_hdi12)
 rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
@@ -1266,6 +1273,7 @@ Data show that 2,841 respondents' perception of whether or not they are a procra
 
 
 ```r
+#table that shows counts/percentages by combo of responses.
 Vector <- data.frame('Match.Assess'<-paste(procrast_hdi1$Self.Assess , procrast_hdi1$Other.Assess, sep = "|"))
 procrast_hdi6 <- table(Vector)
 procrast_hdi11 <- data.frame(cbind(procrast_hdi6, prop.table(procrast_hdi6)))
@@ -1296,13 +1304,14 @@ Top 15 Nations According to the Decisional Procrastination Scale - DP (Q5b)
 
 
 ```r
+#table that summarizes DP means by country.
 DP_Mean <- procrast_hdi1[,c("Country", "XDP.Mean")]
 DP_Mean <- aggregate(DP_Mean[, c("XDP.Mean")], list(DP_Mean$Country), mean)
 colnames(DP_Mean) <- c("Country", "XDP.Mean")
-
+#second table that shows development level by country.
 DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
 DP_Mean1 <- unique(DP_Mean1)
-
+#merging 2 tables to get DP and development category together in df.
 DP_Meanfinal <- merge(DP_Mean, DP_Mean1, by=c("Country"))
 DP_Meanfinal = DP_Meanfinal[-1,]
 DP_Meanfinal <- DP_Meanfinal[order(-DP_Meanfinal$XDP.Mean), ,drop = FALSE]
@@ -1310,7 +1319,7 @@ DP_Meanfinal <- head(DP_Meanfinal,15)
 DP_Meanfinal$XDP.Mean <- round(DP_Meanfinal$XDP.Mean, digits=1)
 DP_Meanfinal$Development_Level <- as.character(DP_Meanfinal$Development_Level)
 DP_Meanfinal$Development_Level[is.na(DP_Meanfinal$Development_Level)] <- "No Development Level Reported"
-
+#creating bar plot.
 ggplot(DP_Meanfinal, aes(x=reorder(Country,XDP.Mean),y=XDP.Mean)) +
   geom_bar(stat="identity", aes(fill=Development_Level)) +
   ggtitle("Top 15 Nations in Average DP Procrastination Scores") +
@@ -1330,13 +1339,14 @@ Data show that 9 countries show up in the top 15 in both the DP and GP scale.  T
 
 
 ```r
+#merging 2 tables to get GP and development category together in df.
 DP_Mean <- procrast_hdi1[,c("Country", "XGP.Mean")]
 DP_Mean <- aggregate(DP_Mean[, c("XGP.Mean")], list(DP_Mean$Country), mean)
 colnames(DP_Mean) <- c("Country", "XGP.Mean")
-
+#second table that shows development level by country.
 DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
 DP_Mean1 <- unique(DP_Mean1)
-
+#merging 2 tables to get DP and development category together in df.
 DP_Meanfinal <- merge(DP_Mean, DP_Mean1, by=c("Country"))
 DP_Meanfinal = DP_Meanfinal[-1,]
 DP_Meanfinal <- DP_Meanfinal[order(-DP_Meanfinal$XGP.Mean), ,drop = FALSE]
@@ -1344,7 +1354,7 @@ DP_Meanfinal <- head(DP_Meanfinal,15)
 DP_Meanfinal$XGP.Mean <- round(DP_Meanfinal$XGP.Mean, digits=1)
 DP_Meanfinal$Development_Level <- as.character(DP_Meanfinal$Development_Level)
 DP_Meanfinal$Development_Level[is.na(DP_Meanfinal$Development_Level)] <- "No Development Level Reported"
-
+#creating bar plot.
 ggplot(DP_Meanfinal, aes(x=reorder(Country,XGP.Mean),y=XGP.Mean)) +
   geom_bar(stat="identity", aes(fill=Development_Level)) +
   ggtitle("Top 15 Nations in Average GP Procrastination Scores") +
@@ -1357,6 +1367,43 @@ ggplot(DP_Meanfinal, aes(x=reorder(Country,XGP.Mean),y=XGP.Mean)) +
 ```
 
 ![](ProcrastinationStudy_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
+
+Relationship Between Age and Income (Q5d)
+
+?????????????????????????????????????????????????
+
+
+```r
+#creating scatterplot.
+ggplot(procrast_hdi1, aes(x=Age, y=Income.Year, color=Gender)) +
+  geom_point() +
+  scale_colour_hue(l=50)+
+  ggtitle("Age Versus Income") +
+  theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
+  xlab("Age") +
+  ylab("Income") 
+```
+
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+
+Relationship Between Life Satisfaction and HDI (Q5d)
+
+?????????????????????????????????????????????????
+
+
+```r
+#creating scatterplot.
+ggplot(procrast_hdi1, aes(x=HDI, y=SWLS.Mean)) +
+  geom_point() +
+  scale_colour_hue(l=50)+
+  ggtitle("Life Satisfaction Versus HDI") +
+  theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
+  xlab("HDI") +
+  ylab("Life Satisfaction") 
+```
+
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+
 
 Highlights:
 
