@@ -8,14 +8,14 @@
 ---
 | Responsibilities | Analyst |
 | :--------------: | :-----: |
-| Presentation | |
-| Makefile | |
+| Presentation | Arturo & Eric |
+| Makefile | Arturo |
 | Introduction | |
 | Conclusion | |
-| Tidy Data | |
-| Readme | |
-| Codebook | |
-| Analysis | |
+| Tidy Data | Arturo |
+| Readme | Arturo |
+| Codebook | Arturo |
+| Analysis | Eric |
 
 ## Organization
 ### Folder Structure
@@ -23,26 +23,27 @@
 This repo contains the following folders:
 
 * 
-*
-*
+* Analysis
+* Data
+* ProcrastinationStudy_files
 
 ### Files
 ---
 This section will detail the files that appear in this repo and their description.
 
-### Folder1
+### Analysis
 ---
 The code folder contains the following files:
 
-* 
-*
-*
-* Importfile.R
-* Makefile.R
+* C2MAKEFILE.R
+* hdi_data.R
+* merge_data.R
+* procrastination_data.R
 
-#### subFolder1
+#### Code Archive
+    * CaseStudy2CodeArturo.R
 
-### Folder2
+### Data
 ---
 * 
 *

@@ -261,3 +261,10 @@ temp<-data.frame(procrast_hdi5[order(-procrast_hdi5, na.last = TRUE)[c(1:3, 5:16
 temp
 
 ggplot(data=temp, aes(x=))
+
+
+procrastination$Current.Job[grepl('â???"', procrastination$Current.Job)]
+procrastination$Current.Job[grepl('&', procrastination$Current.Job)]
+sum(grepl('â???"', procrastination$Current.Job))
+
+procrastination$Current.Job[!is.na(procrastination$Current.Job)]

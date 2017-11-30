@@ -4,7 +4,7 @@
 
 #2.a.
 #read the data
-procrastination<-read.csv('./CaseStudy2/Data/Procrastination.csv', header=TRUE)
+procrastination<-read.csv('./CaseStudy2/Data/Procrastination.csv', header=TRUE, na.strings=c(""," ","NA"))
 
 #check dimensions
 dim(procrastination)
@@ -18,7 +18,7 @@ names(procrastination)[1]<-'Age'
 names(procrastination)[4]<-'Education'
 
 #names(procrastination)[5]<-'Work.Status'
-levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-''
+levels(procrastination$Work.Status)[match('0', levels(procrastination$Work.Status))]<-NA #''
 
 names(procrastination)[6]<-'Income.Year'
 #tail(sort(procrastination$Income.Year), 150)
@@ -29,8 +29,8 @@ names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
 #check for other info about 's'
 #procrastination[procrastination$Current.Job == 's',]
-levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-''
-levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-''
+levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-NA
+levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-NA
 
 #Fix Misspellings
 #ouh could be oxford university hospital was not changed
@@ -60,15 +60,15 @@ names(procrastination)[10]<-'Comm.Size'
 #procrastination$Comm.Size[as.numeric(procrastination$Comm.Size) == 0]
 #Change to 'Small City based on other responses
 levels(procrastination$Comm.Size)[match('8', levels(procrastination$Comm.Size))]<-'Small City'
-levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]<-''
+levels(procrastination$Comm.Size)[match('0', levels(procrastination$Comm.Size))]<-NA
 
 names(procrastination)[11]<-'Country'
-levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-''
-levels(procrastination$Country)[match('', levels(procrastination$Country))]<-'<NA>'
-levels(procrastination$Country)[match(' ', levels(procrastination$Country))]<-'<NA>'
+levels(procrastination$Country)[match('0', levels(procrastination$Country))]<-NA
+levels(procrastination$Country)[match('', levels(procrastination$Country))]<-NA
+#levels(procrastination$Country)[match(' ', levels(procrastination$Country))]<-'<NA>'
 
 names(procrastination)[12]<-'Marital.Stat'
-levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-''
+levels(procrastination$Marital.Stat)[match('0', levels(procrastination$Marital.Stat))]<-NA
 
 names(procrastination)[13]<-'Sons'
 levels(procrastination$Sons)[match('Male', levels(procrastination$Sons))]<-'1'
@@ -132,7 +132,7 @@ names(procrastination)[61]<-'Other.Assess'
 #procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 4]
 #procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 0]
 levels(procrastination$Other.Assess)[match('4', levels(procrastination$Other.Assess))]<-'no'
-levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-''
+levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Assess))]<-NA
 
 #2.e.
 #Create means for category of survey questions
