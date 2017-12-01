@@ -1488,16 +1488,35 @@ Relationship Between Life Satisfaction and HDI (Q5e)
 
 ```r
 #creating scatterplot.
-ggplot(procrast_hdi1, aes(x=HDI, y=SWLS.Mean)) +
+ggplot(procrast_hdi1, aes(x=SWLS.Mean, y=HDI)) +
   geom_point() +
   scale_colour_hue(l=50)+
   ggtitle("Life Satisfaction Versus HDI") +
   theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
-  xlab("HDI") +
-  ylab("Life Satisfaction") 
+  xlab("Life Satisfaction") +
+  ylab("HDI") 
 ```
 
 ![](ProcrastinationStudy_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+
+Relationship Between Life Satisfaction and HDI (Development Level) (Q5e)
+
+?????????????????????????????????????????????????
+
+
+```r
+#creating scatterplot.
+ggplot(procrast_hdi1, aes(x=SWLS.Mean, y=Development_Level)) +
+  geom_point() +
+  scale_colour_hue(l=50)+
+  ggtitle("Life Satisfaction Versus HDI") +
+  theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
+  xlab("Life Satisfaction") +
+  ylab("HDI Development Level") 
+```
+
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+
 
 
 Highlights:
