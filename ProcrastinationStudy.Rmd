@@ -27,6 +27,7 @@ Data files: Raw and URL/Scraped
 library(knitr)
 library(xml2)
 library(rvest)
+library(ggplot2)
 library(pander)
 #opts_knit$set(root.dir = "~/Documents/")
 #getwd()
@@ -53,23 +54,6 @@ dim(procrastination)
 Dimensions:
  * Initial dimensions are 4264 observations and 61 variables
 
-<-!First Look:
-
-```{r, echo=TRUE, results='hide'}
-#general info
-str(procrastination)
-
-#Create 'catch', a vector of boolean if-numeric
-catch=NA
-for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
-#catch[-1]
-
-#Numeric Summary
-apply(procrastination[,catch[-1]], 2, summary)
-
-#Character Summary
-apply(procrastination[,!catch[-1]], 2, unique)
-```
 
 Clean data variable by variable:
 
@@ -120,8 +104,8 @@ levels(procrastination$Current.Job)[match('mktg', levels(procrastination$Current
 levels(procrastination$Current.Job)[match('MD', levels(procrastination$Current.Job))]<-'Physician'
 levels(procrastination$Current.Job)[match('Economy', levels(procrastination$Current.Job))]<-'Economist'
 levels(procrastination$Current.Job)[match('vidoe', levels(procrastination$Current.Job))]<-'video'
-levels(procrastination$Current.Job)[match('houswife', levels(procrastination$Current.Job))]<-'Housewife'
-gsub('â???"', '', levels(procrastination$Current.Job))
+levels(procrastination$Current.Job)[match(' houswife', levels(procrastination$Current.Job))]<-'Housewife'
+#gsub('â???"', '', levels(procrastination$Current.Job))
 levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]<-'Assistant'
 
@@ -240,23 +224,6 @@ procrastination$SWLS.Mean<-apply(procrastination[,SWLS], 1, mean, na.rm=TRUE)
 
 Double Check
 
-```{r, echo=TRUE, results='hide'}
-#Double Check
-str(procrastination)
-
-#apply(procrastination, 2, class)
-catch=NA
-for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
-#catch[-1]
-
-#Numeric Summary
-#apply(procrastination[,c(1,6,8:9, 14:59)], 2, summary)
-apply(procrastination[,catch[-1]], 2, summary)
-
-#Character Summary
-#apply(procrastination[,-c(1,6,8:9, 14:59)], 2, unique)
-apply(procrastination[,!catch[-1]], 2, unique)
-```
 
 HDI_Data Scraped and cleaned
  * Scrape HDI data and save to repository
@@ -388,7 +355,7 @@ Histogram shows most respondents age 18+ from the study are under 50, however, t
 
 ```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
 #histogram to show distribution of respondent age.
-library(ggplot2)
+
 ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
   geom_histogram() +
   xlab("Age") 
@@ -473,12 +440,44 @@ EMTABLE<-function(df, var1 = 'Variable', digits = 1){
 ```
 
 20 most frequent occupations
+```{r}
+#4.c.
+## These are frequency tables for three key variables
+
+#First, table for gender
+Gend.Table<-EMTABLE(procrast_hdi1$Gender, digits=1, var1 = 'Gender')
+Gend.Table
+```
+
+```{r}
+#4.c.
+#Then, table for work status
+WorkStat.Table<-EMTABLE(procrast_hdi1$Work.Status, digits=1, var1 = 'Work Status')
+kable(WorkStat.Table)
+```
 
 ```{r}
 #4.c.
 #Then, table for Job Table
 JobTable<-EMTABLE(procrast_hdi1$Current.Job, digits=1, var1 = 'Current Occupation')
 kable(JobTable[1:20,])
+```
+
+```{r}
+#4.d.
+#Top 15 countries among our respondents
+Country.Table<-EMTABLE(procrast_hdi1$Country, digits=1, var1 = 'Country')
+kable(Country.Table[1:15,])
+#Note: NA or no response accounted for 231 participants, putting it in 4th place
+```
+
+
+```{r}
+#4.e.
+#
+Match.Assess <- data.frame('Match.Assess'<-paste(procrast_hdi1$Self.Assess , procrast_hdi1$Other.Assess, sep = "|"))
+MatchTable<-EMTABLE(Match.Assess, digits=1, var1 = 'Assessment: Self | Others')
+kable(MatchTable)
 ```
 
 ???????????????????????????????????????????????????????
