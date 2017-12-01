@@ -22,16 +22,24 @@
 ---
 This repo contains the following folders:
 
-* 
-* Analysis
-* Data
+* Analysis : This folder is our code repository for data importing, exporting and analysis
+  * Code Archive :This folder is our code repository for prior versions of code
+* Data : This is a folder containing raw used in alaysis and exported data after analysis
 * ProcrastinationStudy_files
 
 ### Files
 ---
 This section will detail the files that appear in this repo and their description.
 
-### Analysis
+### Root
+
+* ProcrastinationStudy.html
+* ProcrastinationStudy.md
+* ProcrastinationStudy.Rmd
+* README.md
+
+
+### Analysis Folder
 ---
 The code folder contains the following files:
 
@@ -43,11 +51,12 @@ The code folder contains the following files:
 #### Code Archive
     * CaseStudy2CodeArturo.R
 
-### Data
+### Data Folder
 ---
-* 
-*
-*
+* Procrastination.csv : 
+* ProcrastinationCODEBOOK.md : 
+* hdi.csv : 
+* procrast_hdi.csv : 
 
 #### subFolder2
 
