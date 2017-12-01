@@ -1191,53 +1191,33 @@ EMTABLE<-function(df, var1 = 'Variable', digits = 1){
 #4.c.
 #Then, table for Job Table
 JobTable<-EMTABLE(procrast_hdi1$Current.Job, digits=1, var1 = 'Current Occupation')
-pander(JobTable[1:20,])
+kable(JobTable[1:20,])
 ```
 
 
-------------------------------------------
- Current Occupation    Count   Percentage 
---------------------- ------- ------------
-                       2045       56.5    
 
-   please specify       200       5.5     
-
-       teacher          74         2      
-
-  college professor     43        1.2     
-
-      engineer          32        0.9     
-
-       manager          32        0.9     
-
-      Attorney          30        0.8     
-
-       retired          28        0.8     
-
-       Editor           21        0.6     
-
-      Marketing         21        0.6     
-
-      attorney          19        0.5     
-
-     Unemployed         18        0.5     
-
-       writer           19        0.5     
-
-      houswife          16        0.4     
-
-  Doctor; Physician     16        0.4     
-
-        Nurse           13        0.4     
-
- Software Developer     16        0.4     
-
-     consultant         12        0.3     
-
-    Administrator       10        0.3     
-
- assistant professor    10        0.3     
-------------------------------------------
+Current Occupation     Count   Percentage
+--------------------  ------  -----------
+                        2045         56.5
+please specify           200          5.5
+teacher                   74          2.0
+college professor         43          1.2
+engineer                  32          0.9
+manager                   32          0.9
+Attorney                  30          0.8
+retired                   28          0.8
+Editor                    21          0.6
+Marketing                 21          0.6
+attorney                  19          0.5
+Unemployed                18          0.5
+writer                    19          0.5
+houswife                  16          0.4
+Doctor; Physician         16          0.4
+Nurse                     13          0.4
+Software Developer        16          0.4
+consultant                12          0.3
+Administrator             10          0.3
+assistant professor       10          0.3
 
 ???????????????????????????????????????????????????????
 
