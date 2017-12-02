@@ -278,3 +278,27 @@ procrastination$Current.Job[!is.na(procrastination$Current.Job)]
 unique(procrast_hdi$Self.Assess)
 unique(procrast_hdi$Other.Assess)
 unique(procrast_hdi$Gender)
+unique(procrast_hdi$Age)
+unique(procrast_hdi$Income.Year)
+
+summary(procrast_hdi$Gender)
+
+
+HDI.level.table<-aggregate(procrast_hdi1$SWLS.Mean, by=list(procrast_hdi1$Development_Level), FUN=mean)
+names(HDI.level.table)<-c("HDI Level", 'SWLS.Mean')
+HDI.level.table
+
+display.brewer.all()
+
+table(procrast_hdi1[, c("Age", "Income.Year", "Gender")])
+test<-aggregate( Gender ~ Age + Income.Year, data=procrast_hdi1, FUN=is.na)
+dim(test)
+
+library(plyr)
+#get frequencies
+q5d<-count(procrast_hdi1, c("Age", "Income.Year", "Gender"))
+#str(q5d)
+
+#merge frequencies to procrast_hdi1 to read into ggplot
+freqAIG<-merge(procrast_hdi1[, c("Age", "Income.Year", "Gender")], q5d, by=c("Age", "Income.Year", "Gender"), all.x = TRUE)
+#dim(freqAIG)
