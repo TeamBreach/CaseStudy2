@@ -302,3 +302,5 @@ q5d<-count(procrast_hdi1, c("Age", "Income.Year", "Gender"))
 #merge frequencies to procrast_hdi1 to read into ggplot
 freqAIG<-merge(procrast_hdi1[, c("Age", "Income.Year", "Gender")], q5d, by=c("Age", "Income.Year", "Gender"), all.x = TRUE)
 #dim(freqAIG)
+
+EMTABLE(procrast_hdi1$Age, digits=1, var1 = 'Age')
