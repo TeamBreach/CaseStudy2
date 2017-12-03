@@ -1,6 +1,6 @@
 ---
-title: "Procrastination"
-author: "Arturo Casillas & Eric McCandless"
+title: "Procrastination and Human Development"
+author: "Arturo Casillas & Eric McCandless (ACEM Research. Inc.)"
 date: "November 26, 2017"
 output:
   html_document:
@@ -14,9 +14,27 @@ output:
 ---
 
 
-## Introduction
+## Introduction/Background
 
-Background: 
+The Better World Organization (BWO) is a socioeconomic thinktank that is interested in better understanding the relationship between procrastination and the development of countries in the world.  BWO hired ACEM Research to analyze this topic.  Specifically, BWO has asked ACEM to provide the answers to a few specific questions.  
+
+- Top 15 Nations According to the Decisional Procrastination Scale
+- Top 15 Nations According to the General Procrastination Scale
+- Relationship Between Life Satisfaction and Human Development Index 
+- Relationship Between Life Satisfaction and Human Development Index Levels
+
+As part of the analysis, ACEM collected procrastination data and used the HDI from the United Nations.  MOre information about these sources is provided in the README documentation.
+
+Additionally, initial analysis of the data needed to be conducted to assess whether there are any biases within the data set worth noting.  Analysis included:
+
+- Descriptive Statistics - age, income, HDI, Procrastination data mean scores
+- Histogram for Age 
+- Histogram for Income
+- Participants by Gender
+- Participants by Work Status
+- Participants by Occupation
+- Participants by Country 
+- Perceptions of Procrastination 
 
 ##Sources/Data
 
@@ -630,6 +648,9 @@ Highlights:
 ###Data Summary
 
 ##Conclusions
+
+????? Mention biases in procrastination data set.
+????? Conclusions about procrastination related to country
 
 
 

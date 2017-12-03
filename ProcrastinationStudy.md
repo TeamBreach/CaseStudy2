@@ -1,11 +1,29 @@
 # Procrastination
-Arturo Casillas & Eric McCandless  
+Arturo Casillas & Eric McCandless (ACEM Research. Inc.)  
 November 26, 2017  
 
 
-## Introduction
+## Introduction/Background
 
-Background: 
+The Better World Organization (BWO) is a socioeconomic thinktank that is interested in better understanding the relationship between procrastination and the development of countries in the world.  BWO hired ACEM Research to analyze this topic.  Specifically, BWO has asked ACEM to provide the answers to a few specific questions.  
+
+- Top 15 Nations According to the Decisional Procrastination Scale
+- Top 15 Nations According to the General Procrastination Scale
+- Relationship Between Life Satisfaction and Human Development Index 
+- Relationship Between Life Satisfaction and Human Development Index Levels
+
+As part of the analysis, ACEM collected procrastination data and used the HDI from the United Nations.  MOre information about these sources is provided in the README documentation.
+
+Additionally, initial analysis of the data needed to be conducted to assess whether there are any biases within the data set worth noting.  Analysis included:
+
+- Descriptive Statistics - age, income, HDI, Procrastination data mean scores
+- Histogram for Age 
+- Histogram for Income
+- Participants by Gender
+- Participants by Work Status
+- Participants by Occupation
+- Participants by Country 
+- Perceptions of Procrastination 
 
 ##Sources/Data
 
@@ -344,19 +362,19 @@ Descriptive Statistics - Age, Income, HDI, 4 Mean Scores (Q4b)
 
 ```r
 #Summary stats for key variables.
-procrast_hdi2 <- apply(procrast_hdi1[,c('Age','Income.Year', 'HDI', 'XGP.Mean', 'XDP.Mean', 'XAIP.Mean', 'SWLS.Mean')], 2, summary)
+procrast_hdi2 <- apply(procrast_hdi1[,c('Age','Income.Year', 'HDI', 'XGP.Mean', 'XDP.Mean', 'XAIP.Mean', 'SWLS.Mean')], 2, function(y) summary(y, digits = 2))
 kable(procrast_hdi2)
 ```
 
-                Age   Income.Year           HDI   XGP.Mean    XDP.Mean   XAIP.Mean   SWLS.Mean
---------  ---------  ------------  ------------  ---------  ----------  ----------  ----------
-Min.       19.00000      10000.00     0.4790000    1.00000    1.000000    1.000000    1.000000
-1st Qu.    28.00000      15000.00     0.9200000    2.80000    2.400000    2.400000    2.400000
-Median     37.50000      45000.00     0.9200000    3.25000    3.000000    2.933333    3.000000
-Mean       38.28382      59879.87     0.9054367    3.23947    3.051635    2.963859    3.046779
-3rd Qu.    45.00000      87500.00     0.9200000    3.75000    3.800000    3.533333    3.800000
-Max.       80.00000     250000.00     0.9490000    5.00000    5.000000    5.000000    5.000000
-NA's       71.00000        486.00   242.0000000   71.00000   71.000000   71.000000   71.000000
+           Age   Income.Year      HDI   XGP.Mean   XDP.Mean   XAIP.Mean   SWLS.Mean
+--------  ----  ------------  -------  ---------  ---------  ----------  ----------
+Min.        19         10000     0.48        1.0        1.0         1.0         1.0
+1st Qu.     28         15000     0.92        2.8        2.4         2.4         2.4
+Median      38         45000     0.92        3.2        3.0         2.9         3.0
+Mean        38         60000     0.91        3.2        3.1         3.0         3.0
+3rd Qu.     45         88000     0.92        3.8        3.8         3.5         3.8
+Max.        80        250000     0.95        5.0        5.0         5.0         5.0
+NA's        71           486   242.00       71.0       71.0        71.0        71.0
 
 Histogram for Age (Q4b)
 
@@ -381,67 +399,11 @@ Histogram shows most respondents from the study have income below 100K, however,
 ```r
 #histogram to show distribution of respondent income.
 ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
-  geom_histogram() +
+  geom_histogram() + theme_minimal() +
   xlab("Income") 
 ```
 
 ![](ProcrastinationStudy_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
-
-Participants by Gender (Q4c)
-
-Counts of how many participants there were by gender in decending order.  There were 70 observations without a gender value.  These observations were removed from the list prior to creating the table.
-
-
-```r
-#table that shows counts/percentages.
-procrast_hdi3 <- table(procrast_hdi1$Gender)
-procrast_hdi11 <- data.frame(cbind(procrast_hdi3, prop.table(procrast_hdi3)))
-#procrast_hdi11 = procrast_hdi11[-1,]
-names(procrast_hdi11) <- c("Count", "Percentage")
-procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
-procrast_hdi12 <- data.frame(procrast_hdi11)
-procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
-procrast_hdi12 <- cbind(Gender=rownames(procrast_hdi12), procrast_hdi12)
-rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
-knitr::kable(procrast_hdi12)
-```
-
-
-
-Gender    Count   Percentage
--------  ------  -----------
-Female     2309         57.3
-Male       1721         42.7
-
-Participants by Work Status (Q4c)
-
-Counts of how many participants there were by work status in decending order.  There were 113 observations without a work status value.  These observations were removed from the list prior to creating the table.
-
-
-```r
-#table that shows counts/percentages.
-procrast_hdi4 <- table(procrast_hdi1$Work.Status)
-procrast_hdi11 <- data.frame(cbind(procrast_hdi4, prop.table(procrast_hdi4)))
-procrast_hdi11 = procrast_hdi11[-1,]
-names(procrast_hdi11) <- c("Count", "Percentage")
-procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
-procrast_hdi12 <- data.frame(procrast_hdi11)
-procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
-procrast_hdi12 <- cbind(WorkStatus=rownames(procrast_hdi12), procrast_hdi12)
-rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
-knitr::kable(procrast_hdi12)
-```
-
-
-
-WorkStatus    Count   Percentage
------------  ------  -----------
-student         837        20.96
-part-time       465        11.64
-unemployed      258         6.46
-retired         174         4.36
-
-Participants by Occupation (Q4c)
 
 
 ```r
@@ -472,6 +434,10 @@ EMTABLE<-function(df, var1 = 'Variable', digits = 1){
 }
 ```
 
+Participants by Gender (Q4c)
+
+Counts of how many participants there were by gender in decending order.  There were 70 observations without a gender value.  These observations were removed from the list prior to creating the table.
+
 
 
 ```r
@@ -480,14 +446,19 @@ EMTABLE<-function(df, var1 = 'Variable', digits = 1){
 
 #First, table for gender
 Gend.Table<-EMTABLE(procrast_hdi1$Gender, digits=1, var1 = 'Gender')
-Gend.Table
+kable(Gend.Table)
 ```
 
-```
-##   Gender Count Percentage
-## 1 Female  2309       57.3
-## 2   Male  1721       42.7
-```
+
+
+Gender    Count   Percentage
+-------  ------  -----------
+Female     2309         57.3
+Male       1721         42.7
+
+Participants by Work Status (Q4c)
+
+Counts of how many participants there were by work status in decending order.  There were 113 observations without a work status value.  These observations were removed from the list prior to creating the table.
 
 
 ```r
@@ -507,7 +478,7 @@ part-time        465         11.6
 unemployed       258          6.5
 retired          174          4.4
 
-Current Occupation Q4c
+Participants by Occupation (Q4c)
 
 Shown here are the twenty largest counts of how many participants there were by current occupation in decending order of frequency.  There were 2654 observations without an occupation value.  These observations were removed from the list prior to creating the table. Given that this was a write in response, there are a large number of unique responses. A full list of all of responses can be found in the repository.
 
@@ -550,59 +521,7 @@ home maker               11          0.7
 ```
 
 
-```r
-#4.d.
-#Top 15 countries among our respondents
-Country.Table<-EMTABLE(procrast_hdi1$Country, digits=1, var1 = 'Country')
-kable(Country.Table[1:15,])
-```
 
-
-
-Country           Count   Percentage
----------------  ------  -----------
-United States      2785         71.9
-Canada              243          6.3
-United Kingdom      177          4.6
-Australia            99          2.6
-India                78          2.0
-Italy                62          1.6
-Germany              36          0.9
-Brazil               20          0.5
-Ireland              19          0.5
-Israel               19          0.5
-Netherlands          18          0.5
-Norway               14          0.4
-Sweden               15          0.4
-China                12          0.3
-Finland              12          0.3
-
-```r
-#Note: NA or no response accounted for 231 participants, putting it in 4th place
-```
-
-
-
-```r
-#4.e.
-#
-Match.Assess <- data.frame('Match.Assess'<-paste(procrast_hdi1$Self.Assess , procrast_hdi1$Other.Assess, sep = "|"))
-MatchTable<-EMTABLE(Match.Assess, digits=1, var1 = 'Assessment: Self | Others')
-kable(MatchTable)
-```
-
-
-
-Assessment: Self | Others    Count   Percentage
---------------------------  ------  -----------
-yes|yes                       2358         57.4
-yes|no                        1107         27.0
-no|no                          483         11.8
-NA|NA                           78          1.9
-no|yes                          51          1.2
-yes|NA                          25          0.6
-no|NA                            4          0.1
-NA|no                            1          0.0
 
 ???????????????????????????????????????????????????????
 
@@ -612,18 +531,10 @@ Counts of how many participants there were by country in decending order.  There
 
 
 ```r
-#table that shows counts/percentages.
-procrast_hdi5 <- table(procrast_hdi1$Country)
-procrast_hdi11 <- data.frame(cbind(procrast_hdi5, prop.table(procrast_hdi5)))
-procrast_hdi11 = procrast_hdi11[-1,]
-names(procrast_hdi11) <- c("Count", "Percentage")
-procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
-procrast_hdi12 <- data.frame(procrast_hdi11)
-#sorting
-procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
-procrast_hdi12 <- cbind(Country=rownames(procrast_hdi12), procrast_hdi12)
-rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
-knitr::kable(procrast_hdi12)
+#4.d.
+#Top 15 countries among our respondents
+Country.Table<-EMTABLE(procrast_hdi1$Country, digits=2, var1 = 'Country')
+kable(Country.Table)
 ```
 
 
@@ -662,6 +573,7 @@ Portugal                  7         0.18
 Slovenia                  6         0.15
 Poland                    5         0.13
 Romania                   5         0.13
+Afghanistan               4         0.10
 Chile                     4         0.10
 Croatia                   4         0.10
 Malaysia                  4         0.10
@@ -722,37 +634,35 @@ Vietnam                   1         0.03
 Estonia                   0         0.00
 Lebanon                   0         0.00
 
+```r
+#Note: NA or no response accounted for 231 participants, putting it in 4th place
+```
+
 Perceptions of Procrastination (Q4e)
 
 Data show that 2,841 respondents' perception of whether or not they are a procrastinator matched what others think.  This equates to 69% of the respondent base.
 
 
 ```r
-#table that shows counts/percentages by combo of responses.
-Vector <- data.frame('Match.Assess'<-paste(procrast_hdi1$Self.Assess , procrast_hdi1$Other.Assess, sep = "|"))
-procrast_hdi6 <- table(Vector)
-procrast_hdi11 <- data.frame(cbind(procrast_hdi6, prop.table(procrast_hdi6)))
-names(procrast_hdi11) <- c("Count", "Percentage")
-procrast_hdi11$Percentage <- round(procrast_hdi11$Percentage * 100, digits=2)
-procrast_hdi12 <- data.frame(procrast_hdi11)
-procrast_hdi12 <- procrast_hdi12[order(-procrast_hdi12$Percentage), ,drop = FALSE]
-procrast_hdi12 <- cbind(Procrastination=rownames(procrast_hdi12), procrast_hdi12)
-rownames(procrast_hdi12) <- 1:nrow(procrast_hdi12) 
-knitr::kable(procrast_hdi12)
+#4.e.
+#
+Match.Assess <- data.frame('Match.Assess'<-paste(procrast_hdi1$Self.Assess , procrast_hdi1$Other.Assess, sep = "|"))
+MatchTable<-EMTABLE(Match.Assess, digits=1, var1 = 'Assessment: Self | Others')
+kable(MatchTable)
 ```
 
 
 
-Procrastination    Count   Percentage
-----------------  ------  -----------
-yes|yes             2358        57.41
-yes|no              1107        26.95
-no|no                483        11.76
-NA|NA                 78         1.90
-no|yes                51         1.24
-yes|NA                25         0.61
-no|NA                  4         0.10
-NA|no                  1         0.02
+Assessment: Self | Others    Count   Percentage
+--------------------------  ------  -----------
+yes|yes                       2358         57.4
+yes|no                        1107         27.0
+no|no                          483         11.8
+NA|NA                           78          1.9
+no|yes                          51          1.2
+yes|NA                          25          0.6
+no|NA                            4          0.1
+NA|no                            1          0.0
 
 Top 15 Nations According to the Decisional Procrastination Scale - DP (Q5b)
 
@@ -780,16 +690,17 @@ DP_Meanfinal$Development_Level[is.na(DP_Meanfinal$Development_Level)] <- "No Dev
 #creating bar plot.
 ggplot(DP_Meanfinal, aes(x=reorder(Country,XDP.Mean),y=XDP.Mean)) +
   geom_bar(stat="identity", aes(fill=Development_Level)) +
+  theme_minimal() + 
   ggtitle("Top 15 Nations in Average DP Procrastination Scores") +
   theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=15)) +
-  xlab("Country") +
-  ylab("DP") +
+  xlab("Country of Residence") +
+  ylab("Mean DP Response") +
   geom_text(aes(label = XDP.Mean), hjust=-.25, size=5) +
-  scale_fill_brewer(palette="Dark2") +
+  scale_fill_manual(values = c('#39ac73', '#c6ecd9', '#206040')) +  
   coord_flip()
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
 
 Top 15 Nations According to the General Procrastination Scale - GP (Q5c)
 
@@ -798,60 +709,80 @@ Data show that 9 countries show up in the top 15 in both the DP and GP scale.  T
 
 ```r
 #merging 2 tables to get GP and development category together in df.
-DP_Mean <- procrast_hdi1[,c("Country", "XGP.Mean")]
-DP_Mean <- aggregate(DP_Mean[, c("XGP.Mean")], list(DP_Mean$Country), mean)
-colnames(DP_Mean) <- c("Country", "XGP.Mean")
+GP_Mean <- procrast_hdi1[,c("Country", "XGP.Mean")]
+GP_Mean <- aggregate(GP_Mean[, c("XGP.Mean")], list(GP_Mean$Country), mean)
+colnames(GP_Mean) <- c("Country", "XGP.Mean")
 #second table that shows development level by country.
-DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
-DP_Mean1 <- unique(DP_Mean1)
+GP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
+GP_Mean1 <- unique(GP_Mean1)
 #merging 2 tables to get DP and development category together in df.
-DP_Meanfinal <- merge(DP_Mean, DP_Mean1, by=c("Country"))
-DP_Meanfinal = DP_Meanfinal[-1,]
-DP_Meanfinal <- DP_Meanfinal[order(-DP_Meanfinal$XGP.Mean), ,drop = FALSE]
-DP_Meanfinal <- head(DP_Meanfinal,15)
-DP_Meanfinal$XGP.Mean <- round(DP_Meanfinal$XGP.Mean, digits=1)
-DP_Meanfinal$Development_Level <- as.character(DP_Meanfinal$Development_Level)
-DP_Meanfinal$Development_Level[is.na(DP_Meanfinal$Development_Level)] <- "No Development Level Reported"
+GP_Meanfinal <- merge(GP_Mean, GP_Mean1, by=c("Country"))
+GP_Meanfinal = GP_Meanfinal[-1,]
+GP_Meanfinal <- GP_Meanfinal[order(-GP_Meanfinal$XGP.Mean), ,drop = FALSE]
+GP_Meanfinal <- head(GP_Meanfinal,15)
+GP_Meanfinal$XGP.Mean <- round(GP_Meanfinal$XGP.Mean, digits=1)
+GP_Meanfinal$Development_Level <- as.character(GP_Meanfinal$Development_Level)
+GP_Meanfinal$Development_Level[is.na(GP_Meanfinal$Development_Level)] <- "No Development Level Reported"
 #creating bar plot.
-ggplot(DP_Meanfinal, aes(x=reorder(Country,XGP.Mean),y=XGP.Mean)) +
+ggplot(GP_Meanfinal, aes(x=reorder(Country,XGP.Mean),y=XGP.Mean)) +
   geom_bar(stat="identity", aes(fill=Development_Level)) +
+  theme_minimal() +
   ggtitle("Top 15 Nations in Average GP Procrastination Scores") +
   theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=15)) +
-  xlab("Country") +
-  ylab("GP") +
+  xlab("Country of Residence") +
+  ylab("Mean GP Response") +
   geom_text(aes(label = XGP.Mean), hjust=-.25, size=5) +
-  scale_fill_brewer(palette="Dark2") +
+  #scale_fill_manual(values = c('royalblue3','steelblue1', 'lightcyan', 'darkblue')) +  
+  scale_fill_manual(values = c('#0047b3','#4da6ff', '#e6f2ff', '#001a4d')) + 
+  #scale_fill_brewer(palette="Dark2") +
   coord_flip()
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
 
 Relationship Between Age and Income (Q5d)
 
-?????????????????????????????????????????????????
+According to the scatterplot below, there appears to be a relationship between age and yearly income. The relationship appers to be stronger for Males.
 
 
 ```r
+library(plyr)
+#get frequencies
+q5d<-count(procrast_hdi1, c("Age", "Income.Year", "Gender"))
+#str(q5d)
+
+#merge frequencies to procrast_hdi1 to read into ggplot
+freqAIG<-merge(procrast_hdi1, q5d, by=c("Age", "Income.Year", "Gender"), all.x = TRUE)
+#dim(freqAIG)
+
 #creating scatterplot.
-ggplot(procrast_hdi1, aes(x=Age, y=Income.Year, color=Gender)) +
-  geom_point() +
-  scale_colour_hue(l=50)+
+ggplot(na.omit(procrast_hdi1), aes(x=Age, y=Income.Year, color=Gender, fill=Gender, shape=Gender)) + 
+  theme_minimal() +
+  geom_point() + geom_smooth(method=lm) +  #Make scatterplot and add linea
+  stat_sum() + scale_size(guide = "none") + #size by counts
+  scale_shape_manual(values=c(19, 18, 20))+
+  scale_colour_hue(l=50) +
+  scale_fill_manual(values = c('orange','lightblue2')) +                 
+  #scale_size_manual(values=4)+
   ggtitle("Age Versus Income") +
   theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
   xlab("Age") +
   ylab("Income") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-22-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+
+The sizes of the points are larger for larger frequencies. 
+
 
 Relationship Between Life Satisfaction and HDI (Q5e)
 
-According to the scatterplot, there appears to be no relationship between mean Life Satsisfaciton and HDI. 
+According to the scatterplot, there appears to be no relationship between mean Life Satsisfaciton and HDI. There appears to be little variability in the HDI values, in that most of our respondents live inc countries with an HDI of around 0.90. Thus, it becomes difficult to test general differences in Life Satisfaction vs HDI 
 
 
 ```r
 #creating scatterplot.
-ggplot(procrast_hdi1, aes(x=SWLS.Mean, y=HDI)) +
+ggplot(procrast_hdi1, aes(x=SWLS.Mean, y=HDI)) + theme_minimal() +
   geom_point() + geom_smooth(method=lm) +
   scale_colour_hue(l=50)+
   ggtitle("Life Satisfaction Versus HDI") +
@@ -860,7 +791,7 @@ ggplot(procrast_hdi1, aes(x=SWLS.Mean, y=HDI)) +
   ylab("HDI") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-23-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 Relationship Between Life Satisfaction and HDI (Development Level) (Q5e)
 
@@ -868,13 +799,16 @@ Relationship Between Life Satisfaction and HDI (Development Level) (Q5e)
 
 
 ```r
+HDI.level.table<-aggregate(procrast_hdi1$SWLS.Mean, by=list(procrast_hdi1$Development_Level), FUN=mean)
+names(HDI.level.table)<-c("Development_Level", 'SWLS.Mean')
+
 #creating scatterplot.
-  ggplot(procrast_hdi1, aes(y=SWLS.Mean, x=Development_Level, fill=Development_Level)) + theme_minimal() +
+  ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_Level)) + theme_minimal() +
   geom_bar(stat="identity") + 
-  scale_fill_brewer(palette="Greens") #+
+  scale_fill_brewer(palette="YlOrRd") #+
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-24-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
 
 ```r
 #  scale_colour_hue(l=50) 
@@ -905,6 +839,9 @@ Highlights:
 ###Data Summary
 
 ##Conclusions
+
+????? Mention biases in procrastination data set.
+????? Conclusions about procrastination related to country
 
 
 
