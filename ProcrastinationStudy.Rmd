@@ -93,7 +93,7 @@ Go through variables one by one
    - For example, when respondents claim to be working at their current job for 999 years, the response is set to missing
   - Correct spelling mistakes in respondents' write-in answers so that observations can be more easily categorized if analysis demands (Q2civ)
    - For example: 'Studey' was corrected to 'student'
-   - Current Occupation !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   - Furthermore, 'na', '0', and 'please specify' were set to missing
   - Additional information about this data can be found in the CODEBOOK
 
 ```{r, echo=TRUE, results='markup'}
@@ -117,8 +117,10 @@ names(procrastination)[6]<-'Income.Year'
 
 names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
+#define missing
 levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-NA
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-NA
+levels(procrastination$Current.Job)[match('please specify', levels(procrastination$Current.Job))]<-NA
 
 #Fix Misspellings
 #ouh could be oxford university hospital was not changed
@@ -135,6 +137,14 @@ levels(procrastination$Current.Job)[match(' houswife', levels(procrastination$Cu
 #gsub('â???"', '', levels(procrastination$Current.Job))
 levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]<-'Assistant'
+#Consolidate Attrorneys
+levels(procrastination$Current.Job)[match('attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Attorney â???" Associate', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Attorney - self employed for 2 years â???" f', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Editor Attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Assistant District Attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match(' Attorney-self employed', levels(procrastination$Current.Job))]<-'Attorney'
+
 
 names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
@@ -660,9 +670,25 @@ Data Output
 
 The finalized HDI table can be found in the Data folder in repository (hdi.csv). (Q6a)
 
+```{r}
+#write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
+```
+
 The Tidied version of the original data and merged HDI data... (Q6b)
 
+```{r}
+#write.csv(procrast_hdi, file='~/CaseStudy2/Data/procrastination_clean.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+```
+
 Dataset (or two) that shows the Top 15 nations... (Q6c)
+
+```{r}
+
+#write.csv(DP_Meanfinal, file='~/CaseStudy2/Data/DP_MeanFinal.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+
+
+#write.csv(GP_Meanfinal, file='~/CaseStudy2/Data/GP_MeanFinal.csv.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+```
 
 All output should be in plain English or translated in the Codebook. (Q6d)
 

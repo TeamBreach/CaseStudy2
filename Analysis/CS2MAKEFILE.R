@@ -35,7 +35,13 @@ source('~/CaseStudy2/Analysis/hdi_data.R', echo=TRUE)
 source('~/CaseStudy2/Analysis/merge_data.R', echo=TRUE)
 #OUTPUT: procrast_hdi
 #
-#Uncommment below if you woud like to  export the tidied output
+#### Uncommment below if you woud like to  export the tidied outputs
+#
+## Clean original
+#write.csv(procrast_hdi, file='~/CaseStudy2/Data/procrastination_clean.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+#
+## Clean with hdi
+#
 #write.csv(procrast_hdi, file='~/CaseStudy2/Data/procrast_hdi.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 
 

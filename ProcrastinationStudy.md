@@ -131,6 +131,7 @@ levels(procrastination$Current.Job)[match(' houswife', levels(procrastination$Cu
 #gsub('â???"', '', levels(procrastination$Current.Job))
 levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]<-'Assistant'
+levels(procrastination$Current.Job)[match('please specify', levels(procrastination$Current.Job))]<-NA
 
 names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
@@ -262,7 +263,7 @@ str(procrastination)
 ##  $ Education   : Factor w/ 8 levels "deg","dip","grade",..: 7 1 2 7 1 1 7 3 7 7 ...
 ##  $ Work.Status : Factor w/ 5 levels "full-time","part-time",..: 3 2 4 1 1 1 2 2 1 1 ...
 ##  $ Income.Year : int  25000 35000 NA 45000 35000 15000 NA 10000 250000 87500 ...
-##  $ Current.Job : Factor w/ 668 levels "student"," Accountant",..: NA NA NA NA NA NA NA NA NA NA ...
+##  $ Current.Job : Factor w/ 667 levels "student"," Accountant",..: NA NA NA NA NA NA NA NA NA NA ...
 ##  $ Years.Empl. : num  9 0 0 14 1 1 8 NA 2 14 ...
 ##  $ Months.Empl.: int  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ Comm.Size   : Factor w/ 7 levels "Small City","Large-City",..: 2 7 3 3 7 6 3 7 7 7 ...
@@ -460,7 +461,7 @@ Descriptive Statistics - Age, Income, HDI, 4 Mean Scores (Q4b)
 
 Initial look at the summary data reveals some interesting characteristics:
 
-- Yearly Incomencome is a bit right skewed
+- Yearly Income is right skewed
 - Age is concentrated around a few distinct values.
 - at least 50% of HDI values are 0.92
 
@@ -598,26 +599,26 @@ kable(JobTable[1:20,])
 
 Current Occupation    Count   Percentage
 -------------------  ------  -----------
-please specify          200         12.7
-teacher                  74          4.7
-college professor        43          2.7
-engineer                 32          2.0
-manager                  32          2.0
-Attorney                 30          1.9
-retired                  28          1.8
-Editor                   21          1.3
-Marketing                21          1.3
-attorney                 19          1.2
-writer                   19          1.2
-Unemployed               18          1.1
-Housewife                16          1.0
-Doctor; Physician        16          1.0
-Software Developer       16          1.0
-consultant               12          0.8
-Nurse                    13          0.8
-Scientist                12          0.8
-Financial Advisor        11          0.7
-home maker               11          0.7
+teacher                  74          5.4
+college professor        43          3.1
+engineer                 32          2.3
+manager                  32          2.3
+Attorney                 30          2.2
+retired                  28          2.0
+Editor                   21          1.5
+Marketing                21          1.5
+attorney                 19          1.4
+writer                   19          1.4
+Unemployed               18          1.3
+Housewife                16          1.2
+Doctor; Physician        16          1.2
+Software Developer       16          1.2
+consultant               12          0.9
+Nurse                    13          0.9
+Scientist                12          0.9
+Financial Advisor        11          0.8
+home maker               11          0.8
+Administrator            10          0.7
 
 ```r
 ####EXPORT
@@ -940,7 +941,8 @@ Our analysis shows the following conclusions
 Note the following concerns about the procrastination data
 
 - The data is likely not up to date if it still references the former Yugoslavia. All responses were probably recorded before the popularity of the internet which is likely to be big source of procrastination for many people.
-- Income appears 
+- Age clusters at distinct values. It is unusual for there to be 773 respondents at age 45 and 0 between 32.5 and 45, and 0 between 45 and 55. 
+- HDI is concentrated at the value of 0.92 making it difficult to observe the effect of differences in HDI values.
 
 
 
