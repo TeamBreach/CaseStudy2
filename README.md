@@ -1,20 +1,20 @@
 
 ***
-## Case Study 2 - Beer Research
+## Case Study 2 - Procrastination Research
 
 ### Created November 25th, 2017
 
 ##### by Arturo Casillas and Eric McCandless.
 
 System Info:
-          sysname:             |"Windows"         
-          release:             |">= 8 x64"        
-          version:             |"build 9200"        
-          nodename:            ||"LAPTOP-74TSC78B" 
-          machine:             |"x86-64"
-          login:               |"acasi"
-          user:                |"acasi" 
-          effective_user:      |"acasi" 
+|          sysname:             |"Windows"           |
+|         release:              |">= 8 x64"          |
+|          version:             |"build 9200"        |
+|          nodename:            ||"LAPTOP-74TSC78B"  |
+|          machine:             |"x86-64"            |
+|          login:               |"acasi"             |
+|          user:                |"acasi"             |
+|          effective_user:      |"acasi"             |
 
 ---
 | Responsibilities | Analyst |

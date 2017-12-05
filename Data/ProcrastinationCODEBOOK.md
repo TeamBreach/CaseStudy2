@@ -40,7 +40,7 @@ output: md_document
 ### Variables & Descriptions
 
 | Name | Format | Description |
-| :------------:| :-----:|:--------_-- |
+| :---:| :-----:|:-----------:|
 | Country | Character | The country where the person holds citizenship. |
 | HDI | Number: 0-1 | Human Development Index |
 | Development Level | Factor: Low to Very-High | A cateogry of development based on HDI.  |
@@ -51,7 +51,7 @@ output: md_document
 ### Variables & Descriptions
 
 | Name | Format | Description |
-| :------------:| :-----:|:--------_-- |
+| :---:| :-----:| :---------: |
 |Age| Number | The participant's age in years |
 | Kids| Binary: 'Yes Kids' or 'No Kids' | whether they have kids or not|
 | Education | Factor | Education level |
@@ -77,3 +77,23 @@ output: md_document
 | SWLS Mean | Number: 1 - 5 | mean of  the Satisfaction with Life Scale per respondent (Diener et al., 1985) |
 | HDI | Bumber: 0-1 |  Human Development Index |
 | Development Level | Number | mean of  the Satisfaction with Life Scale per respondent (Diener et al., 1985) |
+
+## DP_MeanFinal.csv
+### General Description
+
+| Name | Format | Description |
+| :---:| :-----:| :---------: |
+| Country | | |
+| XDP.Mean | | |
+| Development_Level | | |
+| HDI | | |
+
+## DP_MeanFinal.csv
+### General Description
+
+| Name | Format | Description |
+| :---:| :-----:| :---------: |
+| Country | | |
+| XGP.Mean | | |
+| Development_Level | | |
+| HDI | | |

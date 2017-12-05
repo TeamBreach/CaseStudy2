@@ -123,5 +123,7 @@ ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_L
   ylim(0,4) 
 
 #Investigate Low Development Level
-EMTABLE(procrast_hdi1$Development_Level, var1='Development Level', digits=1)
-na.omit(procrast_hdi1[procrast_hdi1$Development_Level=='Low Human Development', c('Age', 'Country', 'HDI', 'SWLS.Mean')])
+kable(EMTABLE(procrast_hdi1$Development_Level, var1='Development Level', digits=1))
+
+SWLS.Spot.Check<-na.omit(procrast_hdi1[procrast_hdi1$Development_Level=='Low Human Development', c('Age', 'Country', 'HDI', 'SWLS.Mean')])
+kable(SWLS.Spot.Check)
