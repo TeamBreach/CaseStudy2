@@ -42,7 +42,8 @@ output: md_document
 | Name | Format | Description |
 | :------------:| :-----:|:--------_-- |
 | Country | Character | The country where the person holds citizenship. |
-| HDI | Number: 1-100 | Human Development Index |
+| HDI | Number: 0-1 | Human Development Index |
+| Development Level | Factor: Low to Very-High | A cateogry of development based on HDI.  |
 
 ## Procrastination_hdi.csv
 ### General Description
@@ -74,5 +75,5 @@ output: md_document
 | AIP Mean | Number: 1 - 5 | mean of Adult Inventory of Procrastination per respondent (McCown & Johnson, 1989) |
 | GP Mean | Number: 1 - 5 |  mean of the General Procrastination scale per respondent (Lay, 1986) |
 | SWLS Mean | Number: 1 - 5 | mean of  the Satisfaction with Life Scale per respondent (Diener et al., 1985) |
-| HDI | Bumber: 1 - 100 |  Human Development Index |
-| SWLS Mean | Number | mean of  the Satisfaction with Life Scale per respondent (Diener et al., 1985) |
+| HDI | Bumber: 0-1 |  Human Development Index |
+| Development Level | Number | mean of  the Satisfaction with Life Scale per respondent (Diener et al., 1985) |

@@ -683,10 +683,10 @@ The Tidied version of the original data and merged HDI data... (Q6b)
 Dataset (or two) that shows the Top 15 nations... (Q6c)
 
 ```{r}
-
+#Export a table of top 15 Countries with mean DP score and respective HDI
 #write.csv(DP_Meanfinal, file='~/CaseStudy2/Data/DP_MeanFinal.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 
-
+#Export a table of top 15 Countries with mean GP score and respective HDI
 #write.csv(GP_Meanfinal, file='~/CaseStudy2/Data/GP_MeanFinal.csv.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 ```
 
