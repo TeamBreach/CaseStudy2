@@ -12,7 +12,7 @@ The Better World Organization (BWO) is a socioeconomic thinktank that is interes
 - Relationship Between Life Satisfaction and Human Development Index 
 - Relationship Between Life Satisfaction and Human Development Index Levels
 
-As part of the analysis, ACEM collected procrastination data and used the HDI from the United Nations.  MOre information about these sources is provided in the README documentation.
+As part of the analysis, ACEM collected procrastination data and used the HDI from the United Nations.  More information about these sources is provided in the README documentation.
 
 Additionally, initial analysis of the data needed to be conducted to assess whether there are any biases within the data set worth noting.  Analysis included:
 
@@ -88,7 +88,7 @@ Go through variables one by one
    - For example, when respondents claim to be working at their current job for 999 years, the response is set to missing
   - Correct spelling mistakes in respondents' write-in answers so that observations can be more easily categorized if analysis demands (Q2civ)
    - For example: 'Studey' was corrected to 'student'
-   - Current Occupation !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+   - Furthermore, 'na', '0', and 'please specify' were set to missing
   - Additional information about this data can be found in the CODEBOOK
 
 
@@ -113,8 +113,10 @@ names(procrastination)[6]<-'Income.Year'
 
 names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
+#define missing
 levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-NA
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-NA
+levels(procrastination$Current.Job)[match('please specify', levels(procrastination$Current.Job))]<-NA
 
 #Fix Misspellings
 #ouh could be oxford university hospital was not changed
@@ -131,7 +133,14 @@ levels(procrastination$Current.Job)[match(' houswife', levels(procrastination$Cu
 #gsub('â???"', '', levels(procrastination$Current.Job))
 levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]<-'Assistant'
-levels(procrastination$Current.Job)[match('please specify', levels(procrastination$Current.Job))]<-NA
+#Consolidate Attrorneys
+levels(procrastination$Current.Job)[match('attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Attorney â???" Associate', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Attorney - self employed for 2 years â???" f', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Editor Attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Assistant District Attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match(' Attorney-self employed', levels(procrastination$Current.Job))]<-'Attorney'
+
 
 names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
@@ -223,7 +232,7 @@ levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Ass
 ```
 
 
-To simplify analysis, aggregated the variables within each procrastination and life satisfaction measures (GP, DP, AIP, and life statisfaction) by calculating a mean score (Q2e).
+To simplify the analysis, variables were aggregated within each set of procrastination and life satisfaction measures (GP, DP, AIP, and life statisfaction) by calculating a mean score (Q2e).
 
 
 
@@ -263,7 +272,7 @@ str(procrastination)
 ##  $ Education   : Factor w/ 8 levels "deg","dip","grade",..: 7 1 2 7 1 1 7 3 7 7 ...
 ##  $ Work.Status : Factor w/ 5 levels "full-time","part-time",..: 3 2 4 1 1 1 2 2 1 1 ...
 ##  $ Income.Year : int  25000 35000 NA 45000 35000 15000 NA 10000 250000 87500 ...
-##  $ Current.Job : Factor w/ 667 levels "student"," Accountant",..: NA NA NA NA NA NA NA NA NA NA ...
+##  $ Current.Job : Factor w/ 663 levels "student"," Accountant",..: NA NA NA NA NA NA NA NA NA NA ...
 ##  $ Years.Empl. : num  9 0 0 14 1 1 8 NA 2 14 ...
 ##  $ Months.Empl.: int  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ Comm.Size   : Factor w/ 7 levels "Small City","Large-City",..: 2 7 3 3 7 6 3 7 7 7 ...
@@ -409,8 +418,10 @@ hdi_total$Development_Level <- cut(hdi_total$HDI,
 #write.csv(hdi_total, "~/CaseStudy2/Data/hdi.csv", row.names=FALSE)
 ```
 
-Merged procrastination and HDI data by country of residence (Q3c)
+Then, HDI data was merged with procrastination data by country of residence (Q3c)
+ 
  - Corrected the spelling of Israel and Colombia in the procrastination data
+ 
  - No HDI information for Antiqua, Bermuda, Guam, Macao, Puerto Rico, and the former Yogoslavia
 
 
@@ -449,7 +460,7 @@ Additional information about this assessment can be found in the README file in 
 
 ##Analysis/Findings
 
-Removed age outliers <18 per clients request. (Q4a)
+First, ACEM removed age outliers <18 per clients request. (Q4a)
 
 
 ```r
@@ -457,9 +468,9 @@ Removed age outliers <18 per clients request. (Q4a)
 procrast_hdi1 <- procrast_hdi[procrast_hdi$Age>18,]
 ```
 
-Descriptive Statistics - Age, Income, HDI, 4 Mean Scores (Q4b)
+Initial Look at Descriptive Statistics in Merged File - Age, Income, HDI, 4 Mean Scores (Q4b)
 
-Initial look at the summary data reveals some interesting characteristics:
+Summary data reveals some interesting characteristics:
 
 - Yearly Income is right skewed
 - Age is concentrated around a few distinct values.
@@ -489,9 +500,10 @@ Histogram shows most respondents age 18+ from the study are under 50, however, t
 
 ```r
 #histogram to show distribution of respondent age.
-
 ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
-  geom_histogram() + theme_minimal() +
+  geom_histogram(color="black",fill="blue") +
+  ggtitle("Age Distribution") +
+  theme(plot.title = element_text(hjust = 0.5)) +
   xlab("Age") 
 ```
 
@@ -505,7 +517,9 @@ Histogram shows most respondents from the study have income below 60K. However, 
 ```r
 #histogram to show distribution of respondent income.
 ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
-  geom_histogram() + theme_minimal() +
+  geom_histogram(color="black",fill="blue") + theme_minimal() +
+  ggtitle("Income Distribution") +
+  theme(plot.title = element_text(hjust = 0.5)) +
   xlab("Income") 
 ```
 
@@ -597,28 +611,28 @@ kable(JobTable[1:20,])
 
 
 
-Current Occupation    Count   Percentage
--------------------  ------  -----------
-teacher                  74          5.4
-college professor        43          3.1
-engineer                 32          2.3
-manager                  32          2.3
-Attorney                 30          2.2
-retired                  28          2.0
-Editor                   21          1.5
-Marketing                21          1.5
-attorney                 19          1.4
-writer                   19          1.4
-Unemployed               18          1.3
-Housewife                16          1.2
-Doctor; Physician        16          1.2
-Software Developer       16          1.2
-consultant               12          0.9
-Nurse                    13          0.9
-Scientist                12          0.9
-Financial Advisor        11          0.8
-home maker               11          0.8
-Administrator            10          0.7
+Current Occupation     Count   Percentage
+--------------------  ------  -----------
+teacher                   74          5.4
+Attorney                  52          3.8
+college professor         43          3.1
+engineer                  32          2.3
+manager                   32          2.3
+retired                   28          2.0
+Editor                    21          1.5
+Marketing                 21          1.5
+writer                    19          1.4
+Unemployed                18          1.3
+Housewife                 16          1.2
+Doctor; Physician         16          1.2
+Software Developer        16          1.2
+consultant                12          0.9
+Nurse                     13          0.9
+Scientist                 12          0.9
+Financial Advisor         11          0.8
+home maker                11          0.8
+Administrator             10          0.7
+assistant professor       10          0.7
 
 ```r
 ####EXPORT
@@ -897,22 +911,23 @@ ggplot(procrast_hdi1, aes(x=SWLS.Mean, y=HDI)) + theme_minimal() +
 
 Relationship Between Life Satisfaction and HDI (Development Level) (Q5e)
 
-An barchart on the categorical values of Human Development suggest that low HDI is associated with a lower life satisfaction. However, medium to very-high development show similar levels of life satisfaction.
+However, a barchart showing Life Satisfaction by HDI categories suggests that Life Satisfaction drops off among countries that are in the Low Human Development category. 
 
 
 ```r
 HDI.level.table<-aggregate(procrast_hdi1$SWLS.Mean, by=list(procrast_hdi1$Development_Level), FUN=mean)
 names(HDI.level.table)<-c("Development_Level", 'SWLS.Mean')
-
-#creating scatterplot.
-  ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_Level)) + theme_minimal() +
+HDI.level.table$SWLS.Mean <- round(HDI.level.table$SWLS.Mean, digits=1)
+#barchart to show SWLM mean by Development Level.
+ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_Level)) +
   geom_bar(stat="identity") + 
   scale_fill_brewer(palette="YlOrRd") +
-#  scale_colour_hue(l=50) 
-  ggtitle("Life Satisfaction Versus HDI") +
-  theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
-  ylab("Life Satisfaction") +
-  xlab("HDI Development Level") 
+  ggtitle("Life Satisfaction and HDI (Development Level)") +
+  theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20),legend.position="none") +
+  xlab("Development Level") +
+  ylab("SWLS Mean") +
+  geom_text(aes(label = SWLS.Mean), vjust=-.25, size=6) +
+  ylim(0,4) 
 ```
 
 ![](ProcrastinationStudy_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
@@ -921,9 +936,27 @@ Data Output
 
 The finalized HDI table can be found in the Data folder in repository (hdi.csv). (Q6a)
 
+
+```r
+#write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
+```
+
 The Tidied version of the original data and merged HDI data... (Q6b)
 
+
+```r
+#write.csv(procrast_hdi, file='~/CaseStudy2/Data/procrastination_clean.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+```
+
 Dataset (or two) that shows the Top 15 nations... (Q6c)
+
+
+```r
+#write.csv(DP_Meanfinal, file='~/CaseStudy2/Data/DP_MeanFinal.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+
+
+#write.csv(GP_Meanfinal, file='~/CaseStudy2/Data/GP_MeanFinal.csv.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+```
 
 All output should be in plain English or translated in the Codebook. (Q6d)
 
@@ -932,11 +965,9 @@ All output should be in plain English or translated in the Codebook. (Q6d)
 
 Our analysis shows the following conclusions
 
-- Through assessment of two procrastnation scales we see that the following countries report to have relatively high levels of procrastination.
-  - The countries are Slovania, Taiwan, Puerto Rico, Qatar, Panama, Sri Lanka, Austria, Ecuador, and Uruguay.
-- The data shows a positive relationship between age and yearly income, which is more pronounced for males than females.
-- Overall, We don't observe a relationship between life satisfaction and HDI. 
-- However, a closer look at the categorical levels of human development suggests that low development is, in fact, associated with lower life satisfaction relative to Medium to Very-High development levels. 
+- Slovania, Taiwan, Puerto Rico, Qatar, Panama, Sri Lanka, Austria, Ecuador, and Uruguay are likely to be top procrastination countries in the world as they appear in the top 15 using two different procrastination scales (DP and GP).  
+- As age increases so does yearly income as the data show a positive relationship between these two variables.  Additionally, it is more pronounced for males than females.
+- At first glance, there does not appear to be a relationship between life satisfaction and HDI as our "Life Satisfaction Versus HDI" scatterplot shows. However, a closer look at Life Satisfaction mean scores by HDI category shows that life satisfaction drops off among countries that are in the Low Human Development category. 
 
 Note the following concerns about the procrastination data
 
