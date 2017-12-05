@@ -44,7 +44,8 @@ library(xml2)
 library(rvest)
 library(ggplot2)
 library(pander)
-#opts_knit$set(root.dir = "~/Documents/")
+library(plyr)
+#opts_knit$set(root.dir = "~/Documents/CaseStudy2/")
 #getwd()
 ```
 
@@ -88,6 +89,7 @@ Go through variables one by one
    - For example, when respondents claim to be working at their current job for 999 years, the response is set to missing
   - Correct spelling mistakes in respondents' write-in answers so that observations can be more easily categorized if analysis demands (Q2civ)
    - For example: 'Studey' was corrected to 'student'
+   - Some jobs were consolidated. For example, 'Attorney' and 'Attorney-self Employed' have been consolidated to 'Attorney'
    - Furthermore, 'na', '0', and 'please specify' were set to missing
   - Additional information about this data can be found in the CODEBOOK
 
@@ -501,7 +503,7 @@ Histogram shows most respondents age 18+ from the study are under 50, however, t
 ```r
 #histogram to show distribution of respondent age.
 ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
-  geom_histogram(color="black",fill="blue") +
+  geom_histogram(color="black",fill="blue") + theme_minimal() +
   ggtitle("Age Distribution") +
   theme(plot.title = element_text(hjust = 0.5)) +
   xlab("Age") 
@@ -790,7 +792,7 @@ DP_Mean <- aggregate(DP_Mean[, c("XDP.Mean")], list(DP_Mean$Country), mean)
 colnames(DP_Mean) <- c("Country", "XDP.Mean")
 
 #second table that shows development level by country.
-DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
+DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level", "HDI")]
 DP_Mean1 <- unique(DP_Mean1)
 
 #merging 2 tables to get DP and development category together in df.
@@ -829,7 +831,7 @@ GP_Mean <- procrast_hdi1[,c("Country", "XGP.Mean")]
 GP_Mean <- aggregate(GP_Mean[, c("XGP.Mean")], list(GP_Mean$Country), mean)
 colnames(GP_Mean) <- c("Country", "XGP.Mean")
 #second table that shows development level by country.
-GP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
+GP_Mean1 <- procrast_hdi1[,c("Country","Development_Level", "HDI")]
 GP_Mean1 <- unique(GP_Mean1)
 #merging 2 tables to get DP and development category together in df.
 GP_Meanfinal <- merge(GP_Mean, GP_Mean1, by=c("Country"))
@@ -862,7 +864,6 @@ According to the scatterplot below, there appears to be a relationship between a
 
 
 ```r
-library(plyr)
 #get frequencies
 q5d<-count(procrast_hdi1, c("Age", "Income.Year", "Gender"))
 #str(q5d)
@@ -932,6 +933,36 @@ ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_L
 
 ![](ProcrastinationStudy_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
+Closer inspection reveals that mean life satisfaction was calculated from only four participants over 18 years of age and only in the country of Afghanistan. This makes it difficult to generalize our conclusions.
+
+
+```r
+kable(EMTABLE(procrast_hdi1$Development_Level, var1='Development Level', digits=1))
+```
+
+
+
+Development Level              Count   Percentage
+----------------------------  ------  -----------
+Very High Human Development     3657         94.6
+Medium Human Development         114          2.9
+High Human Development            90          2.3
+Low Human Development              4          0.1
+
+```r
+SWLS.Spot.Check<-na.omit(procrast_hdi1[procrast_hdi1$Development_Level=='Low Human Development', c('Age', 'Country', 'HDI', 'SWLS.Mean')])
+kable(SWLS.Spot.Check)
+```
+
+
+
+ Age  Country          HDI   SWLS.Mean
+----  ------------  ------  ----------
+  55  Afghanistan    0.479         2.4
+  80  Afghanistan    0.479         2.8
+  55  Afghanistan    0.479         1.4
+  55  Afghanistan    0.479         2.4
+
 Data Output
 
 The finalized HDI table can be found in the Data folder in repository (hdi.csv). (Q6a)
@@ -952,9 +983,10 @@ Dataset (or two) that shows the Top 15 nations... (Q6c)
 
 
 ```r
+#Export a table of top 15 Countries with mean DP score and respective HDI
 #write.csv(DP_Meanfinal, file='~/CaseStudy2/Data/DP_MeanFinal.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 
-
+#Export a table of top 15 Countries with mean GP score and respective HDI
 #write.csv(GP_Meanfinal, file='~/CaseStudy2/Data/GP_MeanFinal.csv.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 ```
 

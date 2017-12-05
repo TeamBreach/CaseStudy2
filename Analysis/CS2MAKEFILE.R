@@ -5,6 +5,8 @@ library(knitr)
 library(xml2)
 library(rvest)
 library(ggplot2)
+library(pander)
+library(plyr)
 #getwd()
 
 
@@ -54,3 +56,19 @@ source('~/CaseStudy2/Analysis/preliminary_analysis.R', echo=TRUE)
       #  The function must be created for future codes
 #OUTPUT: procrast_hdi1: a subset of the merged procrastination and HDI tables for those over 18
       #  All future analysis will involve procrast_hdi1
+
+
+
+###### DEEPER ANALYSIS AND FREQUENCY TABLES  #######
+
+#INPUT: procrast_hdi
+source('~/CaseStudy2/Analysis/analysis_wGraphics.R', echo=TRUE)
+#OUTPUT: 
+
+#### Uncommment below if you woud like to  export some of the exhibits in table form
+#
+#Export a table of top 15 Countries with mean DP score and respective HDI
+#write.csv(DP_Meanfinal, file='~/CaseStudy2/Data/DP_MeanFinal.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+#
+#Export a table of top 15 Countries with mean GP score and respective HDI
+#write.csv(GP_Meanfinal, file='~/CaseStudy2/Data/GP_MeanFinal.csv.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))

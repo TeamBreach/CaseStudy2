@@ -54,7 +54,8 @@ library(xml2)
 library(rvest)
 library(ggplot2)
 library(pander)
-#opts_knit$set(root.dir = "~/Documents/")
+library(plyr)
+#opts_knit$set(root.dir = "~/Documents/CaseStudy2/")
 #getwd()
 ```
 
@@ -93,6 +94,7 @@ Go through variables one by one
    - For example, when respondents claim to be working at their current job for 999 years, the response is set to missing
   - Correct spelling mistakes in respondents' write-in answers so that observations can be more easily categorized if analysis demands (Q2civ)
    - For example: 'Studey' was corrected to 'student'
+   - Some jobs were consolidated. For example, 'Attorney' and 'Attorney-self Employed' have been consolidated to 'Attorney'
    - Furthermore, 'na', '0', and 'please specify' were set to missing
   - Additional information about this data can be found in the CODEBOOK
 
@@ -419,7 +421,7 @@ Histogram shows most respondents age 18+ from the study are under 50, however, t
 ```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
 #histogram to show distribution of respondent age.
 ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
-  geom_histogram(color="black",fill="blue") +
+  geom_histogram(color="black",fill="blue") + theme_minimal() +
   ggtitle("Age Distribution") +
   theme(plot.title = element_text(hjust = 0.5)) +
   xlab("Age") 
@@ -540,7 +542,7 @@ DP_Mean <- aggregate(DP_Mean[, c("XDP.Mean")], list(DP_Mean$Country), mean)
 colnames(DP_Mean) <- c("Country", "XDP.Mean")
 
 #second table that shows development level by country.
-DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
+DP_Mean1 <- procrast_hdi1[,c("Country","Development_Level", "HDI")]
 DP_Mean1 <- unique(DP_Mean1)
 
 #merging 2 tables to get DP and development category together in df.
@@ -577,7 +579,7 @@ GP_Mean <- procrast_hdi1[,c("Country", "XGP.Mean")]
 GP_Mean <- aggregate(GP_Mean[, c("XGP.Mean")], list(GP_Mean$Country), mean)
 colnames(GP_Mean) <- c("Country", "XGP.Mean")
 #second table that shows development level by country.
-GP_Mean1 <- procrast_hdi1[,c("Country","Development_Level")]
+GP_Mean1 <- procrast_hdi1[,c("Country","Development_Level", "HDI")]
 GP_Mean1 <- unique(GP_Mean1)
 #merging 2 tables to get DP and development category together in df.
 GP_Meanfinal <- merge(GP_Mean, GP_Mean1, by=c("Country"))
@@ -608,7 +610,7 @@ Relationship Between Age and Income (Q5d)
 According to the scatterplot below, there appears to be a relationship between age and yearly income. The relationship appers to be stronger for Males.
 
 ```{r, ECHO=TRUE, warning=FALSE, message=FALSE, fig.width=15, fig.height=10}
-library(plyr)
+
 #get frequencies
 q5d<-count(procrast_hdi1, c("Age", "Income.Year", "Gender"))
 #str(q5d)
@@ -672,6 +674,16 @@ ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_L
   ylim(0,4) 
 ```
 
+Closer inspection reveals that mean life satisfaction was calculated from only four participants over 18 years of age and only in the country of Afghanistan. This makes it difficult to generalize our conclusions.
+
+```{r, ECHO=TRUE, warning=FALSE, message=FALSE}
+kable(EMTABLE(procrast_hdi1$Development_Level, var1='Development Level', digits=1))
+
+SWLS.Spot.Check<-na.omit(procrast_hdi1[procrast_hdi1$Development_Level=='Low Human Development', c('Age', 'Country', 'HDI', 'SWLS.Mean')])
+kable(SWLS.Spot.Check)
+
+```
+
 Data Output
 
 The finalized HDI table can be found in the Data folder in repository (hdi.csv). (Q6a)
@@ -680,13 +692,13 @@ The finalized HDI table can be found in the Data folder in repository (hdi.csv).
 #write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
 ```
 
-The Tidied version of the original data and merged HDI data... (Q6b)
+This is also true for the cleaned version of the original data, merged with the HDI data. (Q6b)
 
 ```{r}
 #write.csv(procrast_hdi, file='~/CaseStudy2/Data/procrastination_clean.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 ```
 
-Dataset (or two) that shows the Top 15 nations... (Q6c)
+The Data that populates both barcharts detailing the top 15 countries by mean DP score and mean GP score can be found in the 'Data' portion of the repository as well.  (Q6c)
 
 ```{r}
 #Export a table of top 15 Countries with mean DP score and respective HDI
