@@ -972,14 +972,14 @@ The finalized HDI table can be found in the Data folder in repository (hdi.csv).
 #write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
 ```
 
-The Tidied version of the original data and merged HDI data... (Q6b)
+This is also true for the cleaned version of the original data, merged with the HDI data. (Q6b)
 
 
 ```r
-#write.csv(procrast_hdi, file='~/CaseStudy2/Data/procrastination_clean.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+#write.csv(procrast_hdi, file='~/CaseStudy2/Data/procrast_hdi.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 ```
 
-Dataset (or two) that shows the Top 15 nations... (Q6c)
+The Data that populates both barcharts detailing the top 15 countries by mean DP score and mean GP score can be found in the 'Data' portion of the repository as well.  (Q6c)
 
 
 ```r
