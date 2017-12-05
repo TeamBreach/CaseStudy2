@@ -27,13 +27,15 @@ names(procrastination)[6]<-'Income.Year'
 
 names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
-#check for other info about 's'
-#procrastination[procrastination$Current.Job == 's',]
+#define missing
 levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-NA
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-NA
+levels(procrastination$Current.Job)[match('please specify', levels(procrastination$Current.Job))]<-NA
 
 #Fix Misspellings
 #ouh could be oxford university hospital was not changed
+#check for other info about 's'
+#procrastination[procrastination$Current.Job == 's',]
 levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('Studey', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('psychologis', levels(procrastination$Current.Job))]<-'psychologist'
@@ -41,10 +43,17 @@ levels(procrastination$Current.Job)[match('mktg', levels(procrastination$Current
 levels(procrastination$Current.Job)[match('MD', levels(procrastination$Current.Job))]<-'Physician'
 levels(procrastination$Current.Job)[match('Economy', levels(procrastination$Current.Job))]<-'Economist'
 levels(procrastination$Current.Job)[match('vidoe', levels(procrastination$Current.Job))]<-'video'
-levels(procrastination$Current.Job)[match('houswife', levels(procrastination$Current.Job))]<-'Housewife'
-gsub('â???"', '', levels(procrastination$Current.Job))
+levels(procrastination$Current.Job)[match(' houswife', levels(procrastination$Current.Job))]<-'Housewife'
+#gsub('â???"', '', levels(procrastination$Current.Job))
 levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]<-'Assistant'
+#Consolidate Attrorneys
+levels(procrastination$Current.Job)[match('attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Attorney â???" Associate', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Attorney - self employed for 2 years â???" f', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Editor Attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Assistant District Attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match(' Attorney-self employed', levels(procrastination$Current.Job))]<-'Attorney'
 
 names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)

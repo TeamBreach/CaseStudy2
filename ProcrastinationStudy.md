@@ -12,7 +12,7 @@ The Better World Organization (BWO) is a socioeconomic thinktank that is interes
 - Relationship Between Life Satisfaction and Human Development Index 
 - Relationship Between Life Satisfaction and Human Development Index Levels
 
-As part of the analysis, ACEM collected procrastination data and used the HDI from the United Nations.  MOre information about these sources is provided in the README documentation.
+As part of the analysis, ACEM collected procrastination data and used the HDI from the United Nations.  More information about these sources is provided in the README documentation.
 
 Additionally, initial analysis of the data needed to be conducted to assess whether there are any biases within the data set worth noting.  Analysis included:
 
@@ -25,10 +25,17 @@ Additionally, initial analysis of the data needed to be conducted to assess whet
 - Participants by Country 
 - Perceptions of Procrastination 
 
+Analysis conducted via R. More details about the system information can be found in the README.
+
 ##Sources/Data
 
-Data files: Raw and URL/Scraped
- * Procrastination data
+The two primary data sources for this analysis were the following:
+
+  - Procrastination file
+      - From a study funded by the client (BWO) through Qualtrics containing answers to various survey questions centered on Procrastination as well as demographic information
+      
+  - HDI table
+      - List of HDI indexes per country, measured by the United Nations and located on Wikipedia
 
 
 ```r
@@ -64,23 +71,25 @@ dim(procrastination)
 ## [1] 4264   61
 ```
 
-Dimensions:
- * Initial dimensions are 4264 observations and 61 variables
-
 
 Clean data variable by variable:
 
- * Go through variables one by one
-  * Rename if necessary to keep 12 characters and under
-  * the '.' is used as a separator
-  * Define appropriate missing values: '0' when numeric and blank when character
-   * Use 2.c.iii.-iv. as examples  
-   -For example, work status has a '0' instead of 'full-time' or 'retired'. This was changed to a missing value
-  * Fix when factor labels are not applied correctly
-   * Use 2.c.ii. as example
-   - Sons has 'Male' and 'Female' instead of 1 and 2
-  * Decide what to do with nonsense data
-   * Use 2.c.i. as example
+Go through variables one by one
+
+  - Rename if necessary to keep 12 characters and under (Q2b)
+  - Define appropriate missing values: '0' or NA when numeric and blank or NA when character
+   - For example, work status has a '0' instead of 'full-time' or 'retired'. This was changed to a missing value
+   - County of Residence of '0 is set to missing (Q2ciii)
+  - Fix when factor labels are not applied correctly
+   - Sons has 'Male' and 'Female' instead of 1 and 2 (Q2cii)
+   - Survey responses on whether others consider the respondent a procrastinator is a factor variable where '5' is yes and '4' is 'no' when read numerically. Data was thus modified so that an observed factor level of '4' corresponds to 'no'
+   - Similarly, analysis of how the factor levels were defined led us to modify the number '8' to a 'Small City' community
+  - Unrealistic values are defined as missing
+   - For example, when respondents claim to be working at their current job for 999 years, the response is set to missing
+  - Correct spelling mistakes in respondents' write-in answers so that observations can be more easily categorized if analysis demands (Q2civ)
+   - For example: 'Studey' was corrected to 'student'
+   - Furthermore, 'na', '0', and 'please specify' were set to missing
+  - Additional information about this data can be found in the CODEBOOK
 
 
 ```r
@@ -104,13 +113,15 @@ names(procrastination)[6]<-'Income.Year'
 
 names(procrastination)[7]<-'Current.Job'
 #unique(procrastination$Current.Job)
-#check for other info about 's'
-#procrastination[procrastination$Current.Job == 's',]
+#define missing
 levels(procrastination$Current.Job)[match('na', levels(procrastination$Current.Job))]<-NA
 levels(procrastination$Current.Job)[match('0', levels(procrastination$Current.Job))]<-NA
+levels(procrastination$Current.Job)[match('please specify', levels(procrastination$Current.Job))]<-NA
 
 #Fix Misspellings
 #ouh could be oxford university hospital was not changed
+#check for other info about 's'
+#procrastination[procrastination$Current.Job == 's',]
 levels(procrastination$Current.Job)[match('s', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('Studey', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('psychologis', levels(procrastination$Current.Job))]<-'psychologist'
@@ -122,6 +133,14 @@ levels(procrastination$Current.Job)[match(' houswife', levels(procrastination$Cu
 #gsub('â???"', '', levels(procrastination$Current.Job))
 levels(procrastination$Current.Job)[match('\'Utterly shiftless arts student\'... at p', levels(procrastination$Current.Job))]<-'student'
 levels(procrastination$Current.Job)[match('asst', levels(procrastination$Current.Job))]<-'Assistant'
+#Consolidate Attrorneys
+levels(procrastination$Current.Job)[match('attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Attorney â???" Associate', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Attorney - self employed for 2 years â???" f', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Editor Attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match('Assistant District Attorney', levels(procrastination$Current.Job))]<-'Attorney'
+levels(procrastination$Current.Job)[match(' Attorney-self employed', levels(procrastination$Current.Job))]<-'Attorney'
+
 
 names(procrastination)[8]<-'Years.Empl.'
 #tail(sort(procrastination$Years.Empl.), 50)
@@ -205,7 +224,7 @@ names(procrastination)[59]<-'SWLS5'
 names(procrastination)[60]<-'Self.Assess'
 
 names(procrastination)[61]<-'Other.Assess'
-#Check if '4' or '0' correspond to a categor under numeric coding
+#Check if '4' or '0' correspond to a category under numeric coding
 #procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 4]
 #procrastination$Other.Assess[as.numeric(procrastination$Other.Assess) == 0]
 levels(procrastination$Other.Assess)[match('4', levels(procrastination$Other.Assess))]<-'no'
@@ -213,8 +232,8 @@ levels(procrastination$Other.Assess)[match('0', levels(procrastination$Other.Ass
 ```
 
 
-Create Procrastination means
- * These are the mean procrastination scores per individual per category
+To simplify the analysis, variables were aggregated within each set of procrastination and life satisfaction measures (GP, DP, AIP, and life statisfaction) by calculating a mean score (Q2e).
+
 
 
 ```r
@@ -236,11 +255,102 @@ SWLS<-grep( 'SWLS', names(procrastination))
 procrastination$SWLS.Mean<-apply(procrastination[,SWLS], 1, mean, na.rm=TRUE)
 ```
 
-Double Check
+ACEM also conducted secondary analysis to confirm data validity via munging (Q2d).
 
 
-HDI_Data Scraped and cleaned
- * Scrape HDI data and save to repository
+```r
+#2.d.
+#Double Check Character and Numeric
+str(procrastination)
+```
+
+```
+## 'data.frame':	4264 obs. of  65 variables:
+##  $ Age         : num  67.5 45 19 37.5 28 23 67.5 37.5 24 45 ...
+##  $ Gender      : Factor w/ 2 levels "Female","Male": 2 2 1 2 1 1 1 2 1 2 ...
+##  $ Kids        : Factor w/ 2 levels "No Kids","Yes Kids": 2 2 1 2 1 1 1 1 1 2 ...
+##  $ Education   : Factor w/ 8 levels "deg","dip","grade",..: 7 1 2 7 1 1 7 3 7 7 ...
+##  $ Work.Status : Factor w/ 5 levels "full-time","part-time",..: 3 2 4 1 1 1 2 2 1 1 ...
+##  $ Income.Year : int  25000 35000 NA 45000 35000 15000 NA 10000 250000 87500 ...
+##  $ Current.Job : Factor w/ 663 levels "student"," Accountant",..: NA NA NA NA NA NA NA NA NA NA ...
+##  $ Years.Empl. : num  9 0 0 14 1 1 8 NA 2 14 ...
+##  $ Months.Empl.: int  0 0 0 0 0 0 0 0 0 0 ...
+##  $ Comm.Size   : Factor w/ 7 levels "Small City","Large-City",..: 2 7 3 3 7 6 3 7 7 7 ...
+##  $ Country     : Factor w/ 92 levels "Afghanistan",..: 29 13 23 24 24 24 58 86 86 71 ...
+##  $ Marital.Stat: Factor w/ 5 levels "Divorced","Married",..: 1 2 4 2 4 4 1 4 4 2 ...
+##  $ Sons        : num  0 1 0 0 0 0 0 0 0 2 ...
+##  $ Daughters   : int  5 1 0 1 0 0 0 0 0 0 ...
+##  $ XDP1        : int  3 3 5 3 3 3 3 4 2 5 ...
+##  $ XDP2        : int  1 4 5 3 3 4 4 3 2 5 ...
+##  $ XDP3        : int  1 3 2 3 2 3 3 4 4 5 ...
+##  $ XDP4        : int  1 3 3 3 1 2 2 4 4 5 ...
+##  $ XDP5        : int  1 3 3 3 1 2 2 3 4 5 ...
+##  $ XAIP1       : int  1 3 5 2 1 2 3 4 3 3 ...
+##  $ XAIP2       : int  1 1 4 1 1 5 1 4 3 3 ...
+##  $ XAIP3       : int  1 4 4 4 3 5 1 4 3 5 ...
+##  $ XAIP4       : int  1 3 5 3 3 5 2 4 4 3 ...
+##  $ XAIP5       : int  1 3 5 5 2 5 3 4 4 5 ...
+##  $ XAIP6       : int  1 4 5 3 2 3 3 2 2 1 ...
+##  $ XAIP7       : int  1 3 5 4 2 5 1 5 2 5 ...
+##  $ XAIP8       : int  1 3 4 5 2 4 4 2 4 5 ...
+##  $ XAIP9       : int  5 3 5 4 1 4 5 4 2 5 ...
+##  $ XAIP10      : int  1 3 5 5 1 5 5 3 2 5 ...
+##  $ XAIP11      : int  1 4 4 4 2 3 3 2 4 4 ...
+##  $ XAIP12      : int  1 2 3 3 1 5 2 4 4 4 ...
+##  $ XAIP13      : int  1 2 5 4 2 4 3 3 4 4 ...
+##  $ XAIP14      : int  1 2 4 2 1 5 1 4 3 4 ...
+##  $ XAIP15      : int  3 4 3 1 2 5 4 5 3 5 ...
+##  $ XGP1        : int  1 4 5 4 4 5 4 5 3 5 ...
+##  $ XGP2        : int  1 2 2 1 1 5 1 1 4 3 ...
+##  $ XGP3        : int  1 2 2 3 2 2 1 3 3 3 ...
+##  $ XGP4        : int  1 2 4 3 4 5 1 4 4 1 ...
+##  $ XGP5        : int  1 2 3 2 5 4 1 3 2 5 ...
+##  $ XGP6        : int  1 2 1 3 2 4 2 3 2 5 ...
+##  $ XGP7        : int  1 4 3 4 4 5 3 4 4 5 ...
+##  $ XGP8        : int  1 2 2 5 2 4 2 3 2 4 ...
+##  $ XGP9        : int  1 4 5 4 4 4 4 4 4 5 ...
+##  $ XGP10       : int  1 2 4 1 1 3 1 4 1 3 ...
+##  $ XGP11       : int  5 3 5 3 2 4 4 3 5 5 ...
+##  $ XGP12       : int  1 4 5 4 3 4 2 5 2 5 ...
+##  $ XGP13       : int  1 2 3 3 2 3 3 2 3 4 ...
+##  $ XGP14       : int  1 2 4 3 4 4 2 2 2 4 ...
+##  $ XGP15       : int  1 3 5 4 3 4 4 4 1 4 ...
+##  $ XGP16       : int  1 4 2 4 2 4 3 4 5 5 ...
+##  $ XGP17       : int  1 3 3 3 3 4 1 3 5 3 ...
+##  $ XGP18       : int  5 3 5 4 2 4 4 4 1 5 ...
+##  $ XGP19       : int  1 4 5 5 3 4 4 4 1 5 ...
+##  $ XGP20       : int  5 4 4 1 4 4 2 4 3 5 ...
+##  $ SWLS1       : int  5 3 2 2 4 3 3 3 4 1 ...
+##  $ SWLS2       : int  5 4 2 4 4 2 4 3 4 4 ...
+##  $ SWLS3       : int  5 4 2 2 4 4 3 3 5 2 ...
+##  $ SWLS4       : int  5 4 3 2 3 4 3 2 4 4 ...
+##  $ SWLS5       : int  5 3 4 2 4 3 2 3 4 1 ...
+##  $ Self.Assess : Factor w/ 2 levels "no","yes": 1 2 2 2 1 2 2 2 1 2 ...
+##  $ Other.Assess: Factor w/ 2 levels "no","yes": 1 2 2 2 1 2 2 2 1 2 ...
+##  $ XGP.Mean    : num  1.6 2.9 3.6 3.2 2.85 4 2.45 3.45 2.85 4.2 ...
+##  $ XDP.Mean    : num  1.4 3.2 3.6 3 2 2.8 2.8 3.6 3.2 5 ...
+##  $ XAIP.Mean   : num  1.4 2.93 4.4 3.33 1.73 ...
+##  $ SWLS.Mean   : num  5 3.6 2.6 2.4 3.8 3.2 3 2.8 4.2 2.4 ...
+```
+
+```r
+# #apply(procrastination, 2, class)
+# catch=NA
+# for(i in 1:length(procrastination[1,])){catch<-c(catch, is.numeric(procrastination[,i]))}
+# #catch[-1]
+# 
+# #Numeric Summary
+# apply(procrastination[,catch[-1]], 2, summary)
+# 
+# #Character Summary
+# apply(procrastination[,!catch[-1]], 2, unique)
+# 
+# aggregate(procrastination[,!catch[-1]], by= , FUN=is.na)
+```
+
+
+ACEM scraped and cleaned HDI data for analysis and merging to procrastination data (Q3a-Q3b). 
+
 
 
 ```r
@@ -299,19 +409,20 @@ hdi_total$HDI <- as.numeric(hdi_total$HDI)
 
 #Create HDI category column and assign category to each country.
 
-hdi_total$Development_Level <- cut(hdi_total$HDI, 
+hdi_total$Development_Level <- cut(hdi_total$HDI,
                        breaks = c(-Inf, .550, .701, .800, Inf), 
                        labels = c("Low Human Development", "Medium Human Development", "High Human Development", "Very High Human Development"),
                        right = FALSE)
 
 #saved file "hdi.csv" to Data file in repo:
-#write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
+#write.csv(hdi_total, "~/CaseStudy2/Data/hdi.csv", row.names=FALSE)
 ```
 
-Merge the two datasets
- * Prepare to merge by Country / align spellings
- * Merge Procrastination and HDI_Data by Country
- * Use merged table for analysis
+Then, HDI data was merged with procrastination data by country of residence (Q3c)
+ 
+ - Corrected the spelling of Israel and Colombia in the procrastination data
+ 
+ - No HDI information for Antiqua, Bermuda, Guam, Macao, Puerto Rico, and the former Yogoslavia
 
 
 ```r
@@ -349,7 +460,7 @@ Additional information about this assessment can be found in the README file in 
 
 ##Analysis/Findings
 
-Removed age outliers <18 per clients request. (Q4a)
+First, ACEM removed age outliers <18 per clients request. (Q4a)
 
 
 ```r
@@ -357,7 +468,13 @@ Removed age outliers <18 per clients request. (Q4a)
 procrast_hdi1 <- procrast_hdi[procrast_hdi$Age>18,]
 ```
 
-Descriptive Statistics - Age, Income, HDI, 4 Mean Scores (Q4b)
+Initial Look at Descriptive Statistics in Merged File - Age, Income, HDI, 4 Mean Scores (Q4b)
+
+Summary data reveals some interesting characteristics:
+
+- Yearly Income is right skewed
+- Age is concentrated around a few distinct values.
+- at least 50% of HDI values are 0.92
 
 
 ```r
@@ -378,12 +495,11 @@ NA's        71           486   242.00       71.0       71.0        71.0        7
 
 Histogram for Age (Q4b)
 
-Histogram shows most respondents age 18+ from the study are under 50, however, there is a large segment age 50-60. 
+Histogram shows most respondents age 18+ from the study are under 50, however, there is a large segment age 50-60. The distribution appears to be symmetrical. However, respondents are highly clustered at certain age points. 
 
 
 ```r
 #histogram to show distribution of respondent age.
-
 ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
   geom_histogram(color="black",fill="blue") +
   ggtitle("Age Distribution") +
@@ -391,11 +507,11 @@ ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
   xlab("Age") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-8-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
 
 Histogram for Income (Q4b)
 
-Histogram shows most respondents from the study have income below 100K, however, there is a large segment with income of 150K. 
+Histogram shows most respondents from the study have income below 60K. However, there is a large segment with income of greater than 150K that skews the distribution to the right.
 
 
 ```r
@@ -407,7 +523,11 @@ ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
   xlab("Income") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-9-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-10-1.png)<!-- -->
+
+Participants by Gender (Q4c)
+
+Counts of how many participants there were by gender in decending order.  There were 70 observations without a gender value.  These observations were removed from the list prior to creating the table. For example, we have 773 respondents who are 45 and 0 who are 44 and 0 who are 46.
 
 
 ```r
@@ -437,11 +557,6 @@ EMTABLE<-function(df, var1 = 'Variable', digits = 1){
 
 }
 ```
-
-Participants by Gender (Q4c)
-
-Counts of how many participants there were by gender in decending order.  There were 70 observations without a gender value.  These observations were removed from the list prior to creating the table.
-
 
 
 ```r
@@ -496,28 +611,28 @@ kable(JobTable[1:20,])
 
 
 
-Current Occupation    Count   Percentage
--------------------  ------  -----------
-please specify          200         12.7
-teacher                  74          4.7
-college professor        43          2.7
-engineer                 32          2.0
-manager                  32          2.0
-Attorney                 30          1.9
-retired                  28          1.8
-Editor                   21          1.3
-Marketing                21          1.3
-attorney                 19          1.2
-writer                   19          1.2
-Unemployed               18          1.1
-Housewife                16          1.0
-Doctor; Physician        16          1.0
-Software Developer       16          1.0
-consultant               12          0.8
-Nurse                    13          0.8
-Scientist                12          0.8
-Financial Advisor        11          0.7
-home maker               11          0.7
+Current Occupation     Count   Percentage
+--------------------  ------  -----------
+teacher                   74          5.4
+Attorney                  52          3.8
+college professor         43          3.1
+engineer                  32          2.3
+manager                   32          2.3
+retired                   28          2.0
+Editor                    21          1.5
+Marketing                 21          1.5
+writer                    19          1.4
+Unemployed                18          1.3
+Housewife                 16          1.2
+Doctor; Physician         16          1.2
+Software Developer        16          1.2
+consultant                12          0.9
+Nurse                     13          0.9
+Scientist                 12          0.9
+Financial Advisor         11          0.8
+home maker                11          0.8
+Administrator             10          0.7
+assistant professor       10          0.7
 
 ```r
 ####EXPORT
@@ -525,9 +640,6 @@ home maker               11          0.7
 ```
 
 
-
-
-???????????????????????????????????????????????????????
 
 Participants by Country (Q4d)
 
@@ -704,7 +816,7 @@ ggplot(DP_Meanfinal, aes(x=reorder(Country,XDP.Mean),y=XDP.Mean)) +
   coord_flip()
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-16-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
 
 Top 15 Nations According to the General Procrastination Scale - GP (Q5c)
 
@@ -742,7 +854,7 @@ ggplot(GP_Meanfinal, aes(x=reorder(Country,XGP.Mean),y=XGP.Mean)) +
   coord_flip()
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-17-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
 
 Relationship Between Age and Income (Q5d)
 
@@ -774,14 +886,14 @@ ggplot(na.omit(procrast_hdi1), aes(x=Age, y=Income.Year, color=Gender, fill=Gend
   ylab("Income") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-18-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
 
 The sizes of the points are larger for larger frequencies. 
 
 
 Relationship Between Life Satisfaction and HDI (Q5e)
 
-According to the scatterplot, there appears to be no relationship between mean Life Satsisfaciton and HDI. There appears to be little variability in the HDI values, in that most of our respondents live inc countries with an HDI of around 0.90. Thus, it becomes difficult to test general differences in Life Satisfaction vs HDI 
+According to the scatterplot, there appears to be no relationship between mean Life Satsisfaciton and HDI. There appears to be little variability in the HDI values, in that more than half of our respondents live in countries with an HDI of 0.92. Thus, it becomes difficult to test general differences in Life Satisfaction vs HDI 
 
 
 ```r
@@ -795,55 +907,73 @@ ggplot(procrast_hdi1, aes(x=SWLS.Mean, y=HDI)) + theme_minimal() +
   ylab("HDI") 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-19-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
 
 Relationship Between Life Satisfaction and HDI (Development Level) (Q5e)
 
-?????????????????????????????????????????????????
+However, a barchart showing Life Satisfaction by HDI categories suggests that Life Satisfaction drops off among countries that are in the Low Human Development category. 
 
 
 ```r
 HDI.level.table<-aggregate(procrast_hdi1$SWLS.Mean, by=list(procrast_hdi1$Development_Level), FUN=mean)
 names(HDI.level.table)<-c("Development_Level", 'SWLS.Mean')
-
-#creating scatterplot.
-  ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_Level)) +
+HDI.level.table$SWLS.Mean <- round(HDI.level.table$SWLS.Mean, digits=1)
+#barchart to show SWLM mean by Development Level.
+ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_Level)) +
   geom_bar(stat="identity") + 
   scale_fill_brewer(palette="YlOrRd") +
   ggtitle("Life Satisfaction and HDI (Development Level)") +
   theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20),legend.position="none") +
   xlab("Development Level") +
   ylab("SWLS Mean") +
-  
-  ylim(0,5) 
+  geom_text(aes(label = SWLS.Mean), vjust=-.25, size=6) +
+  ylim(0,4) 
 ```
 
-![](ProcrastinationStudy_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
+![](ProcrastinationStudy_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
 
 Data Output
 
 The finalized HDI table can be found in the Data folder in repository (hdi.csv). (Q6a)
 
+
+```r
+#write.csv(hdi_total, "C:/Users/emccandless/Documents/SMU/CaseStudy2/Data/hdi.csv", row.names=FALSE)
+```
+
 The Tidied version of the original data and merged HDI data... (Q6b)
+
+
+```r
+#write.csv(procrast_hdi, file='~/CaseStudy2/Data/procrastination_clean.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+```
 
 Dataset (or two) that shows the Top 15 nations... (Q6c)
 
-d All output should be in plain English or translated in the Codebook. (Q6d)
+
+```r
+#write.csv(DP_Meanfinal, file='~/CaseStudy2/Data/DP_MeanFinal.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 
 
-Highlights:
+#write.csv(GP_Meanfinal, file='~/CaseStudy2/Data/GP_MeanFinal.csv.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+```
 
+All output should be in plain English or translated in the Codebook. (Q6d)
 
-
-
-###Modifications/Merges to Data
-
-###Data Summary
 
 ##Conclusions
 
-????? Mention biases in procrastination data set.
-????? Conclusions about procrastination related to country
+Our analysis shows the following conclusions
+
+- Slovania, Taiwan, Puerto Rico, Qatar, Panama, Sri Lanka, Austria, Ecuador, and Uruguay are likely to be top procrastination countries in the world as they appear in the top 15 using two different procrastination scales (DP and GP).  
+- As age increases so does yearly income as the data show a positive relationship between these two variables.  Additionally, it is more pronounced for males than females.
+- At first glance, there does not appear to be a relationship between life satisfaction and HDI as our "Life Satisfaction Versus HDI" scatterplot shows. However, a closer look at Life Satisfaction mean scores by HDI category shows that life satisfaction drops off among countries that are in the Low Human Development category. 
+
+Note the following concerns about the procrastination data
+
+- The data is likely not up to date if it still references the former Yugoslavia. All responses were probably recorded before the popularity of the internet which is likely to be big source of procrastination for many people.
+- Age clusters at distinct values. It is unusual for there to be 773 respondents at age 45 and 0 between 32.5 and 45, and 0 between 45 and 55. 
+- HDI is concentrated at the value of 0.92 making it difficult to observe the effect of differences in HDI values.
 
 
 

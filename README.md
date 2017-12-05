@@ -5,13 +5,20 @@
 ### Created November 25th, 2017
 
 ##### by Arturo Casillas and Eric McCandless.
+
+Sys.info()
+          sysname           release           version          nodename           machine             login 
+        "Windows"        ">= 8 x64"      "build 9200" "LAPTOP-74TSC78B"          "x86-64"           "acasi" 
+             user    effective_user 
+          "acasi"           "acasi" 
+
 ---
 | Responsibilities | Analyst |
 | :--------------: | :-----: |
 | Presentation | Arturo & Eric |
 | Makefile | Arturo |
-| Introduction | |
-| Conclusion | |
+| Introduction | Eric |
+| Conclusion | Arturo & Eric |
 | Tidy Data | Arturo |
 | Readme | Arturo |
 | Codebook | Arturo |

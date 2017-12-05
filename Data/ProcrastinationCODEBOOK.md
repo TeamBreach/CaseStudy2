@@ -12,7 +12,7 @@ output: md_document
 ### Variables & Descriptions
 
 | Original Name | Format | Description |
-| :------------:| :-----:|:--------_-- |
+| :------------:| :-----:|:-----------:|
 |Age| Buckets? | The participant's age in years |
 | Kids| Binary: 'Yes Kids' or 'No Kids' | whether they have kids or not|
 | Edu | Factor | Education level |
