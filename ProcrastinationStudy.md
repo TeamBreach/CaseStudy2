@@ -1,4 +1,4 @@
-# Procrastination
+# Procrastination and Human Development
 Arturo Casillas & Eric McCandless (ACEM Research. Inc.)  
 November 26, 2017  
 
@@ -385,7 +385,9 @@ Histogram shows most respondents age 18+ from the study are under 50, however, t
 #histogram to show distribution of respondent age.
 
 ggplot(procrast_hdi1, aes(procrast_hdi1$Age)) +
-  geom_histogram() +
+  geom_histogram(color="black",fill="blue") +
+  ggtitle("Age Distribution") +
+  theme(plot.title = element_text(hjust = 0.5)) +
   xlab("Age") 
 ```
 
@@ -399,7 +401,9 @@ Histogram shows most respondents from the study have income below 100K, however,
 ```r
 #histogram to show distribution of respondent income.
 ggplot(procrast_hdi1, aes(procrast_hdi1$Income.Year)) +
-  geom_histogram() + theme_minimal() +
+  geom_histogram(color="black",fill="blue") + theme_minimal() +
+  ggtitle("Income Distribution") +
+  theme(plot.title = element_text(hjust = 0.5)) +
   xlab("Income") 
 ```
 
@@ -803,20 +807,18 @@ HDI.level.table<-aggregate(procrast_hdi1$SWLS.Mean, by=list(procrast_hdi1$Develo
 names(HDI.level.table)<-c("Development_Level", 'SWLS.Mean')
 
 #creating scatterplot.
-  ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_Level)) + theme_minimal() +
+  ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_Level)) +
   geom_bar(stat="identity") + 
-  scale_fill_brewer(palette="YlOrRd") #+
+  scale_fill_brewer(palette="YlOrRd") +
+  ggtitle("Life Satisfaction and HDI (Development Level)") +
+  theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20),legend.position="none") +
+  xlab("Development Level") +
+  ylab("SWLS Mean") +
+  
+  ylim(0,5) 
 ```
 
 ![](ProcrastinationStudy_files/figure-html/unnamed-chunk-20-1.png)<!-- -->
-
-```r
-#  scale_colour_hue(l=50) 
-#   ggtitle("Life Satisfaction Versus HDI") +
-#   theme(plot.title = element_text(hjust = 0.5, size=20), axis.text=element_text(size=15), axis.title=element_text(size=20), legend.title=element_text(size=20), legend.text=element_text(size=20)) +
-#   xlab("Life Satisfaction") +
-#   ylab("HDI Development Level") 
-```
 
 Data Output
 
