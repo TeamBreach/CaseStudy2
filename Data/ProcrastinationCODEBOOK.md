@@ -13,11 +13,11 @@ output: md_document
 
 | Original Name | Format | Description |
 | :------------:| :-----:|:-----------:|
-|Age| Buckets? | The participant's age in years |
+| Age | Number | The participant's age in years |
 | Kids| Binary: 'Yes Kids' or 'No Kids' | whether they have kids or not|
 | Edu | Factor | Education level |
-| Work Status| | Factor | What kind of job are they working?
-| Annual Income| | Buckets? | All converted to dollars |
+| Work Status| | Factor | What kind of job are they working?: "retired", "part-time" , "student", "full-time", "unemployed" |
+| Annual Income| | Number | Respondent's income, converted to U.S. dollars |
 | Current Occupation| | Character | A write-in for occupation. It contains typos |
 | How long have you held this position? | Number - scientific | Number of years in this job. |
 | How long have you held this position? | Number | Number of months in this job. |
@@ -55,8 +55,8 @@ output: md_document
 |Age| Number | The participant's age in years |
 | Kids| Binary: 'Yes Kids' or 'No Kids' | whether they have kids or not|
 | Education | Factor | Education level |
-| Work Status| | Factor | What kind of job are they working?
-| Income Year| | Number | All converted to dollars |
+| Work Status| | Factor | What kind of job are they working?: "retired", "part-time" , "student", "full-time", "unemployed" |
+| Income Year| | Number | Respondent's income, converted to U.S. dollars |
 | Current Job| | Character | A write-in for occupation. |
 | Years Emp. | Factor | Number of years in this job. |
 | Months Emp. | Factor | Number of months in this job. |
@@ -75,7 +75,7 @@ output: md_document
 | AIP Mean | Number: 1 - 5 | mean of Adult Inventory of Procrastination per respondent (McCown & Johnson, 1989) |
 | GP Mean | Number: 1 - 5 |  mean of the General Procrastination scale per respondent (Lay, 1986) |
 | SWLS Mean | Number: 1 - 5 | mean of  the Satisfaction with Life Scale per respondent (Diener et al., 1985) |
-| HDI | Bumber: 0-1 |  Human Development Index |
+| HDI | Number: 0-1 |  Human Development Index |
 | Development Level | Number | mean of  the Satisfaction with Life Scale per respondent (Diener et al., 1985) |
 
 ## DP_MeanFinal.csv
@@ -83,17 +83,17 @@ output: md_document
 
 | Name | Format | Description |
 | :---:| :-----:| :---------: |
-| Country | | |
-| XDP.Mean | | |
-| Development_Level | | |
-| HDI | | |
+| Country | Character | The country where the person holds citizenship. |
+| XDP.Mean | Number: 1-5 | mean of the Decisional Procrastination Scale per respondent (Mann, 1982) |
+| Development_Level | Character | |
+| HDI | Number: 0-1  | Human Development Index |
 
 ## DP_MeanFinal.csv
 ### General Description
 
 | Name | Format | Description |
 | :---:| :-----:| :---------: |
-| Country | | |
-| XGP.Mean | | |
-| Development_Level | | |
-| HDI | | |
+| Country | Character |  The country where the person holds citizenship.|
+| XGP.Mean | Number: 1-5 | mean of the General Procrastination scale per respondent (Lay, 1986 |
+| Development_Level | Character | |
+| HDI | Number: 0-1  | Human Development Index |

@@ -71,4 +71,4 @@ source('~/CaseStudy2/Analysis/analysis_wGraphics.R', echo=TRUE)
 #write.csv(DP_Meanfinal, file='~/CaseStudy2/Data/DP_MeanFinal.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
 #
 #Export a table of top 15 Countries with mean GP score and respective HDI
-#write.csv(GP_Meanfinal, file='~/CaseStudy2/Data/GP_MeanFinal.csv.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))
+#write.csv(GP_Meanfinal, file='~/CaseStudy2/Data/GP_MeanFinal.csv', row.names = FALSE, na=c(""," ","NA", "<NA>"))

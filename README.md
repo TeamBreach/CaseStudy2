@@ -70,11 +70,12 @@ The Analysis folder contains the following files:
 The Analysis folder contains the following files:
 ---
 * Procrastination.csv : Original Procrastination data, uncleaned
-* ProcrastinationCODEBOOK.md : 
+* ProcrastinationCODEBOOK.md : A codebook detailing the variable names and formats
 * hdi.csv : Human Development Index Data (HDI), taken form Wikipedia December 2017
 * procrast_hdi.csv : Procrastination data, cleaned and merged with HDI data
+* DP_MeanFinal.csv : 15 Countries with the largest mean Decision Procrastination Score
+* GP_MeanFinal.csv : 15 Countries with the largest mean General Procrastination Score
 
-## This repo also contains a codebook explaining variable names and data transformation performed on original data for the purposes of creating tidy data for analysis.
 
 ### Contact
 * Arturo Casillas (acasillas@SMU.edu)
