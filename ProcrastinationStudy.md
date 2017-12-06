@@ -78,18 +78,18 @@ Go through variables one by one
 
   - Rename if necessary to keep 12 characters and under (Q2b)
   - Define appropriate missing values: '0' or NA when numeric and blank or NA when character
-   - For example, work status has a '0' instead of 'full-time' or 'retired'. This was changed to a missing value
-   - County of Residence of '0 is set to missing (Q2ciii)
+    - For example, work status has a '0' instead of 'full-time' or 'retired'. This was changed to a missing value
+    - County of Residence of '0 is set to missing (Q2ciii)
   - Fix when factor labels are not applied correctly
-   - Sons has 'Male' and 'Female' instead of 1 and 2 (Q2cii)
-   - Survey responses on whether others consider the respondent a procrastinator is a factor variable where '5' is yes and '4' is 'no' when read numerically. Data was thus modified so that an observed factor level of '4' corresponds to 'no'
-   - Similarly, analysis of how the factor levels were defined led us to modify the number '8' to a 'Small City' community
+    - Sons has 'Male' and 'Female' instead of 1 and 2 (Q2cii)
+    - Survey responses on whether others consider the respondent a procrastinator is a factor variable where '5' is yes and '4' is 'no' when read numerically. Data was thus modified so that an observed factor level of '4' corresponds to 'no'
+    - Similarly, analysis of how the factor levels were defined led us to modify the number '8' to a 'Small City' community
   - Unrealistic values are defined as missing
-   - For example, when respondents claim to be working at their current job for 999 years, the response is set to missing
+    - For example, when respondents claim to be working at their current job for 999 years, the response is set to missing
   - Correct spelling mistakes in respondents' write-in answers so that observations can be more easily categorized if analysis demands (Q2civ)
-   - For example: 'Studey' was corrected to 'student'
-   - Some jobs were consolidated. For example, 'Attorney' and 'Attorney-self Employed' have been consolidated to 'Attorney'
-   - Furthermore, 'na', '0', and 'please specify' were set to missing
+    - For example: 'Studey' was corrected to 'student'
+    - Some jobs were consolidated. For example, 'Attorney' and 'Attorney-self Employed' have been consolidated to 'Attorney'
+    - Furthermore, 'na', '0', and 'please specify' were set to missing
   - Additional information about this data can be found in the CODEBOOK
 
 
@@ -997,6 +997,6 @@ Note the following concerns about the procrastination data
 - As mentioned above, there were only 4 observations from one country (Afghanistan) that fit into the Low Human Development HDI category.  Therefore, assessing the relationship between various categories of HDI and life satisfaction/procrastination metrics is not feasible.  Data shown is bias toward higher developed countries. 
 
 
-##All reports, script, analysis, data, README, and codebooks can be found on GitHub:
+### All reports, script, analysis, data, README, and codebooks can be found on GitHub:
 
 https://github.com/TeamBreach/CaseStudy2
