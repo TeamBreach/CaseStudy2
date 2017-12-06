@@ -75,3 +75,7 @@ The Analysis folder contains the following files:
 * procrast_hdi.csv : Procrastination data, cleaned and merged with HDI data
 
 ## This repo also contains a codebook explaining variable names and data transformation performed on original data for the purposes of creating tidy data for analysis.
+
+### Contact
+* Arturo Casillas (acasillas@SMU.edu)
+* Eric McCandless (emccandless@SMU.edu)

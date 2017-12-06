@@ -36,6 +36,8 @@ The two primary data sources for this analysis were the following:
       
   - HDI table
       - List of HDI indexes per country, measured by the United Nations and located on Wikipedia
+      
+Initialize libraries for coding/analysis
 
 
 ```r
@@ -49,10 +51,7 @@ library(plyr)
 #getwd()
 ```
 
-Procrastination data imported and cleaned
-
-
-Import the data. It has 4,264 observations and 61 variables:
+Procrastination data is imported and cleaned. There are 4,264 observations and 61 variables:
 
 
 ```r
@@ -928,7 +927,7 @@ ggplot(HDI.level.table, aes(y=SWLS.Mean, x=Development_Level, fill=Development_L
   xlab("Development Level") +
   ylab("SWLS Mean") +
   geom_text(aes(label = SWLS.Mean), vjust=-.25, size=6) +
-  ylim(0,4) 
+  ylim(1,5) 
 ```
 
 ![](ProcrastinationStudy_files/figure-html/unnamed-chunk-21-1.png)<!-- -->
@@ -937,19 +936,8 @@ Closer inspection reveals that mean life satisfaction was calculated from only f
 
 
 ```r
-kable(EMTABLE(procrast_hdi1$Development_Level, var1='Development Level', digits=1))
-```
+#kable(EMTABLE(procrast_hdi1$Development_Level, var1='Development Level', digits=1))
 
-
-
-Development Level              Count   Percentage
-----------------------------  ------  -----------
-Very High Human Development     3657         94.6
-Medium Human Development         114          2.9
-High Human Development            90          2.3
-Low Human Development              4          0.1
-
-```r
 SWLS.Spot.Check<-na.omit(procrast_hdi1[procrast_hdi1$Development_Level=='Low Human Development', c('Age', 'Country', 'HDI', 'SWLS.Mean')])
 kable(SWLS.Spot.Check)
 ```
@@ -999,13 +987,16 @@ Our analysis shows the following conclusions
 
 - Slovania, Taiwan, Puerto Rico, Qatar, Panama, Sri Lanka, Austria, Ecuador, and Uruguay are likely to be top procrastination countries in the world as they appear in the top 15 using two different procrastination scales (DP and GP).  
 - As age increases so does yearly income as the data show a positive relationship between these two variables.  Additionally, it is more pronounced for males than females.
-- At first glance, there does not appear to be a relationship between life satisfaction and HDI as our "Life Satisfaction Versus HDI" scatterplot shows. However, a closer look at Life Satisfaction mean scores by HDI category shows that life satisfaction drops off among countries that are in the Low Human Development category. 
+- At first glance, there does not appear to be a relationship between life satisfaction and HDI as our "Life Satisfaction Versus HDI" scatterplot shows. However, a closer look at Life Satisfaction mean scores by HDI category shows that life satisfaction drops off among countries that are in the Low Human Development category. But, it is worth noting that the life satisfaction metric for countries in the Low HDI category only represents 4 observations from 1 country (Afghanistan).  We need to interpret with caution. 
 
 Note the following concerns about the procrastination data
 
 - The data is likely not up to date if it still references the former Yugoslavia. All responses were probably recorded before the popularity of the internet which is likely to be big source of procrastination for many people.
 - Age clusters at distinct values. It is unusual for there to be 773 respondents at age 45 and 0 between 32.5 and 45, and 0 between 45 and 55. 
 - HDI is concentrated at the value of 0.92 making it difficult to observe the effect of differences in HDI values.
+- As mentioned above, there were only 4 observations from one country (Afghanistan) that fit into the Low Human Development HDI category.  Therefore, assessing the relationship between various categories of HDI and life satisfaction/procrastination metrics is not feasible.  Data shown is bias toward higher developed countries. 
 
 
+##All reports, script, analysis, data, README, and codebooks can be found on GitHub:
 
+https://github.com/TeamBreach/CaseStudy2
